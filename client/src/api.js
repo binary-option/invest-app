@@ -9,3 +9,9 @@ export function getUsers() {
     return res.data;
   });
 }
+
+export function signUp(userInfo) {
+  return recipes.signup("/api/signup").then(res => {
+    return res.data;
+  });
+}

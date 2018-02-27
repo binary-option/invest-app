@@ -15,6 +15,7 @@ const passport = require("passport");
 const User = require("./models/user");
 const config = require("./config");
 const { Strategy, ExtractJwt } = require("passport-jwt");
+const { ensureLoggedIn, ensureLoggedOut } = require("connect-ensure-login");
 
 mongoose.connect("mongodb://localhost/invest-app");
 
@@ -61,19 +62,21 @@ const strategy = new Strategy(
 passport.use(strategy);
 
 // Uncomment this when we start working on the protected parts of the app
-// app.use("/api", (req, res, next) => {
-//   passport.authenticate("jwt", config.jwtSession, (err, user, fail) => {
-//     req.user = user;
-//     if (err) {
-//       next(err);
-//     } else {
-//       next();
-//     }
-//   })(req, res, next);
-// });
+app.use("/api", (req, res, next) => {
+  passport.authenticate("jwt", config.jwtSession, (err, user, fail) => {
+    req.user = user;
+    next(err);
+  })(req, res, next);
+});
 
-app.use("/api/me", (req, res) => {
-  res.json(req.user);
+app.get("/api/me", (req, res) => {
+  if (req.user) {
+    res.json(req.user);
+  } else {
+    res.json({
+      message: "You're not connected"
+    });
+  }
 });
 
 app.use("/", index);
@@ -85,10 +88,23 @@ app.get(
   "/api/secret",
   // this is protecting the route and giving us access to
   // req.user
-  passport.authenticate("jwt", config.jwtSession),
+  ensureLoggedIn(),
   (req, res) => {
     // send the user his own information
     res.json(req.user);
+  }
+);
+
+// This route is only accessible for non authenticated users
+// If the user is not authenticated, he will be redirected to /
+app.get(
+  "/api/not-secret",
+  // this is protecting the route and giving us access to
+  // req.user
+  ensureLoggedOut(),
+  (req, res) => {
+    // send the user his own information
+    res.json({ message: "User is not authenticated" });
   }
 );
 
