@@ -1,13 +1,14 @@
 <template>
   <div class="home">
-    <img src="../assets/logo.png">
-    {{users}}
+    
+    This is the home page
+    <!-- {{users}} -->
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import { getUsers } from "@/api";
+import { getUsers } from "../api";
 
 export default {
   name: "home",
