@@ -7,7 +7,8 @@ const config = require("../config");
 router.post("/signup", (req, res, next) => {
   // extract the info we need from the body
   // of the request
-  const { username, name, password } = req.body;
+  const { username, name, familyName, password, role } = req.body;
+  const date = new Date();
 
   // create the new user
   // notice how we don't pass the password because
@@ -15,7 +16,10 @@ router.post("/signup", (req, res, next) => {
   // for us
   const user = new User({
     username,
-    name
+    name,
+    familyName,
+    accountCreated: date,
+    role
   });
 
   User.register(user, password, err => {

@@ -9,10 +9,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const history = require("connect-history-api-fallback");
 
-const index = require("./routes/index");
-const users = require("./routes/users");
-const authRoutes = require("./routes/auth");
-
 const passport = require("passport");
 const User = require("./models/user");
 const config = require("./config");
@@ -88,9 +84,11 @@ app.get("/api/me", (req, res) => {
   }
 });
 
-app.use("/api", index);
-app.use("/api", authRoutes);
-app.use("/api/users", users);
+app.use("/api", require("./routes/index"));
+app.use("/api", require("./routes/auth"));
+app.use("/api/clients", require("./routes/clients"));
+app.use("/api/managers", require("./routes/managers"));
+app.use("/api/portfolios", require("./routes/portfolios"));
 
 // This is an example of protected route
 app.get(
