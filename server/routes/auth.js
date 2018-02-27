@@ -20,7 +20,7 @@ router.post("/signup", (req, res, next) => {
 
   User.register(user, password, err => {
     if (err) {
-      return next(err);
+      return res.status(400).json(err.message);
     }
     res.json({ success: true });
   });
@@ -28,7 +28,7 @@ router.post("/signup", (req, res, next) => {
 
 // User.authenticate() returns a function
 const authenticate = User.authenticate();
-router.post("/login", (req, res) => {
+router.post("/login", (req, res, next) => {
   const { username, password } = req.body;
   // check if we have a username and password
   if (username && password) {
@@ -36,7 +36,7 @@ router.post("/login", (req, res) => {
     authenticate(username, password, (err, user, failed) => {
       if (err) {
         // an unexpected error from the database
-        return res.status(500).json(err);
+        return next(err);
       }
       if (failed) {
         // failed logging (bad password, too many attempts, etc)
@@ -56,12 +56,19 @@ router.post("/login", (req, res) => {
         // for the client, this is just a token, he knows that
         // he has to send it
         const token = jwt.encode(payload, config.jwtSecret);
-        res.json({ token });
+        const baseURL =
+          process.env.NODE_ENV === "production" ? "" : "http://localhost:8080";
+        // Redirect to client with the token and name
+        res.redirect(
+          `${baseURL}/login/callback?token=${token}&name=${encodeURI(
+            user.name
+          )}`
+        );
       }
     });
   } else {
     // unauthorized error
-    res.sendStatus(401);
+    res.status(401).json("Username or password missing");
   }
 });
 
