@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const favicon = require("serve-favicon");
@@ -6,10 +7,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
-
-const index = require("./routes/index");
-const users = require("./routes/users");
-const authRoutes = require("./routes/auth");
+const history = require("connect-history-api-fallback");
 
 const passport = require("passport");
 const User = require("./models/user");
@@ -18,6 +16,7 @@ const { Strategy, ExtractJwt } = require("passport-jwt");
 const { ensureLoggedIn, ensureLoggedOut } = require("connect-ensure-login");
 
 mongoose.connect("mongodb://localhost/invest-app");
+//mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
 
 const app = express();
 
@@ -26,13 +25,14 @@ const app = express();
 app.use(logger("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(
-  cors({
-    origin: "http://localhost:8080"
-  })
-);
-
-passport.initialize();
+if (process.env.NODE_ENV !== "production") {
+  app.use(
+    cors({
+      origin: "http://localhost:8080"
+    })
+  );
+}
+app.use(passport.initialize());
 // Create the strategy for JWT
 const strategy = new Strategy(
   {
@@ -63,10 +63,15 @@ passport.use(strategy);
 
 // Uncomment this when we start working on the protected parts of the app
 app.use("/api", (req, res, next) => {
-  passport.authenticate("jwt", config.jwtSession, (err, user, fail) => {
-    req.user = user;
-    next(err);
-  })(req, res, next);
+  const authenticate = passport.authenticate(
+    "jwt",
+    config.jwtSession,
+    (err, user, fail) => {
+      req.user = user;
+      next(err);
+    }
+  );
+  authenticate(req, res, next);
 });
 
 app.get("/api/me", (req, res) => {
@@ -79,9 +84,11 @@ app.get("/api/me", (req, res) => {
   }
 });
 
-app.use("/", index);
-app.use("/api", authRoutes);
-app.use("/api/users", users);
+app.use("/api", require("./routes/index"));
+app.use("/api", require("./routes/auth"));
+app.use("/api/clients", require("./routes/clients"));
+app.use("/api/managers", require("./routes/managers"));
+app.use("/api/portfolios", require("./routes/portfolios"));
 
 // This is an example of protected route
 app.get(
@@ -108,6 +115,10 @@ app.get(
   }
 );
 
+const clientRoot = path.join(__dirname, "../client/dist");
+app.use("/", express.static(clientRoot));
+app.use(history("index.html", { root: clientRoot }));
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error("Not Found");
@@ -116,14 +127,11 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
+app.use((err, req, res, next) => {
   res.status(err.status || 500);
-  res.json(err);
+  console.log(err);
+  // return the error message only in development mode
+  res.json(req.app.get("env") === "development" ? err.message : {});
 });
 
 module.exports = app;
