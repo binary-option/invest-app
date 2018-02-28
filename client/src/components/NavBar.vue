@@ -1,43 +1,88 @@
 <template>
-<b-navbar toggleable="md" type="dark" variant="info">
+<nav class="navbar is-transparent">
+  <div class="navbar-brand">
+    <router-link class="navbar-item" to="/">
+      <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
+    </router-link>
+    <div
+      class="navbar-burger burger"
+      :class="{ 'is-active': isActive }"
+      @click="isActive = !isActive"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
 
-  <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+  <div class="navbar-menu" :class="{ 'is-active': isActive }">
+    <div class="navbar-start">
+      <router-link
+        class="navbar-item" to="/about"
+        @click.native="isActive = false"
+      >
+        About
+      </router-link>
+    </div>
 
-  <b-navbar-brand href="#">NavBar</b-navbar-brand>
-
-  <b-collapse is-nav id="nav_collapse">
-
-    <b-navbar-nav>
-      <b-nav-item href="#">Link</b-nav-item>
-      <b-nav-item href="#" disabled>Disabled</b-nav-item>
-    </b-navbar-nav>
-
-    <!-- Right aligned nav items -->
-    <b-navbar-nav class="ml-auto">
-
-      <b-nav-form>
-        <b-form-input size="sm" class="mr-sm-2" type="text" placeholder="Search"/>
-        <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-      </b-nav-form>
-
-      <b-nav-item-dropdown text="Lang" right>
-        <b-dropdown-item href="#">EN</b-dropdown-item>
-        <b-dropdown-item href="#">ES</b-dropdown-item>
-        <b-dropdown-item href="#">RU</b-dropdown-item>
-        <b-dropdown-item href="#">FA</b-dropdown-item>
-      </b-nav-item-dropdown>
-
-      <b-nav-item-dropdown right>
-        <!-- Using button-content slot -->
-        <template slot="button-content">
-          <em>User</em>
-        </template>
-        <b-dropdown-item href="#">Profile</b-dropdown-item>
-        <b-dropdown-item href="#">Signout</b-dropdown-item>
-      </b-nav-item-dropdown>
-    </b-navbar-nav>
-
-  </b-collapse>
-</b-navbar>
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="field is-grouped" v-if="!$root.user">
+          <p class="control">
+            <router-link
+              class="navbar-item" to="/login"
+              @click.native="isActive = false"
+            >
+              Login
+            </router-link>
+          </p>
+          <p class="control">
+            <router-link
+              class="navbar-item" to="/signup"
+              @click.native="isActive = false"
+            >
+              Signup
+            </router-link>
+          </p>
+        </div>
+        <div class="field is-grouped" v-else>
+          <p class="control">
+            Hi {{ $root.user.name }}
+          </p>
+          <p class="control">
+            <a
+              class="navbar-item"
+              @click="logout"
+            >
+              Logout
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
 
 </template>
+
+
+<script>
+import api from "../api";
+
+export default {
+  data() {
+    return {
+      isActive: false
+    };
+  },
+  methods: {
+    logout() {
+      api.logout();
+      this.$root.user = null;
+      this.$router.push("/login");
+    }
+  }
+};
+</script>
+
+

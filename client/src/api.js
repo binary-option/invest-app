@@ -9,9 +9,13 @@ const errHandler = err => {
   throw err.response.data;
 };
 
-export function signup(userInfo) {
+export function signup(name, username, password) {
   return service
-    .post("/signup", userInfo)
+    .post("/signup", {
+      name,
+      username,
+      password
+    })
     .then(res => res.data)
     .catch(errHandler);
 }
