@@ -64,9 +64,7 @@ router.post("/login", (req, res, next) => {
           process.env.NODE_ENV === "production" ? "" : "http://localhost:8080";
         // Redirect to client with the token and name
         res.redirect(
-          `${baseURL}/login/callback?token=${token}&name=${encodeURI(
-            user.name
-          )}`
+          `/login/callback?token=${token}&name=${encodeURI(user.name)}`
         );
       }
     });
