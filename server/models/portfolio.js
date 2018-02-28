@@ -1,10 +1,28 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+const stockSchema = new Schema(
+  {
+    stockName: String,
+    stockValue: Number,
+    stockStartingDate: Date
+  },
+  { noId: true }
+);
+
 const portfolioSchema = new Schema({
-  stocks: [],
+  portfolioName: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  stocks: [stockSchema],
   movements: [],
-  description: String,
+  description: {
+    type: String,
+    required: true
+  },
+  performance1y: Number,
   performance5y: Number,
   volatility: [],
   shapiroRate1y: Number,
