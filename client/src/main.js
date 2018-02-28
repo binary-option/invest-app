@@ -1,12 +1,11 @@
 import Vue from "vue";
 import router from "./router";
-import Buefy from "buefy";
 import BootstrapVue from "bootstrap-vue";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
+
 import App from "./App.vue";
 
-import "buefy/lib/buefy.css";
-
-Vue.use(Buefy);
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 

@@ -9,13 +9,16 @@ const errHandler = err => {
   throw err.response.data;
 };
 
-export function signup(name, username, password) {
+export function getUser(userInfo) {
   return service
-    .post("/signup", {
-      name,
-      username,
-      password
-    })
+    .post("/signup", userInfo)
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
+export function signup(userInfo) {
+  return service
+    .post("/signup", userInfo)
     .then(res => res.data)
     .catch(errHandler);
 }
@@ -28,6 +31,7 @@ export function login(username, password) {
     })
     .then(res => {
       const { data } = res;
+      console.log(res);
       localStorage.setItem("user", JSON.stringify(data));
       axios.defaults.headers.common["Authorization"] = "Bearer " + data.token;
       return data;

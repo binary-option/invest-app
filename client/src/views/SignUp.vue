@@ -9,6 +9,26 @@
       </div>
       </div>
 
+        <div class="field">
+      <label class="label">Family name:</label>
+      <div class="control">
+      <input class="input" type="text" v-model="familyName">
+      </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Role</label>
+        <div class="control">
+        <div class="select">
+      <select v-model="role">
+        <option>Select option</option>
+        <option>client</option>
+        <option>manager</option>
+      </select>
+        </div>
+        </div>
+    </div>
+
     <div class="field">
       <label class="label"
       :type="usernameError && 'is-danger'"
@@ -41,12 +61,14 @@
 </template>
 
 <script>
-import api from "../api";
+import { signup } from "../api";
 
 export default {
   data() {
     return {
       name: "",
+      familyName: "",
+      role: "",
       username: "",
       password: "",
       error: null
@@ -55,12 +77,13 @@ export default {
   methods: {
     signup() {
       this.error = null;
-      api
-        .signup({
-          name: this.name,
-          username: this.username,
-          password: this.password
-        })
+      signup({
+        name: this.name,
+        familyName: this.familyName,
+        role: this.role,
+        username: this.username,
+        password: this.password
+      })
         .then(() => {
           this.$router.push("/login");
         })

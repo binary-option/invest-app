@@ -1,18 +1,11 @@
 <template>
 <nav class="navbar is-transparent">
+  
   <div class="navbar-brand">
     <router-link class="navbar-item" to="/">
       <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
     </router-link>
-    <div
-      class="navbar-burger burger"
-      :class="{ 'is-active': isActive }"
-      @click="isActive = !isActive"
-    >
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
+ 
   </div>
 
   <div class="navbar-menu" :class="{ 'is-active': isActive }">
@@ -27,7 +20,7 @@
 
     <div class="navbar-end">
       <div class="navbar-item">
-        <div class="field is-grouped" v-if="!$root.user">
+        <div class="field is-grouped">
           <p class="control">
             <router-link
               class="navbar-item" to="/login"
@@ -45,12 +38,12 @@
             </router-link>
           </p>
         </div>
-        <div class="field is-grouped" v-else>
+        <div class="field is-grouped">
           <p class="control">
-            Hi {{ $root.user.name }}
+           
           </p>
           <p class="control">
-            <a
+            <a href="#"
               class="navbar-item"
               @click="logout"
             >
@@ -67,7 +60,7 @@
 
 
 <script>
-import api from "../api";
+import { logout } from "../api";
 
 export default {
   data() {
@@ -77,7 +70,7 @@ export default {
   },
   methods: {
     logout() {
-      api.logout();
+      logout();
       this.$root.user = null;
       this.$router.push("/login");
     }
