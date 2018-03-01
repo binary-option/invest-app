@@ -11,6 +11,20 @@ router.get("/", ensureLoggedIn(), function(req, res, next) {
   });
 });
 
+router.get("/managers", ensureLoggedIn(), function(req, res, next) {
+  User.find({ role: "manager" }, (err, managers) => {
+    if (err) return next(err);
+    res.json(managers);
+  });
+});
+
+router.get("/clients", ensureLoggedIn(), function(req, res, next) {
+  User.find({ role: "client" }, (err, managers) => {
+    if (err) return next(err);
+    res.json(managers);
+  });
+});
+
 router.get("/:userId", ensureLoggedIn(), function(req, res, next) {
   User.findById(req.params.userId, (err, user) => {
     if (err) return next(err);
