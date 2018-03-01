@@ -12,8 +12,6 @@
     <footer class="footer">
      
     </footer>
-    
-    
   </div>
 </template>
 
@@ -23,6 +21,7 @@ import { loadUser } from "./api";
 
 export default {
   components: { NavBar },
+
   created() {
     const user = loadUser();
     if (user) this.$root.user = user;

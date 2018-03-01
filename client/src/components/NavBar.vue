@@ -38,7 +38,7 @@
         <b-dropdown-item href="/profile"  @click.native="isActive = false">See my profile</b-dropdown-item>
         <b-dropdown-item href="/edit"  @click.native="isActive = false">Edit my profile</b-dropdown-item>
         <b-dropdown-item href="/wishlist"  @click.native="isActive = false">My wishlist</b-dropdown-item>
-        <b-dropdown-item href="/login"  @click.native="isActive = false">Logout</b-dropdown-item>
+        <b-dropdown-item href="/login" @click="logout">Logout</b-dropdown-item>
       </b-nav-item-dropdown>
     </b-navbar-nav>  
 
