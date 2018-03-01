@@ -86,6 +86,7 @@ app.get("/api/me", (req, res) => {
 
 app.use("/api", require("./routes/index"));
 app.use("/api", require("./routes/auth"));
+app.use("/api/users", require("./routes/users"));
 app.use("/api/clients", require("./routes/clients"));
 app.use("/api/managers", require("./routes/managers"));
 app.use("/api/portfolios", require("./routes/portfolios"));
