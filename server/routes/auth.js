@@ -62,7 +62,8 @@ router.post("/login", (req, res, next) => {
         const token = jwt.encode(payload, config.jwtSecret);
         res.json({
           token,
-          name: user.name
+          name: user.name,
+          id: user.id
         });
       }
     });
