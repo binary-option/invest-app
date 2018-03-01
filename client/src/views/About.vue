@@ -12,12 +12,14 @@
 
 
 <script>
+import VueCharts from "vue-chartjs";
+import { Bar, Line } from "vue-chartjs";
 import { getStockDelta } from "@/api";
 import { getStockValue } from "@/api";
 import _ from "lodash";
 import * as ss from "simple-statistics";
 export default {
-  name: "dishes",
+  name: "test",
   components: {},
   created() {
     // This array of promises makes sure that the functions are carried out when both callbacks are ready
@@ -48,6 +50,7 @@ export default {
           this.currentHoldingValue[i] / this.totalHoldingValue
         );
       }
+      this.preparePlotData();
     });
   },
   mounted() {},
@@ -70,6 +73,14 @@ export default {
       portfolioBeta: 0,
       //Portfolio allocation as percentage
       portfolioAllocation: [],
+      pieChartObject: {
+        labels: [],
+        datasets: []
+      },
+      plotObject: {
+        labels: [],
+        datasets: []
+      },
       stockInfo: [
         {
           name: "FB",
@@ -130,10 +141,14 @@ export default {
     calculateValueDeltas() {
       for (let i = 0; i < this.stockValue.length; i++) {
         let returnVector = [];
+        let datesVector = [];
         for (let j = 0; j < this.stockValue[i].dataset.data.length; j++) {
           returnVector.push(this.stockValue[i].dataset.data[j][1]);
+          datesVector.push(this.stockValue[i].dataset.data[j][0]);
         }
         this.stockValueFiltered.push(returnVector);
+        this.plotObject.labels = datesVector;
+        this.pieChartObject.labels = datesVector;
       }
     },
     initializeData() {
@@ -141,6 +156,19 @@ export default {
         var name = this.stockInfo[i].name;
         console.log(name);
         this.stockData.push(`{${name}: {}}`);
+      }
+    },
+    preparePlotData() {
+      for (var i = 0; i < this.stockInfo.length; i++) {
+        var label = this.stockInfo[i].name;
+        console.log("label= " + label);
+        var data = this.stockValueFiltered[i];
+        let plotData = {
+          label: label,
+          backgroundColor: "#f87979",
+          data: data
+        };
+        this.plotObject.datasets.push(plotData);
       }
     }
   }
