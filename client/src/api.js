@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const service = axios.create({
-  baseURL: "http://localhost:3000/api"
+  baseURL:
+    process.env.NODE_ENV === "production" ? "/api" : "http://localhost:3000/api"
 });
 
 const errHandler = err => {
@@ -9,9 +10,9 @@ const errHandler = err => {
   throw err.response.data;
 };
 
-export function getUser(userInfo) {
+export function getUser(userId) {
   return service
-    .post("/signup", userInfo)
+    .get(`/users/${userId}`)
     .then(res => res.data)
     .catch(errHandler);
 }
@@ -31,7 +32,6 @@ export function login(username, password) {
     })
     .then(res => {
       const { data } = res;
-      console.log(res);
       localStorage.setItem("user", JSON.stringify(data));
       axios.defaults.headers.common["Authorization"] = "Bearer " + data.token;
       return data;
@@ -55,9 +55,9 @@ export function loadUser() {
   return false;
 }
 
-// export function getSecret() {
-//   return service
-//     .get('/secret')
-//     .then(res => res.data)
-//     .catch(errHandler);
-// }
+export function getSecret() {
+  return service
+    .get("/secret")
+    .then(res => res.data)
+    .catch(errHandler);
+}

@@ -1,62 +1,44 @@
 <template>
   <section>
-    <form @submit.prevent="signup">
+   
+      <b-alert variant ="danger" show v-if="error" >
+      {{ error}} 
+    </b-alert>
 
-      <div class="field">
-      <label class="label">Name</label>
-      <div class="control">
-      <input class="input" type="text" v-model="name">
-      </div>
-      </div>
+    <b-form @submit.prevent="signup">
+     
+        <b-form-group label="Enter your name">
+         <b-form-input v-model="name"></b-form-input>
+        </b-form-group>
 
-        <div class="field">
-      <label class="label">Family name:</label>
-      <div class="control">
-      <input class="input" type="text" v-model="familyName">
-      </div>
-      </div>
+        <b-form-group label="Enter your family name">
+         <b-form-input v-model="familyName"></b-form-input>
+        </b-form-group>
 
-      <div class="field">
-        <label class="label">Role</label>
-        <div class="control">
-        <div class="select">
-      <select v-model="role">
-        <option>Select option</option>
-        <option>client</option>
-        <option>manager</option>
-      </select>
-        </div>
-        </div>
-    </div>
+         <b-form-group label="Role:">
+        <b-form-select required v-model="role">
+             <option>Select option</option>
+            <option>client</option>
+            <option>manager</option>
+        </b-form-select>
+      </b-form-group>
 
-    <div class="field">
-      <label class="label"
-      :type="usernameError && 'is-danger'"
-      :message="usernameError">
-      Username</label>
-      <div class="control">
-        <input class="input" maxlength="30" v-model="username" required icon="account">
-      </div>
-    </div>
+      <b-form-group label="Enter your username" :invalid-feedback="invalidFeedback" :message="usernameError">
+         <b-form-input v-model="username"></b-form-input>
+        </b-form-group>
 
-    <div class="field">
-      <label class="label">Password</label>
-      <div class="control">
-        <input class="input" type="password"
-            required
-            v-model="password" 
-            icon="lock"
-            password-reveal>
-        </div>
-    </div>
+      <b-form-group label="Enter your password">
+         <b-form-input type="password" v-model="password" required password-reveal></b-form-input>
+        </b-form-group>
 
-    <div class="field is-grouped">
-      <div class="control">
-        <button type="submit" class="button is-link">Signup</button>
-      </div>
-    </div>
-      
-    </form>
+      <b-button type="submit" variant="primary">Signup</b-button>
+   </b-form>
+
+<!--       
+password reveal 
+icons -->
+  {{this.$root.user}}
+
   </section>
 </template>
 
@@ -97,6 +79,13 @@ export default {
       if (!this.error) return null;
       if (this.error.name === "UserExistsError") {
         return this.error.message;
+      }
+    },
+    invalidFeedback() {
+      if (this.username.length > 0) {
+        return "Please enter at least 4 characters";
+      } else if (this.error > 0) {
+        return "error";
       }
     }
   }

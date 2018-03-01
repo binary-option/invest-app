@@ -1,26 +1,30 @@
 <template>
   <div id="app">
     <NavBar/>
+    <br>
+    <br>
     <section class="section">
       <router-view/>
     </section>
-    <footer class="footer">
-      <div class="container">
-        <div class="content has-text-centered">
-          <p>
-            <strong>Tweeter</strong> by Ironhack WebDev Cohort (c) 2018</p>
-        </div>
+      <div slot="footer">
+        <small class="text-muted"><strong>Invest-app</strong> by Ironhack WebDev Cohort (c) 2018</small>
       </div>
+    <footer class="footer">
+     
     </footer>
-    
-    
   </div>
 </template>
 
 <script>
 import NavBar from "./components/NavBar";
+import { loadUser } from "./api";
 
 export default {
-  components: { NavBar }
+  components: { NavBar },
+
+  created() {
+    const user = loadUser();
+    if (user) this.$root.user = user;
+  }
 };
 </script>

@@ -6,22 +6,19 @@
       {{ error}} 
     </b-alert>
 
-    <form @submit.prevent="login">
-     
-      <label>Username</label>
-          <input maxlength="30" v-model="username" required icon="account">
-   
 
-      <label>Password</label>
-          <input type="password"
-            required
-            v-model="password" 
-            icon="lock"
-            password-reveal>
-          
-      
-      <button class="button is-primary">Login</button>
-    </form>
+ <b-form @submit.prevent="login">
+        <b-form-group label="Username">
+         <b-form-input maxlength="10" v-model="username" required ></b-form-input>
+        </b-form-group>
+        <b-form-group label="Password">
+         <b-form-input type="password"v-model="password" required></b-form-input>
+        </b-form-group>
+ <!-- icon="lock"
+password-reveal> -->
+    <b-button type="submit" variant="primary">Login</b-button>
+   </b-form>
+
   </section>
 </template>
 
