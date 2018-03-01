@@ -55,9 +55,9 @@ export function loadUser() {
   return false;
 }
 
-// export function getSecret() {
-//   return service
-//     .get('/secret')
-//     .then(res => res.data)
-//     .catch(errHandler);
-// }
+export function getSecret() {
+  return service
+    .get("/secret")
+    .then(res => res.data)
+    .catch(errHandler);
+}

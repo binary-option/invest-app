@@ -1,60 +1,51 @@
 <template>
-<nav class="navbar is-transparent">
-  
-  <div class="navbar-brand">
-    <router-link class="navbar-item" to="/">
+
+<b-navbar toggleable="md" type="light" variant="light">
+
+  <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+
+  <b-navbar-brand>
+      <router-link class="navbar-item" to="/">
       <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
     </router-link>
- 
-  </div>
+  </b-navbar-brand>
 
-  <div class="navbar-menu" :class="{ 'is-active': isActive }">
-    <div class="navbar-start">
-      <router-link
-        class="navbar-item" to="/about"
-        @click.native="isActive = false"
-      >
-        About
-      </router-link>
-    </div>
+  <b-collapse is-nav id="nav_collapse">
 
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="field is-grouped">
-          <p class="control">
-            <router-link
-              class="navbar-item" to="/login"
-              @click.native="isActive = false"
-            >
-              Login
-            </router-link>
-          </p>
-          <p class="control">
-            <router-link
-              class="navbar-item" to="/signup"
-              @click.native="isActive = false"
-            >
-              Signup
-            </router-link>
-          </p>
-        </div>
-        <div class="field is-grouped">
-          <p class="control">
-           
-          </p>
-          <p class="control">
-            <a href="#"
-              class="navbar-item"
-              @click="logout"
-            >
-              Logout
-            </a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</nav>
+    <b-navbar-nav>
+      <b-nav-item href="/"  @click.native="isActive = false">(About)</b-nav-item>
+      <b-nav-item href="/signup"  @click.native="isActive = false" >(Signup)</b-nav-item>
+      <b-nav-item href="/login" @click="logout" >(Logout)</b-nav-item>
+    </b-navbar-nav>
+
+    <!-- Right aligned nav items -->
+
+     <b-navbar-nav class="ml-auto" v-if="!$root.user">
+    <b-button  variant='outline-primary' href="/login"  @click.native="isActive = false">Login</b-button>
+    </b-navbar-nav>
+
+
+    <b-navbar-nav class="ml-auto" v-else>
+      <b-nav-form >
+        <b-form-input  class="mr-sm-2" type="text" placeholder="Search"/>
+        <b-button class="my-2 my-sm-0" type="submit" variant="primary">Search</b-button>
+      </b-nav-form>
+      <b-nav-item href="/dashboard" >Dashboard</b-nav-item>
+      <b-nav-item-dropdown right>
+       <template slot="button-content">
+          <em> {{ $root.user.name }} </em>
+        </template>
+        <b-dropdown-item href="/profile"  @click.native="isActive = false">See my profile</b-dropdown-item>
+        <b-dropdown-item href="/edit"  @click.native="isActive = false">Edit my profile</b-dropdown-item>
+        <b-dropdown-item href="/wishlist"  @click.native="isActive = false">My wishlist</b-dropdown-item>
+        <b-dropdown-item href="/login"  @click.native="isActive = false">Logout</b-dropdown-item>
+      </b-nav-item-dropdown>
+    </b-navbar-nav>  
+
+  </b-collapse>
+</b-navbar>
+
+
 
 </template>
 
