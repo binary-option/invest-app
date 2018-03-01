@@ -12,8 +12,8 @@
 
 
 <script>
-import { getStockDelta } from "@/apiHandler";
-import { getStockValue } from "@/apiHandler";
+import { getStockDelta } from "@/api";
+import { getStockValue } from "@/api";
 import _ from "lodash";
 import * as ss from "simple-statistics";
 export default {

@@ -71,11 +71,6 @@ const quandl = axios.create({
   }
 });
 
-const errHandler = err => {
-  console.error(err.response.data);
-  throw err.response.data;
-};
-
 //The percentage increase from the previous date.
 export function getStockDelta(stockInfo) {
   return quandl
