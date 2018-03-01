@@ -8,7 +8,7 @@
 		<div class="modal-content">
 			<div class="modal-heading">
         <br>
-				<h2 class="text-center">Login</h2>
+				<h2 class="text-center">Signup</h2>
 			</div>
 			<hr />
 			<div class="modal-body">
@@ -41,8 +41,12 @@
         <b-form-group label="Enter your password">
           <b-form-input type="password" v-model="password" required password-reveal></b-form-input>
           </b-form-group>
-
+           <hr />
+        <div class="row justify-content-md-center">
         <b-button type="submit" variant="primary">Signup</b-button>
+        </div>
+         <hr />
+          <hr />
     </b-form>
     <!--       
   password reveal 

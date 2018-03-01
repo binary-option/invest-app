@@ -1,10 +1,21 @@
 <template>
   <section>
-   <!-- notification for errors missing  -->
-    
-     <b-alert variant ="danger" show v-if="error" >
-      {{ error}} 
-    </b-alert>
+
+    <div class="container">
+      <div class="row justify-content-md-center">
+        <div class="col-lg-5 col-md-6 col-sm-9 col-xs-12">
+            <div class="modal-dialog">
+	        	<div class="modal-content">
+	      	
+          	<div class="modal-heading">
+            <br>
+		    		<h2 class="text-center">Login</h2>
+	    		</div>
+			    <hr />
+		    	<div class="modal-body">
+			  	<b-alert variant ="danger" show v-if="error" >
+          {{ error}} 
+         </b-alert>
 
 
  <b-form @submit.prevent="login">
@@ -16,9 +27,19 @@
         </b-form-group>
  <!-- icon="lock"
 password-reveal> -->
-    <b-button type="submit" variant="primary">Login</b-button>
+      <hr />
+       <div class="row justify-content-md-center">
+       <b-button type="submit" variant="primary">Login</b-button>
+        </div>
+     <hr />
+      <hr />
    </b-form>
-
+</div>
+  </div>
+</div>
+  </div>
+</div>
+</div>
   </section>
 </template>
 
