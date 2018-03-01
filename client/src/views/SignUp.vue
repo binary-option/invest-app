@@ -1,10 +1,12 @@
 <template>
   <section>
+   
       <b-alert variant ="danger" show v-if="error" >
       {{ error}} 
     </b-alert>
 
     <b-form @submit.prevent="signup">
+     
         <b-form-group label="Enter your name">
          <b-form-input v-model="name"></b-form-input>
         </b-form-group>
@@ -35,6 +37,7 @@
 <!--       
 password reveal 
 icons -->
+  {{this.$root.user}}
 
   </section>
 </template>

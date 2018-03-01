@@ -1,6 +1,9 @@
 
 <template>
  <div>
+     {{$root.user}}
+     {{userInfo}}
+     
 <h1>{{$root.user.name}} profile</h1>
     <b-form>
         <br>
@@ -9,61 +12,48 @@
         </div>
         <br>
         <br>
-      <b-form-group label="Name">
-         <b-form-input></b-form-input>
+      <b-form-group label="Name:"> 
+         <b-form-input :value="userInfo.name"></b-form-input>
         </b-form-group>
 
         <b-form-group label="Family name">
-         <b-form-input ></b-form-input>
+         <b-form-input :value="userInfo.familyName"></b-form-input>
         </b-form-group>
 
          <b-form-group label="Role:">
-        <b-form-select required >
-             <option>Select option</option>
-            <option>client</option>
-            <option>manager</option>
-        </b-form-select>
+        <b-form-input :value="userInfo.role"></b-form-input>
       </b-form-group>
 
       <b-form-group label="Username" >
-         <b-form-input  ></b-form-input>
+         <b-form-input :value="userInfo.username" ></b-form-input>
         </b-form-group>
 
         <div>
           <b-form-group label="Bank details" >
             <b-form-group id="fieldsetHorizontal"
                 horizontal
-                :label-cols="4"
-                breakpoint="md"
-              
+                :label-cols="2"
                 label="IBAN"
                 label-for="inputHorizontal">
                 <b-form-input id="inputHorizontal"></b-form-input>
             </b-form-group>
               <b-form-group id="fieldsetHorizontal"
                 horizontal
-                :label-cols="4"
-                breakpoint="md"
-              
-                label="IBAN"
+                :label-cols="2"
+                label="BIC"
                 label-for="inputHorizontal">
                 <b-form-input id="inputHorizontal"></b-form-input>
             </b-form-group>
               <b-form-group id="fieldsetHorizontal"
                 horizontal
-                :label-cols="4"
-                breakpoint="md"
-              
-                label="IBAN"
+                :label-cols="2"
+                label="Owner"
                 label-for="inputHorizontal">
                 <b-form-input id="inputHorizontal"></b-form-input>
             </b-form-group>
   </b-form-group>
 </div>
-
-     
-        </b-form-group>
-    
+  
     </b-form>
   </div>
 
@@ -71,7 +61,17 @@
 </template>
 
 <script>
+import { getUser } from "../api";
+
 export default {
-  methods: {}
+  data() {
+    return { userInfo: {} };
+  },
+  created() {
+    const userId = this.$root.user.id;
+    getUser(userId).then(userInfo => {
+      this.userInfo = userInfo;
+    });
+  }
 };
 </script>
