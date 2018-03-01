@@ -12,7 +12,7 @@
          <b-form-input maxlength="10" v-model="username" required ></b-form-input>
         </b-form-group>
         <b-form-group label="Password">
-         <b-form-input type="password"v-model="password" required></b-form-input>
+         <b-form-input type="password" v-model="password" required></b-form-input>
         </b-form-group>
  <!-- icon="lock"
 password-reveal> -->
