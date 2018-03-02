@@ -10,13 +10,6 @@ const errHandler = err => {
   throw err.response.data;
 };
 
-export function getUser(userId) {
-  return service
-    .get(`/users/${userId}`)
-    .then(res => res.data)
-    .catch(errHandler);
-}
-
 export function signup(userInfo) {
   return service
     .post("/signup", userInfo)
@@ -61,3 +54,19 @@ export function getSecret() {
     .then(res => res.data)
     .catch(errHandler);
 }
+
+export function getUser(userId) {
+  return service
+    .get(`/users/${userId}`)
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
+export function updateUser(userId, userInfo) {
+  return service
+    .post(`/users/${userId}`, userInfo)
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
+

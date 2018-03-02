@@ -1,36 +1,42 @@
 
 <template>
- <div>
-     {{$root.user}}
-     {{userInfo}}
-     
-<h1>{{$root.user.name}} profile</h1>
+<div class="container">
+    <div class="row justify-content-md-center">
+    <div class="col-lg-10">
+    <div class="modal-dialog">
+		<div class="modal-content">
+    
+    <div class="modal-heading">
+        <br>
+				<h1 class="text-center">{{$root.user.name}} profile</h1>
+		</div>
     <b-form>
         <br>
-        <div>
+         <br>
+        <div class="row justify-content-md-center">
           <b-img  src="http://vvcexpl.com/wordpress/wp-content/uploads/2013/09/profile-default-male.png" width="200" />
         </div>
         <br>
-        <br>
-      <b-form-group label="Name:"> 
+       
+      <b-form-group class="ml-3 mr-3" label="Name:"> 
          <b-form-input :value="userInfo.name"></b-form-input>
         </b-form-group>
 
-        <b-form-group label="Family name">
+        <b-form-group class="ml-3 mr-3" label="Family name">
          <b-form-input :value="userInfo.familyName"></b-form-input>
         </b-form-group>
 
-         <b-form-group label="Role:">
+         <b-form-group class="ml-3 mr-3" label="Role:">
         <b-form-input :value="userInfo.role"></b-form-input>
       </b-form-group>
 
-      <b-form-group label="Username" >
+      <b-form-group class="ml-3 mr-3" label="Username" >
          <b-form-input :value="userInfo.username" ></b-form-input>
         </b-form-group>
 
-        <div>
-          <b-form-group label="Bank details" >
-            <b-form-group id="fieldsetHorizontal"
+       <div class="ml-3 mr-3">
+        <div class="mt-4">Bank details:</div> 
+            <b-form-group class="mt-3" id="fieldsetHorizontal"
                 horizontal
                 :label-cols="2"
                 label="IBAN"
@@ -51,11 +57,20 @@
                 label-for="inputHorizontal">
                 <b-form-input id="inputHorizontal"></b-form-input>
             </b-form-group>
-  </b-form-group>
-</div>
-  
+      </div>
+      
+    <br>
+     <div class="row justify-content-md-center">
+        <b-button href="/edit" variant="primary">Edit</b-button>
+      </div>
+      <br>
+      <br>
     </b-form>
   </div>
+  </div>
+  </div>
+  </div>
+</div>
 
 
 </template>

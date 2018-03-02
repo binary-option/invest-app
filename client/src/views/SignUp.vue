@@ -41,17 +41,17 @@
         <b-form-group label="Enter your password">
           <b-form-input type="password" v-model="password" required password-reveal></b-form-input>
           </b-form-group>
-           <hr />
+           <br>
         <div class="row justify-content-md-center">
         <b-button type="submit" variant="primary">Signup</b-button>
         </div>
-         <hr />
-          <hr />
+           <br>
+            <br>
     </b-form>
     <!--       
   password reveal 
   icons -->
-    {{this.$root.user}}
+   
 			</div>
 		</div>
 	</div>
