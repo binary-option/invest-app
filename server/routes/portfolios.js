@@ -49,6 +49,14 @@ router.post("/", ensureLoggedIn(), (req, res, next) => {
   });
 });
 
+router.get("/:portfolioId", ensureLoggedIn(), function(req, res, next) {
+  const portfolioId = req.params.portfolioId;
+  Portfolio.findById(portfolioId, (err, portfolio) => {
+    if (err) return next(err);
+    res.json(portfolio);
+  });
+});
+
 router.patch("/:portfolioId", ensureLoggedIn(), (req, res, next) => {
   const portfolioId = req.params.portfolioId;
   const managerId = req.user._id;

@@ -27,12 +27,12 @@
         </b-form-group>
  <!-- icon="lock"
 password-reveal> -->
-      <hr />
+      <br>
        <div class="row justify-content-md-center">
        <b-button type="submit" variant="primary">Login</b-button>
         </div>
-     <hr />
-      <hr />
+     <br >
+      <br>
    </b-form>
 </div>
   </div>
