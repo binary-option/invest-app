@@ -63,8 +63,15 @@ export function getUser(userId) {
 }
 
 export function updateUser(userId, userInfo) {
+  const formData = new FormData();
+  Object.keys(userInfo).forEach(key => formData.append(key, userInfo[key]));
   return service
-    .post(`/users/${userId}`, userInfo)
+    .patch(`/users/${userId}`, userInfo)
+    .patch(`/users/${userId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
     .then(res => res.data)
     .catch(errHandler);
 }

@@ -20,10 +20,12 @@
         </div>
         <br>
 
+
+
         <div class="ml-3 mr-3">
-        <b-form-file  v-model="userInfo.picture" :state="Boolean(userInfo.picture)" placeholder="Choose a file..."></b-form-file>
-        <div class="mt-3">Selected file: {{userInfo.picture.name}}</div>
-{{userInfo.picture}}
+        <b-form-file  v-model="files" :state="Boolean(files[0])" placeholder="Choose a file..."></b-form-file>
+        <div class="mt-3" v-if="files && files.length">Selected file:  {{ files[0].name}}</div>
+{{this.files[0]}}
        </div>
         <br>
         
@@ -74,7 +76,7 @@
                 label-for="inputHorizontal">
                 <b-form-input  id="inputHorizontal"></b-form-input>
             </b-form-group>
-  </b-form-group>
+
   <br>
      <div class="row justify-content-md-center">
         <b-button type="submit" variant="primary">Submit</b-button>
@@ -105,7 +107,8 @@ export default {
         role: "",
         username: "",
         password: ""
-      }
+      },
+      files: []
     };
   },
   created() {
@@ -121,8 +124,9 @@ export default {
     updateUser() {
       this.error = null;
       const userId = this.$root.user.id;
+      const picture = this.files[0];
       const userInfo = {
-        picture: this.picture,
+        picture: picture,
         name: this.name,
         familyName: this.familyName,
         role: this.role,
