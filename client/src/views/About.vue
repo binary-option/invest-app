@@ -1,5 +1,12 @@
 <template>
   <div class="about">
+    <div class="container">
+      <div class="row justify-content-md-center">
+        <div class="col-lg-5 col-md-6 col-sm-9 col-xs-12">
+      <pie-chart :data="pieChartObject">C</pie-chart>
+      </div>
+      </div>
+    </div>
     <h1>This is an about page</h1>
     <pre>portfolioBeta {{portfolioBeta}}</pre>
     <pre>stockBetas {{stockBetas}}</pre>
@@ -16,11 +23,14 @@ import VueCharts from "vue-chartjs";
 import { Bar, Line } from "vue-chartjs";
 import { getStockDelta } from "@/api";
 import { getStockValue } from "@/api";
+import PieChart from "@/components/PieChart.vue";
 import _ from "lodash";
 import * as ss from "simple-statistics";
 export default {
   name: "test",
-  components: {},
+  components: {
+    PieChart
+  },
   created() {
     // This array of promises makes sure that the functions are carried out when both callbacks are ready
     Promise.all([
@@ -51,6 +61,7 @@ export default {
         );
       }
       this.preparePlotData();
+      this.preparePieChartData();
     });
   },
   mounted() {},
@@ -148,7 +159,6 @@ export default {
         }
         this.stockValueFiltered.push(returnVector);
         this.plotObject.labels = datesVector;
-        this.pieChartObject.labels = datesVector;
       }
     },
     initializeData() {
@@ -170,6 +180,17 @@ export default {
         };
         this.plotObject.datasets.push(plotData);
       }
+    },
+    preparePieChartData() {
+      for (var i = 0; i < this.stockInfo.length; i++) {
+        var name = this.stockInfo[i].name;
+        this.pieChartObject.labels.push(this.stockInfo[i].name);
+      }
+      let data = this.portfolioAllocation;
+      let dataset = {
+        data: data
+      };
+      this.pieChartObject.datasets.push(dataset);
     }
   }
 };
