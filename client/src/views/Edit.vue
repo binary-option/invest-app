@@ -23,7 +23,7 @@
         <div class="ml-3 mr-3">
         <b-form-file  v-model="userInfo.picture" :state="Boolean(userInfo.picture)" placeholder="Choose a file..."></b-form-file>
         <div class="mt-3">Selected file: {{userInfo.picture && userInfo.picture.name}}</div>
-        
+        <b-form-input v-model="userInfo.picture" :value="userInfo.picture"></b-form-input>
        </div>
         <br>
         
@@ -113,7 +113,8 @@ export default {
     },
     updateUser() {
       this.error = null;
-      updateUser({
+      const userId = this.$root.user.id;
+      updateUser(userId, {
         picture: this.picture,
         name: this.name,
         familyName: this.familyName,
