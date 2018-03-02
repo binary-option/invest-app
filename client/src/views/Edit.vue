@@ -16,14 +16,14 @@
     <b-form @submit.prevent="updateUser">
         <br>
         <div class="row justify-content-md-center">
-          <b-img   v-bind:src="userInfo.picture" width="200" alt="Profile Picture"/>
+          <b-img   v-bind:src="userInfo.picture.name" width="200" alt="Profile Picture"/>
         </div>
         <br>
 
         <div class="ml-3 mr-3">
         <b-form-file  v-model="userInfo.picture" :state="Boolean(userInfo.picture)" placeholder="Choose a file..."></b-form-file>
-        <div class="mt-3">Selected file: {{userInfo.picture && userInfo.picture.name}}</div>
-        <b-form-input v-model="userInfo.picture" :value="userInfo.picture"></b-form-input>
+        <div class="mt-3">Selected file: {{userInfo.picture.name}}</div>
+{{userInfo.picture}}
        </div>
         <br>
         
@@ -98,7 +98,14 @@ import { updateUser } from "../api";
 export default {
   data() {
     return {
-      userInfo: {}
+      userInfo: {
+        picture: {},
+        name: "",
+        familyName: "",
+        role: "",
+        username: "",
+        password: ""
+      }
     };
   },
   created() {
@@ -114,14 +121,15 @@ export default {
     updateUser() {
       this.error = null;
       const userId = this.$root.user.id;
-      updateUser(userId, {
+      const userInfo = {
         picture: this.picture,
         name: this.name,
         familyName: this.familyName,
         role: this.role,
         username: this.username,
         password: this.password
-      })
+      };
+      updateUser(userId, this.userInfo)
         .then(() => {
           this.$router.push("/profile");
         })
