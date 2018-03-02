@@ -32,6 +32,20 @@ router.get("/:userId", ensureLoggedIn(), function(req, res, next) {
   });
 });
 
+router.patch("/:userId", ensureLoggedIn(), function(req, res, next) {
+  const name = req.body.name;
+  const familyName = req.body.familyName;
+  const role = req.body.role;
+  const username = req.body.username;
+  const bankAccount = req.body.bankAccount;
+  const userInfo = { name, familyName, role, username, bankAccount };
+
+  User.findByIdAndUpdate(req.params.userId, userInfo, (err, user) => {
+    if (err) return next(err);
+    res.json(user);
+  });
+});
+
 router.get("/:userId/portfolios", ensureLoggedIn(), function(req, res, next) {
   User.findById(req.params.userId, (err, user) => {
     if (err) return next(err);
