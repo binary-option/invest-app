@@ -50,32 +50,9 @@
          <b-form-input v-model="userInfo.username" :value="userInfo.username" ></b-form-input>
         </b-form-group>
 
-        <div class="ml-3 mr-3">
-          <div class="mt-4">Bank details:</div> 
-         
-            <b-form-group class="mt-3" id="fieldsetHorizontal"
-                horizontal
-                :label-cols="2"
-                label="IBAN"
-                label-for="inputHorizontal">
-                <b-form-input  id="inputHorizontal"></b-form-input>
-   
-            </b-form-group>
-              <b-form-group id="fieldsetHorizontal"
-                horizontal
-                :label-cols="2"
-                label="BIC"
-                label-for="inputHorizontal">
-                <b-form-input  id="inputHorizontal"></b-form-input>
-             
-            </b-form-group>
-              <b-form-group id="fieldsetHorizontal"
-                horizontal
-                :label-cols="2"
-                label="Owner"
-                label-for="inputHorizontal">
-                <b-form-input  id="inputHorizontal"></b-form-input>
-            </b-form-group>
+      <b-form-group class="ml-3 mr-3" label="IBAN" >
+         <b-form-input ></b-form-input>
+        </b-form-group>
 
   <br>
      <div class="row justify-content-md-center">
@@ -83,7 +60,7 @@
         </div>
            <br>
             <br>
-</div>
+
     </b-form>
   </div>
 </div>
@@ -118,11 +95,7 @@ export default {
     });
   },
   methods: {
-    fullname(name, familyName) {
-      fullname = this.name + this.familyName;
-    },
     updateUser() {
-      this.error = null;
       const userId = this.$root.user.id;
       const picture = this.files[0];
       const userInfo = {

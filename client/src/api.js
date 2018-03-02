@@ -66,8 +66,8 @@ export function updateUser(userId, userInfo) {
   const formData = new FormData();
   Object.keys(userInfo).forEach(key => formData.append(key, userInfo[key]));
   return service
-    .patch(`/users/${userId}`, userInfo)
-    .patch(`/users/${userId}`, formData, {
+    .post(`/users/${userId}`, userInfo)
+    .post(`/users/${userId}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
