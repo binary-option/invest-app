@@ -89,6 +89,7 @@ app.use("/api", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/clients", require("./routes/clients"));
 app.use("/api/managers", require("./routes/managers"));
+app.use("/api/images", require("./routes/images"));
 app.use("/api/portfolios", require("./routes/portfolios"));
 
 // This is an example of protected route

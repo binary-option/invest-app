@@ -14,7 +14,7 @@
         <br>
          <br>
         <div class="row justify-content-md-center">
-          <b-img  src="http://vvcexpl.com/wordpress/wp-content/uploads/2013/09/profile-default-male.png" width="200" />
+          <img  class="profile-picture" :src="userInfo.picture" width="200" />
         </div>
         <br>
        
@@ -69,3 +69,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.profile-picture {
+  height: 100px;
+}
+</style>

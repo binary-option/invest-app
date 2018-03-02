@@ -16,16 +16,15 @@
     <b-form @submit.prevent="updateUser">
         <br>
         <div class="row justify-content-md-center">
-          <b-img   v-bind:src="userInfo.picture.name" width="200" alt="Profile Picture"/>
+          <b-img  :src="userInfo.picture" class=" profile-picture img-fluid" alt="Profile Picture"/>
         </div>
         <br>
 
 
 
         <div class="ml-3 mr-3">
-        <b-form-file  v-model="files" :state="Boolean(files[0])" placeholder="Choose a file..."></b-form-file>
-        <div class="mt-3" v-if="files && files.length">Selected file:  {{ files[0].name}}</div>
-{{this.files[0]}}
+        <b-form-file  v-model="file" :state="Boolean(file)" placeholder="Choose a file..."></b-form-file>
+        <div class="mt-3" v-if="file">Selected file:  {{ file.name}}</div>
        </div>
         <br>
         
@@ -39,8 +38,8 @@
         </b-form-group>
 
          <b-form-group class="ml-3 mr-3" label="Role:">
-          <b-form-select required v-model="userInfo.role" :value="userInfo.role">
-              <option>Select option</option>
+          <b-form-select v-model="userInfo.role">
+              <option :value="userInfo.username">{{userInfo.role}}</option>
               <option>client</option>
               <option>manager</option>
           </b-form-select>
@@ -78,14 +77,14 @@ export default {
   data() {
     return {
       userInfo: {
-        picture: {},
+        picture: "",
         name: "",
         familyName: "",
         role: "",
         username: "",
         password: ""
       },
-      files: []
+      file: null
     };
   },
   created() {
@@ -97,16 +96,12 @@ export default {
   methods: {
     updateUser() {
       const userId = this.$root.user.id;
-      const picture = this.files[0];
+      const picture = this.file;
       const userInfo = {
-        picture: picture,
-        name: this.name,
-        familyName: this.familyName,
-        role: this.role,
-        username: this.username,
-        password: this.password
+        ...this.userInfo,
+        picture: picture
       };
-      updateUser(userId, this.userInfo)
+      updateUser(userId, userInfo)
         .then(() => {
           this.$router.push("/profile");
         })
@@ -117,3 +112,10 @@ export default {
   }
 };
 </script>
+
+
+<style scoped>
+.profile-picture {
+  height: 150px;
+}
+</style>

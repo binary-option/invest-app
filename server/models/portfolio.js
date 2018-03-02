@@ -5,7 +5,8 @@ const stockSchema = new Schema(
   {
     stockName: String,
     stockValue: Number,
-    stockStartingDate: Date
+    stockStartingDate: Date,
+    holdingValue: Number
   },
   { noId: true }
 );

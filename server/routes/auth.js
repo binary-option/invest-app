@@ -3,11 +3,24 @@ const jwt = require("jwt-simple");
 const router = express.Router();
 const User = require("../models/user");
 const config = require("../config");
+const cloudinary = require("cloudinary");
+const cloudinaryStorage = require("multer-storage-cloudinary");
+const multer = require("multer");
 
+const storage = cloudinaryStorage({
+  cloudinary,
+  folder: "my-images",
+  allowedFormats: ["jpg", "png", "gif"]
+});
+
+const parser = multer({ storage });
+
+//parser.single("picture")
 router.post("/signup", (req, res, next) => {
   // extract the info we need from the body
   // of the request
   const { username, name, familyName, password, role } = req.body;
+  const { file } = req;
   const date = new Date();
 
   // create the new user
@@ -18,15 +31,21 @@ router.post("/signup", (req, res, next) => {
     username,
     name,
     familyName,
-    accountCreated: date,
-    role
+    role,
+    accountCreated: date
+    //picture: file.secure_url
   });
 
   User.register(user, password, err => {
     if (err) {
       return res.status(400).json(err.message);
     }
-    res.json({ success: true });
+    res.json({
+      success: true,
+      //token,
+      name: user.name
+      //picture: user.picture
+    });
   });
 });
 
@@ -65,6 +84,7 @@ router.post("/login", (req, res, next) => {
           name: user.name,
           id: user._id,
           role: user.role
+          //picture: user.picture
         });
       }
     });
