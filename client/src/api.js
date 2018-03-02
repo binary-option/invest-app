@@ -62,6 +62,13 @@ export function getSecret() {
     .catch(errHandler);
 }
 
+export function getPortfolio(portfolioId) {
+  return service
+    .get(`/portfolios/${portfolioId}`)
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
 //Here starts the part with the quandl API to retrieve stock information
 
 const quandl = axios.create({
