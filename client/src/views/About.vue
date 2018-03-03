@@ -69,9 +69,18 @@ export default {
             lastHoldingValue: lastHoldingValue
           };
           this.stockInfo.push(stock);
+          let endDate2 = moment(date)
+            .subtract(10, "year")
+            .format("YYYY-MM-DD");
+          console.log(
+            "regression ",
+            moment(moment(endDate2) - moment(startDate)).format("DDDD"),
+            "endDate ",
+            moment(endDate2),
+            "startDate",
+            moment(startDate)
+          );
         });
-
-        // this.tempPortfolio = portfolio.stocks;
 
         return Promise.all([
           Promise.all(this.stockInfo.map(getStockDelta)),
@@ -164,26 +173,7 @@ export default {
           }
         }
       },
-      stockInfo: [
-        // {
-        //   name: "FB",
-        //   startDate: "2017-12-01",
-        //   endDate: "2017-12-31",
-        //   frequency: "weekly",
-        //   lastUpdated: "2014-01-05",
-        //   lastStockValue: 54,
-        //   lastHoldingValue: 1000
-        // },
-        // {
-        //   name: "GE",
-        //   startDate: "2017-12-01",
-        //   endDate: "2017-12-31",
-        //   frequency: "weekly",
-        //   lastUpdated: "2014-01-05",
-        //   lastStockValue: 27.48,
-        //   lastHoldingValue: 2000
-        // }
-      ]
+      stockInfo: []
     };
   },
   computed: {

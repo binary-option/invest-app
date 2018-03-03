@@ -3,11 +3,13 @@ const router = express.Router();
 const { ensureLoggedIn, ensureLoggedOut } = require("connect-ensure-login");
 const Portfolio = require("../models/portfolio");
 const User = require("../models/user");
+const Benchmark = require("../models/benchmark");
 
 /* GET home page. */
 router.get("/", ensureLoggedIn(), function(req, res, next) {
   Portfolio.find({}, (err, portfolios) => {
     if (err) return next(err);
+
     res.json(portfolios);
   });
 });
@@ -48,6 +50,17 @@ router.post("/", ensureLoggedIn(), (req, res, next) => {
     }
   });
 });
+
+// router.get("/benchmark", ensureLoggedIn(), function(req, res, next) {
+//   // const startDate = req.params.startDate;
+//   // const endDate = req.params.endDate;
+//   Benchmark.find((err, benchmark) => {
+//     console.log(res);
+//     if (err) return next(err);
+//     console.log(benchmark);
+//     res.json(benchmark);
+//   });
+// });
 
 router.get("/:portfolioId", ensureLoggedIn(), function(req, res, next) {
   const portfolioId = req.params.portfolioId;

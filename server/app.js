@@ -91,6 +91,7 @@ app.use("/api/clients", require("./routes/clients"));
 app.use("/api/managers", require("./routes/managers"));
 app.use("/api/images", require("./routes/images"));
 app.use("/api/portfolios", require("./routes/portfolios"));
+app.use("/api/benchmark", require("./routes/benchmark"));
 
 // This is an example of protected route
 app.get(
