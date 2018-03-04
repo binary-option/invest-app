@@ -8,7 +8,7 @@
         <b-col sm="4" class="border border-primary" >
 	   Side colomn
         
-        <figure class="image is-24x24"> <img :src="$root.user.picture"> </figure>
+       
       
         </b-col>
          <b-col sm="8" class="border border-secondary"  >

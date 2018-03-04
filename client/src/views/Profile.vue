@@ -14,7 +14,7 @@
         <br>
          <br>
         <div class="row justify-content-md-center">
-          <img  class="profile-picture" :src="userInfo.picture" width="200" />
+          <b-img  class="profile-picture" :src="userInfo.picture" width="200" />
         </div>
         <br>
        
