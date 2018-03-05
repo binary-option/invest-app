@@ -17,7 +17,7 @@ const userSchema = new Schema({
   email: {
     type: String
   },
-  picture: [],
+  picture: String,
   accountCreated: Date,
   role: {
     type: String,
