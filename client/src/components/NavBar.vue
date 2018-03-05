@@ -12,7 +12,7 @@
 
   <b-collapse is-nav id="nav_collapse">
 
-    <b-navbar-nav>
+    <b-navbar-nav class="align-items-center">
       <b-nav-item href="/about"  @click.native="isActive = false">(About)</b-nav-item>
       <b-nav-item href="/signup"  @click.native="isActive = false" >(Signup)</b-nav-item>
       <b-nav-item href="/login" @click="logout" >(Logout)</b-nav-item>
@@ -47,14 +47,11 @@
       </b-nav-item-dropdown>
 
      
-      <b-nav-form >
-        <b-form-input  class="mr-sm-2" type="text" placeholder="Search"/>
-        <b-button class="my-2 my-sm-0" type="submit" variant="primary">Search</b-button>
+      <b-nav-form>
+        <b-form-input  class="mr-sm-2" type="text"  v-model="$root.searchWord" placeholder="Search"/>
+        <b-button class="my-2 my-sm-0" type="submit" variant="primary"  @click.prevent="search">Search</b-button>
       </b-nav-form>
       
-      
-
-  
     </b-navbar-nav>  
 
   </b-collapse>
@@ -74,11 +71,15 @@ export default {
       isActive: false
     };
   },
+
   methods: {
     logout() {
       logout();
       this.$root.user = null;
       this.$router.push("/login");
+    },
+    search() {
+      this.$router.push("/search");
     }
   }
 };

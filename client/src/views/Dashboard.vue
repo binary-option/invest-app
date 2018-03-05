@@ -9,16 +9,18 @@
     
     <b-row class="row-eq-height">
 
-        <div id="side-column"  class="col-3 border d-flex flex-column justify-content-start" >
+        
+        <div id="side-column"  class="col-lg-3 col-sm-12 border d-flex flex-column justify-content-start " >
         <div class="pt-5">
 	   <p>Total risk</p>
        <p>Total investment</p>
        <p>Total benefit</p>
        </div>
         </div>
+      
   
        
-        <div id="card-column"  class="col-9 border  d-flex flex-row  align-items-center flex-wrap" >
+        <div id="card-column"  class="col-lg-9 col-sm-12 border  d-flex flex-row  align-items-center flex-wrap" >
 	   
         
        <b-card  class="card" bg-variant="dark" text-variant="white">
@@ -88,14 +90,12 @@
 
 #side-column {
   color: white;
-  width: 250px;
   background-color: rgba(61, 64, 78, 0.623);
 }
 
 #card-column {
   overflow-y: auto;
   height: 100%;
-  width: 250px;
   background-color: rgba(248, 251, 252, 0.1);
 }
 
