@@ -1,6 +1,8 @@
 <template>
-  <div class="about">
-    <div v-if="dataLoaded" class="container">
+  <div v-if="dataLoaded" class="about">
+    <indicator-card :rating="3" :read-only="true"></indicator-card>
+    
+    <div class="container">
       <div class="row ">
         <div class="col-lg-5 col-md-6 col-sm-9 col-xs-12">
           <h3>Portfolio allocation</h3>
@@ -18,12 +20,6 @@
         </div>
         </div>
     </div>
-    <h1>This is an about page</h1>
-    <pre>portfolioBeta {{portfolioBeta}}</pre>
-    <pre>stockBetas {{stockBetas}}</pre>
-    <pre>filteredStockRdiffs {{filteredStockRdiffs}}</pre>
-    <pre>stockValueFiltered {{stockValueFiltered}}</pre>
-    <pre>{{stockRdiffs}}</pre>
     
   </div>
 </template>
@@ -36,6 +32,7 @@ import { getStockValue } from "@/api";
 import { retrieveBenchmarkData } from "@/api";
 import PieChart from "@/components/PieChart.vue";
 import LineChart from "@/components/LineChart.vue";
+import IndicatorCard from "@/components/IndicatorCard.vue";
 import _ from "lodash";
 import * as ss from "simple-statistics";
 import moment from "moment";
@@ -43,14 +40,14 @@ export default {
   name: "test",
   components: {
     PieChart,
-    LineChart
+    LineChart,
+    IndicatorCard
   },
   created() {
     // This array of promises makes sure that the functions are carried out when both callbacks are ready
     getPortfolio("5a96bc309826b01503719a30")
       .then(portfolio => {
         portfolio.stocks.forEach(pf => {
-          console.log(pf);
           let name = pf.stockName;
           let date = new Date();
           //Calculate start date, one year and one day from now
@@ -76,17 +73,6 @@ export default {
             lastHoldingValue: lastHoldingValue
           };
           this.stockInfo.push(stock);
-          let endDate2 = moment(date)
-            .subtract(10, "year")
-            .format("YYYY-MM-DD");
-          console.log(
-            "regression ",
-            moment(moment(endDate2) - moment(startDate)).format("DDDD"),
-            "endDate ",
-            moment(endDate2),
-            "startDate",
-            moment(startDate)
-          );
         });
 
         return Promise.all([
@@ -124,6 +110,9 @@ export default {
         this.preparePlotData();
         this.prepareIndexPlotData();
         this.preparePieChartData();
+        console.log(this.portfolioReturn);
+        console.log(this.portfolioAlpha);
+        console.log(this.benchmarkReturn);
       });
   },
   mounted() {},
@@ -228,19 +217,43 @@ export default {
     };
   },
   computed: {
-    //Creates an array with random values between 1.07 and 1.1 for benchmark
-    benchmarkRdiff() {
-      let tempBetas = [];
-      for (var i = 0; i < this.filteredStockRdiffs[0].length; i++) {
-        tempBetas.push(Math.random() * (1.1 - 1.07) + 1.07);
-      }
-      return tempBetas;
-    },
-    //Adds the value in dollars of all stocks in the portfolio
     totalHoldingValue() {
       return this.currentHoldingValue.reduce((acc, curr) => {
         return acc + curr;
       });
+    },
+    portfolioReturn() {
+      return (
+        (1 +
+          (this.compositeStockValue[this.compositeStockValue.length - 1] -
+            this.compositeStockValue[0]) /
+            this.compositeStockValue[0]) *
+          100 -
+        100
+      ).toFixed(2);
+    },
+    //The value of the risk-free return needs to be update periodically until an
+    //API is available
+    portfolioAlpha() {
+      let riskFreeReturn = 0.0204;
+      let marketReturn =
+        (this.benchmarkData.value[this.benchmarkData.value.length - 1] -
+          this.benchmarkData.value[0]) /
+        this.benchmarkData.value[0];
+      return (
+        (this.portfolioReturn / 100 -
+          riskFreeReturn -
+          this.portfolioBeta * (marketReturn - riskFreeReturn)) *
+        100
+      ).toFixed(2);
+    },
+    benchmarkReturn() {
+      return (
+        (this.benchmarkData.value[this.benchmarkData.value.length - 1] -
+          this.benchmarkData.value[0]) /
+        this.benchmarkData.value[0] *
+        100
+      ).toFixed(2);
     }
   },
   methods: {
@@ -393,7 +406,6 @@ export default {
     preparePieChartData() {
       let colorsArray = [];
       for (var i = 0; i < this.stockInfo.length; i++) {
-        console.log(this.stockInfo.length);
         var name = this.stockInfo[i].name;
         this.pieChartObject.labels.push(this.stockInfo[i].name);
         let color = this.standardColors[
