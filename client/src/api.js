@@ -90,6 +90,13 @@ export function updateUser(userId, userInfo) {
     .catch(errHandler);
 }
 
+export function retrieveBenchmarkData(startDate, endDate) {
+  return service
+    .get(`/benchmark/${startDate}/${endDate}`)
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
 //Here starts the part with the quandl API to retrieve stock information
 
 const quandl = axios.create({
