@@ -1,6 +1,8 @@
 <template>
 <div><pre>{{allResults}}</pre>
-<h2>This is the search page</h2>
+  
+  
+<h2>This is the search portfolios page</h2>
 </div>
 </template>
 
@@ -11,6 +13,7 @@ import { getAllPortfolios } from "../api";
 export default {
   data() {
     return {
+      word: "",
       allResults: []
     };
   },
@@ -43,7 +46,7 @@ export default {
     //using this or not?
     const word = this.$root.searchWord;
     this.searchByWord(word).then(results => (this.allResults = results));
-    console.log(this.allResults);
+    this.$root.searchWord = "";
   }
 };
 </script>
