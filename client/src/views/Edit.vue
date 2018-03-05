@@ -16,7 +16,7 @@
     <b-form @submit.prevent="updateUser">
         <br>
         <div class="row justify-content-md-center">
-          <b-img  :src="userInfo.picture" class=" profile-picture img-fluid" alt="Profile Picture"/>
+          <b-img  rounded :src="userInfo.picture" class=" profile-picture img-fluid"  thumbnail alt="Profile Picture"/>
         </div>
         <br>
 
@@ -116,6 +116,6 @@ export default {
 
 <style scoped>
 .profile-picture {
-  height: 150px;
+  height: 130px;
 }
 </style>

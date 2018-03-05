@@ -14,8 +14,8 @@
         <br>
          <br>
         <div class="row justify-content-md-center">
-          <b-img  class="profile-picture" :src="userInfo.picture" width="200" />
-        </div>
+          <b-img  rounded class="profile-picture img-fluid" thumbnail :src="userInfo.picture" alt="Profile Picture" />
+         </div>
         <br>
        
       <b-form-group class="ml-3 mr-3" label="Name:"> 
@@ -72,6 +72,6 @@ export default {
 
 <style scoped>
 .profile-picture {
-  height: 100px;
+  height: 130px;
 }
 </style>

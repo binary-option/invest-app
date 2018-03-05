@@ -34,7 +34,7 @@
         <em> 
           <div  v-if="!$root.user.picture">{{$root.user.name}}</div>
           <div  v-if="$root.user.picture" class="icon-image" >
-            <b-img  rounded="circle" :src="$root.user.picture" fluid/>
+            <b-img  rounded :src="$root.user.picture" fluid/>
           </div>
         </em>
       </template>
