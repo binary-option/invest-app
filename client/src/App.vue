@@ -4,13 +4,17 @@
     <br>
     <br>
     <section class="section">
+      <pre>{{$root.user}}
+      searchWord {{$root.searchWord}}
+      </pre>
       <router-view/>
+     
     </section>
       <div slot="footer">
-        <small class="text-muted"><strong>Invest-app</strong> by Ironhack WebDev Cohort (c) 2018</small>
+        <small class="text-muted"><span class="oi oi-aperture" title="icon name" aria-hidden="true"></span><strong>Invest-app</strong> by Ironhack WebDev Cohort (c) 2018</small>
       </div>
     <footer class="footer">
-     
+      
     </footer>
   </div>
 </template>

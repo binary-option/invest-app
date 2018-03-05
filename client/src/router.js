@@ -8,6 +8,7 @@ import Profile from "./views/Profile.vue";
 import Edit from "./views/Edit.vue";
 import WishList from "./views/WishList.vue";
 import Dashboard from "./views/Dashboard.vue";
+import Search from "./views/Search.vue";
 
 Vue.use(Router);
 
@@ -59,9 +60,17 @@ export default new Router({
       }
     },
     {
-      path: "/Dashboard",
+      path: "/dashboard",
       name: "Dashboard",
       component: Dashboard,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/search",
+      name: "Search",
+      component: Search,
       meta: {
         requiresAuth: true
       }
