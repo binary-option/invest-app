@@ -7,26 +7,33 @@
           <pie-chart :data="pieChartObject"></pie-chart>
         </div>
         <div class="col-lg-5 col-md-6 col-sm-9 col-xs-12">
-          <h3>Portfolio's development</h3>
+          <h3>Single stock development</h3>
           <line-chart :data="plotObject" :options="plotObject.options">1</line-chart>
         </div>
       </div>
+      <div class="row ">
+          <div class="col-lg-5 col-md-6 col-sm-9 col-xs-12">
+            <h3>Portfolio vs S&P500 </h3>
+            <line-chart :data="indexPlotObject" :options="indexPlotObject.options">1</line-chart>
+        </div>
+        </div>
     </div>
     <h1>This is an about page</h1>
     <pre>portfolioBeta {{portfolioBeta}}</pre>
     <pre>stockBetas {{stockBetas}}</pre>
-    <pre>stockIncreases {{stockIncreases}}</pre>
+    <pre>filteredStockRdiffs {{filteredStockRdiffs}}</pre>
     <pre>stockValueFiltered {{stockValueFiltered}}</pre>
-    <pre>{{stockDeltas}}</pre>
+    <pre>{{stockRdiffs}}</pre>
     
   </div>
 </template>
 
 
 <script>
-import { getPortfolio } from "../api";
+import { getPortfolio } from "@/api";
 import { getStockDelta } from "@/api";
 import { getStockValue } from "@/api";
+import { retrieveBenchmarkData } from "@/api";
 import PieChart from "@/components/PieChart.vue";
 import LineChart from "@/components/LineChart.vue";
 import _ from "lodash";
@@ -84,49 +91,62 @@ export default {
 
         return Promise.all([
           Promise.all(this.stockInfo.map(getStockDelta)),
-          Promise.all(this.stockInfo.map(getStockValue))
+          Promise.all(this.stockInfo.map(getStockValue)),
+          retrieveBenchmarkData("2017-02-27", "2018-02-27")
         ]);
       })
-      .then(([stockDelta, stockValue]) => {
-        this.stockDeltas = stockDelta;
-        this.calculateReturnDeltas();
-        this.initializeData();
-
-        this.stockIncreases.forEach(beta => {
+      .then(([stockRdiff, stockValue, benchmarkData]) => {
+        console.log("bmd ", benchmarkData);
+        this.benchmarkData = benchmarkData;
+        this.stockRdiffs = stockRdiff;
+        this.filterStockRdiffs();
+        this.filteredStockRdiffs.forEach(stockRdiff => {
           this.stockBetas.push(
-            ss.sampleCovariance(beta, this.betaBenchmark) /
-              ss.sampleVariance(this.betaBenchmark)
+            ss.sampleCovariance(
+              stockRdiff,
+              this.benchmarkData.rdiff.slice(0, stockRdiff.length)
+            ) / ss.sampleVariance(this.benchmarkData.rdiff)
           );
         });
         this.stockValue = stockValue;
-        this.calculateValueDeltas();
+        this.filterStockValues();
         this.holdingDelta();
         for (var i = 0; i < this.stockBetas.length; i++) {
           this.portfolioBeta +=
             this.stockBetas[i] *
             this.currentHoldingValue[i] /
             this.totalHoldingValue;
-
           this.portfolioAllocation.push(
             this.currentHoldingValue[i] / this.totalHoldingValue
           );
         }
+        this.caclulateCompositeStock();
         this.preparePlotData();
+        this.prepareIndexPlotData();
         this.preparePieChartData();
       });
   },
   mounted() {},
   data() {
     return {
+      //Boolean to only show the charts when all data is available
       dataLoaded: false,
-      tempPortfolio: [],
+      //Composite stock: wheighted value of portfolio in rdiff
+      compositeStockRdiff: [],
+      //Composite stock: wheighted value of portfolio in USD
+      compositeStockValue: [],
+      //Calculates the development of the compounded stock with the compounded rdiff
+      compoundedStockDevelopment: [],
+      //The array with the benchmark data: date, rdiff and value
+      benchmarkData: {},
+      //CHECK IF NECESSARY
       stockData: [],
       //The array with the rdiffs as returned from quandl
-      stockDeltas: [],
+      stockRdiffs: [],
       //The array with the values as returned from quandl
       stockValue: [],
       //Matrix with arrays of the rdiffs
-      stockIncreases: [],
+      filteredStockRdiffs: [],
       //Matrix with the arrays of the value of the stocks in dollar
       stockValueFiltered: [],
       //Array holding the updated value of the holdings
@@ -164,9 +184,40 @@ export default {
           scales: {
             yAxes: [
               {
+                id: "dollar",
+                position: "left",
+                ticks: { min: 0 },
                 scaleLabel: {
                   display: true,
                   labelString: "USD"
+                }
+              }
+            ]
+          }
+        }
+      },
+      indexPlotObject: {
+        labels: [],
+        datasets: [],
+        options: {
+          scales: {
+            yAxes: [
+              {
+                id: "dollar",
+                position: "left",
+                ticks: { min: 0 },
+                scaleLabel: {
+                  display: true,
+                  labelString: "USD"
+                }
+              },
+              {
+                id: "index",
+                position: "right",
+                ticks: { min: 0 },
+                scaleLabel: {
+                  display: true,
+                  labelString: "SP500"
                 }
               }
             ]
@@ -178,9 +229,9 @@ export default {
   },
   computed: {
     //Creates an array with random values between 1.07 and 1.1 for benchmark
-    betaBenchmark() {
+    benchmarkRdiff() {
       let tempBetas = [];
-      for (var i = 0; i < this.stockIncreases[0].length; i++) {
+      for (var i = 0; i < this.filteredStockRdiffs[0].length; i++) {
         tempBetas.push(Math.random() * (1.1 - 1.07) + 1.07);
       }
       return tempBetas;
@@ -193,6 +244,77 @@ export default {
     }
   },
   methods: {
+    //Returns an array with the weighted value of the stock
+    caclulateCompositeStock() {
+      //Initialize
+      /**Calculate the number of stocks as the value of the holding, which was updated
+      in holdingDelta() divided by the current value of the stock
+       **/
+      var numberOfStocks = [];
+      for (var i = 0; i < this.currentHoldingValue.length; i++) {
+        numberOfStocks.push(
+          this.currentHoldingValue[i] / this.stockValueFiltered[i][0]
+        );
+      }
+      var totalNumberOfStocks = numberOfStocks.reduce((acc, curr) => {
+        return acc + curr;
+      });
+      var stockValueVector = [];
+      //i iterates through number of weeks in period
+      for (var i = 0; i < this.stockValueFiltered[0].length; i++) {
+        //Array with holding value as number of stock * current value
+        //j iterates through number of stocks
+        let tempStockValue = [];
+        for (var j = 0; j < this.stockValueFiltered.length; j++) {
+          tempStockValue.push(
+            this.stockValueFiltered[j][i] * numberOfStocks[j]
+          );
+        }
+        stockValueVector.push(tempStockValue);
+      }
+
+      //A Matrix, containing in each row the wheighted stock contributions to the
+      //composite stock per period
+      var tempWeightedStock = [];
+      //Calculate the weighted rdiffs a Vi/Vtotal * rdiffi
+      for (var i = 0; i < stockValueVector.length - 1; i++) {
+        //Holds temporarily a single wheighted stock for a given period. Is pushed
+        //afterwards to tempWeightedStock matrix
+        var weightedStockHolder = [];
+        for (var j = 0; j < this.stockInfo.length; j++) {
+          weightedStockHolder.push(
+            this.filteredStockRdiffs[j][i] *
+              stockValueVector[i][j] /
+              stockValueVector[i].reduce((acc, curr) => {
+                return acc + curr;
+              })
+          );
+        }
+        tempWeightedStock.push(weightedStockHolder);
+      }
+      //Array holding the value of the composite stock per period in rdiff
+      for (var i = 0; i < tempWeightedStock.length; i++) {
+        this.compositeStockRdiff.push(
+          tempWeightedStock[i].reduce((acc, curr) => {
+            return acc + curr;
+          })
+        );
+      }
+      //Array holding the total value of the composite stock
+      for (var i = 0; i < tempWeightedStock.length; i++) {
+        var weightedStock = [];
+        for (var j = 0; j < tempWeightedStock[0].length; j++) {
+          weightedStock.push(
+            (1 + tempWeightedStock[i][j]) * stockValueVector[i][j]
+          );
+        }
+        this.compositeStockValue.push(
+          weightedStock.reduce((acc, curr) => {
+            return acc + curr;
+          }) / totalNumberOfStocks
+        );
+      }
+    },
     //Calculates the change in value of the stocks since the last time they were updated
     holdingDelta() {
       for (var i = 0; i < this.stockValueFiltered.length; i++) {
@@ -206,17 +328,17 @@ export default {
       }
     },
     //Takes the rdiff data from the query to quandl into an array
-    calculateReturnDeltas() {
-      for (let i = 0; i < this.stockDeltas.length; i++) {
+    filterStockRdiffs() {
+      for (let i = 0; i < this.stockRdiffs.length; i++) {
         let returnVector = [];
-        for (let j = 1; j < this.stockDeltas[i].dataset.data.length; j++) {
-          returnVector.push(this.stockDeltas[i].dataset.data[j][1]);
+        for (let j = 1; j < this.stockRdiffs[i].dataset.data.length; j++) {
+          returnVector.push(this.stockRdiffs[i].dataset.data[j][1]);
         }
-        this.stockIncreases.push(returnVector);
+        this.filteredStockRdiffs.push(returnVector);
       }
     },
     //Takes the value data from the query to quandl into an array
-    calculateValueDeltas() {
+    filterStockValues() {
       for (let i = 0; i < this.stockValue.length; i++) {
         let returnVector = [];
         let datesVector = [];
@@ -224,15 +346,8 @@ export default {
           returnVector.push(this.stockValue[i].dataset.data[j][1]);
           datesVector.push(this.stockValue[i].dataset.data[j][0]);
         }
-        this.stockValueFiltered.push(returnVector);
-        this.plotObject.labels = datesVector;
-      }
-    },
-    initializeData() {
-      for (var i = 0; i < this.stockInfo.length; i++) {
-        var name = this.stockInfo[i].name;
-        console.log(name);
-        this.stockData.push(`{${name}: {}}`);
+        this.stockValueFiltered.push(returnVector.reverse());
+        this.plotObject.labels = datesVector.reverse();
       }
     },
     preparePlotData() {
@@ -242,10 +357,35 @@ export default {
         let plotData = {
           label: label,
           borderColor: "#f87979",
-          data: data
+          data: data,
+          yAxisID: "dollar"
         };
         this.plotObject.datasets.push(plotData);
       }
+    },
+    prepareIndexPlotData() {
+      let plotData = {
+        label: "Portfolio",
+        borderColor: "#0F445D",
+        data: this.compositeStockValue,
+        yAxisID: "dollar"
+      };
+      this.indexPlotObject.datasets.push(plotData);
+      this.indexPlotObject.labels = this.plotObject.labels.slice(
+        0,
+        this.compositeStockValue.length
+      );
+
+      let sp500Data = {
+        label: "SP500",
+        borderColor: "#076940",
+        data: this.benchmarkData.value.slice(
+          0,
+          this.compositeStockValue.length
+        ),
+        yAxisID: "index"
+      };
+      this.indexPlotObject.datasets.push(sp500Data);
     },
     //Push the stock name to the data: { labels: [array
     //Picks a random color and pushes it to data: { datasets: [{ backgroundColor: [ array
