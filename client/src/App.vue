@@ -28,7 +28,9 @@ export default {
 
   created() {
     const user = loadUser();
-    if (user) this.$root.user = user;
+    if (user) {
+      this.$root.user = user;
+    } else if (this.$route.meta.requiresAuth) this.$router.push("/login");
   }
 };
 </script>

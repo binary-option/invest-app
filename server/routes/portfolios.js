@@ -6,7 +6,7 @@ const User = require("../models/user");
 const Benchmark = require("../models/benchmark");
 
 /* GET home page. */
-router.get("/", ensureLoggedIn(), function(req, res, next) {
+router.get("/", ensureLoggedIn(), function (req, res, next) {
   Portfolio.find({}, (err, portfolios) => {
     if (err) return next(err);
 
@@ -41,7 +41,7 @@ router.post("/", ensureLoggedIn(), (req, res, next) => {
           },
           (err, manager) => {
             if (err) return next(err);
-            res.json("Portfolio created successfully.");
+            res.json(newPortfolio);
           }
         );
       });
@@ -62,7 +62,7 @@ router.post("/", ensureLoggedIn(), (req, res, next) => {
 //   });
 // });
 
-router.get("/:portfolioId", ensureLoggedIn(), function(req, res, next) {
+router.get("/:portfolioId", ensureLoggedIn(), function (req, res, next) {
   const portfolioId = req.params.portfolioId;
   Portfolio.findById(portfolioId, (err, portfolio) => {
     if (err) return next(err);

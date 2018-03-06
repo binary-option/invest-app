@@ -4,27 +4,24 @@
 <!-- v-model for bankdetails missing -->
 
 <div class="container">
-      <div class="row justify-content-md-center">
-        <div class="col-lg-10">
-  <div class="modal-dialog">
-		<div class="modal-content">
-    <div class="modal-heading">
-        <br>
-				<h1 class="text-center">Edit {{$root.user.name}} profile</h1>
-		</div>
 
+        <div class="col-lg-10">
+         <div class="modal-dialog">
+		      <div class="modal-content">
+
+          <div class="modal-heading text-center">
+            <br>
+			    	<h1 >Edit {{$root.user.name}} profile</h1>
+	  	  </div>
+
+   <div class="text-center">
     <b-form @submit.prevent="updateUser">
         <br>
-        <div class="row justify-content-md-center">
           <b-img  rounded :src="userInfo.picture" class=" profile-picture img-fluid"  thumbnail alt="Profile Picture"/>
-        </div>
         <br>
-
-
-
+        <br>
         <div class="ml-3 mr-3">
         <b-form-file  v-model="file" :state="Boolean(file)" placeholder="Choose a file..."></b-form-file>
-        <div class="mt-3" v-if="file">Selected file:  {{ file.name}}</div>
        </div>
         <br>
         
@@ -53,20 +50,21 @@
          <b-form-input ></b-form-input>
         </b-form-group>
 
-  <br>
-     <div class="row justify-content-md-center">
-        <b-button type="submit" variant="primary">Submit</b-button>
-        </div>
-           <br>
-            <br>
-
+        <br>
+        <b-button type="submit" variant="primary">Submit</b-button>       
+        <br>
+        <br>
     </b-form>
+    </div>
+
   </div>
+
+  </div>
+  </div>
+  </div>
+
 </div>
-</div>
-</div>
-</div>
-</div>
+
 </template>
 
 <script>
