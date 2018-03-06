@@ -9,6 +9,7 @@ import Edit from "./views/Edit.vue";
 import WishList from "./views/WishList.vue";
 import Dashboard from "./views/Dashboard.vue";
 import Search from "./views/Search.vue";
+import Risk from "./views/RiskQuestionaire.vue";
 
 Vue.use(Router);
 
@@ -71,6 +72,14 @@ export default new Router({
       path: "/search",
       name: "Search",
       component: Search,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/risk",
+      name: "risk",
+      component: Risk,
       meta: {
         requiresAuth: true
       }

@@ -6,7 +6,7 @@
         <div class="card-body">
             <h5 class="card-title text-center">Portfolio return</h5>
             <h2 class="card-text text-center">16%</h2>
-            <star-rating class="star-rating" :rating="3" :read-only="true" :show-rating="false" :star-size="25"></star-rating>
+            <star-rating class="star-rating" :rating="4.2" :read-only="true" :show-rating="false" :star-size="25"></star-rating>
         </div>
         </div>
     </div>

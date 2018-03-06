@@ -3,21 +3,23 @@
     <indicator-card :rating="3" :read-only="true"></indicator-card>
     
     <div class="container">
+
       <div class="row ">
-        <div class="col-lg-5 col-md-6 col-sm-9 col-xs-12">
-          <h3>Portfolio allocation</h3>
-          <pie-chart :data="pieChartObject"></pie-chart>
-        </div>
-        <div class="col-lg-5 col-md-6 col-sm-9 col-xs-12">
+        <div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
           <h3>Single stock development</h3>
           <line-chart :data="plotObject" :options="plotObject.options">1</line-chart>
         </div>
-      </div>
-      <div class="row ">
-          <div class="col-lg-5 col-md-6 col-sm-9 col-xs-12">
+        <div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
             <h3>Portfolio vs S&P500 </h3>
             <line-chart :data="indexPlotObject" :options="indexPlotObject.options">1</line-chart>
         </div>
+      </div>
+      <div class="row ">
+                <div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
+          <h3>Portfolio allocation</h3>
+          <pie-chart :data="pieChartObject"></pie-chart>
+        </div>
+          
         </div>
     </div>
     
@@ -60,7 +62,7 @@ export default {
             .subtract(1, "day")
             .format("YYYY-MM-DD");
           let frequency = "weekly";
-          let lastUpdated = moment(pf.lastUpdated).format("YYYY-MM-DD");
+          let lastUpdatedDate = moment(pf.lastUpdatedDate).format("YYYY-MM-DD");
           let lastStockValue = pf.stockValue;
           let lastHoldingValue = pf.holdingValue;
           let stock = {
@@ -68,7 +70,7 @@ export default {
             startDate: startDate,
             endDate: endDate,
             frequency: frequency,
-            lastUpdated: lastUpdated,
+            lastUpdatedDate: lastUpdatedDate,
             lastStockValue: lastStockValue,
             lastHoldingValue: lastHoldingValue
           };
@@ -103,7 +105,11 @@ export default {
             this.currentHoldingValue[i] /
             this.totalHoldingValue;
           this.portfolioAllocation.push(
-            this.currentHoldingValue[i] / this.totalHoldingValue
+            (
+              this.currentHoldingValue[i] /
+              this.totalHoldingValue *
+              100
+            ).toFixed(0)
           );
         }
         this.caclulateCompositeStock();
@@ -147,14 +153,21 @@ export default {
       //Portfolio allocation as percentage
       portfolioAllocation: [],
       standardColors: [
-        "#263745",
-        "#BE481A",
-        "#D6AB3B",
-        "#029B5E",
-        "#007A66",
-        "#1A6288",
-        "#643A70",
-        "#97302A"
+        "#17202a",
+        "#186a3b",
+        "#641e16",
+        "#154360",
+        "#4a235a",
+        "#1c2833",
+        "#1d8348",
+        "#7b241c",
+        "#1a5276",
+        "#5b2c6f",
+        "#212f3d",
+        "#239b56",
+        "#922b21",
+        "#1f618d",
+        "#6c3483"
       ],
       pieChartObject: {
         labels: [],
@@ -305,6 +318,7 @@ export default {
         }
         tempWeightedStock.push(weightedStockHolder);
       }
+      //console.log("tws ", tempWeightedStock);
       //Array holding the value of the composite stock per period in rdiff
       for (var i = 0; i < tempWeightedStock.length; i++) {
         this.compositeStockRdiff.push(

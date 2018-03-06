@@ -25,7 +25,7 @@ const userSchema = new Schema({
     default: "client"
   },
   //Parameters only relevant for the customer:
-  riskProfile: Object,
+  riskProfile: Number,
   bankAccount: String,
   customerPortfoliosOwned: [],
   customerWishList: [],
