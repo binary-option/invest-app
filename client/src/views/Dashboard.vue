@@ -30,11 +30,11 @@
         <!-- Also for this we need to populate the portfolios -->
         <p>Total managed money: {{managerTotalManagedMoney}}</p>
         <div>
-        <b-button type="button" class="btn btn-info" @click="modalIsVisible = !modalIsVisible" >
+        <b-button type="button" class="btn btn-info" @click="modal1IsVisible = !modal1IsVisible" >
           Add a portfolio
         </b-button>
 
-            <b-modal v-model="modalIsVisible" style="color:black" ref="modal"  @ok="submitModal">
+            <b-modal v-model="modal1IsVisible" style="color:black" ref="modal1"  @ok="submitModal">
               <form @submit.stop.prevent="submitModal">
                 <p><strong>Portfolio informations:</strong></p>
                  <b-form-input  class="mt-2 mb-2" type="text"
@@ -43,30 +43,43 @@
                 <b-form-textarea  class="mt-2 mb-2" type="text"
                       placeholder="Enter the portfolio description"
                       v-model="newPortfolio.description"></b-form-textarea>
-              <hr>
-                <p><strong>Stock {{numberOfStocks}}:</strong></p>
-              <b-form-input class="mt-2 mb-2" type="text"
+                <hr>
+                  <div class="modal-footer">
+                  <button  class="btn btn-info" @click.prevent="addInformations">Add the stocks</button>
+                  <button  class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>  
+              </form>
+              </b-modal>
+
+                  <b-modal  style="color:black" ref="modal2"  @ok="submitModal">
+                <form @submit.stop.prevent="submitModal">
+                <p><strong>Stock:</strong></p>
+                <b-form-input class="mt-2 mb-2" type="text"
                       placeholder="Enter the stock name"
                       v-model="stock.stockName"></b-form-input>
-              <b-form-input  class="mt-2 mb-2" type="text"
+                <b-form-input  class="mt-2 mb-2" type="text"
                       placeholder="Enter the stock value"
                       v-model="stock.stockValue"></b-form-input>
 
-              <div class="row">
-             <div class="col-md-12">
-             <date-picker v-model="stock.stockStartingDate" placeholder="Enter the starting date" :config="config">
-             </date-picker>
-             <span class="oi oi-calendar" title="icon name" aria-hidden="true"></span>
-             </div>
-             </div>
+                  <div class="row">
+                <div class="col-md-12">
+                <date-picker v-model="stock.stockStartingDate" placeholder="Enter the starting date" :config="config">
+                </date-picker>
+                <span class="oi oi-calendar" title="icon name" aria-hidden="true"></span>
+                </div>
+                 </div>
 
-              <b-form-input  class="mt-2 mb-2" type="text"
+                <b-form-input  class="mt-2 mb-2" type="text"
                       placeholder="Enter the holding value"
                       v-model="stock.holdingValue"></b-form-input>
-              
               <hr>
-              <b-button type="submit" variant="outline-info" size="sm" @click="addSingleStock"> Add this stock</b-button>
+              <b-button  variant="outline-info" size="sm" @click.prevent="addSingleStock"> Add one more stock</b-button>
+               <div class="modal-footer">
+                  <button  class="btn btn-info" @click="submitModal">Save</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div> 
               </form>
+
             </b-modal>
           </div>
 
@@ -158,7 +171,7 @@ export default {
         format: "DD/MM/YYYY",
         useCurrent: false
       },
-      modalIsVisible: false,
+      modal1IsVisible: false,
       userInfo: {},
       managerPortfoliosNumber: "",
       managerTotalClients: "",
@@ -191,14 +204,21 @@ export default {
     });
   },
   methods: {
+    addInformations() {
+      this.modal1IsVisible = false;
+      this.$refs.modal2.show();
+    },
     addSingleStock() {
       this.newStocks.push(this.stock);
       this.stock = {};
-      this.$refs.modal.show();
+      this.$refs.modal2.show();
       this.numberOfStocks = this.newStocks.length + 1;
     },
     submitModal() {
-      this.addSingleStock();
+      this.newStocks.push(this.stock);
+      this.stock = {};
+      this.$refs.modal2.hide();
+
       const newStocks = this.newStocks;
       const newPortfolio = {
         ...this.newPortfolio,
