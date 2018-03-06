@@ -7,7 +7,7 @@
         <b-form-input  type="text"  v-model="$root.searchWord" placeholder="Search"/>
          <br>
        
-        <b-button  type="submit" variant="primary"  @click.prevent="search">Search</b-button>
+        <b-button  type="submit" variant="dark"  @click.prevent="search">Search</b-button>
        
     </b-form>
   </div>

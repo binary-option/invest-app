@@ -2,10 +2,14 @@
 <div><pre>{{allResults}}
 
 </pre>
-  <div v-if="allResults===[]" class="container col-lg-11 col-sm-11">
-	  <div class="modal-content ">
-	      	
-    <div class="modal-heading text-center p-3 mb-2 bg-info text-white mb-0">
+
+<div v-if="allResults===[]" class="container col-lg-11 col-sm-11 text-center">
+      <h3>Sorry we couldn't find any porfolio</h3>
+    </div> 
+
+  <div v-else class="container col-lg-10 col-sm-12  ">
+	  
+    <div class="modal-heading text-center p-3 mb-2 bg-dark text-white mb-0">
     <br>
 		<h2>Search results</h2>
     <div>
@@ -19,18 +23,19 @@
     </div>
 	  </div>
     
+  <div id="card-column" class="d-flex flex-row justify-content-center  ">
     
-  <div class=" d-flex flex-column align-items-center pb-3" >
+  <div class="col-12 border pb-3 pt-5  " >
    
   
-        <div v-for="result in allResults" :key="result.id" class="col-lg-10 col-sm-10 ">
-        <b-card class="mb-2 mt-3" :title="result.portfolioName"
+        <div v-for="result in allResults" :key="result.id">
+        <b-card border-variant="dark" class="card mb-2 mt-3" :title="result.portfolioName"
           header-tag="header"
           footer-tag="footer">
         <h6 slot="header" class="mb-0">Header</h6>
         <em slot="footer">Rating: {{result.rating}}</em>
         <p class="card-text">{{result.description}} </p>
-        <b-button href="#" variant="primary">Get the details</b-button>
+        <b-button to="#"  variant="dark">Get the details</b-button>
         </b-card>
          </div>
     </div>
@@ -38,9 +43,7 @@
   </div>
 
 
-    <div v-else class="container col-lg-11 col-sm-11 text-center">
-      <h3>Sorry we couldn't find any porfolio</h3>
-    </div>
+    
 
   </div>
 
@@ -120,4 +123,8 @@ export default {
   }
 };
 </script>
+
+<style>
+
+</style>
 

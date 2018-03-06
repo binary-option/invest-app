@@ -51,7 +51,7 @@
         </b-form-group>
 
         <br>
-        <b-button type="submit" variant="primary">Submit</b-button>       
+        <b-button type="submit" variant="dark">Submit</b-button>       
         <br>
         <br>
     </b-form>

@@ -13,21 +13,21 @@
   <b-collapse is-nav id="nav_collapse">
 
     <b-navbar-nav class="align-items-center">
-      <b-nav-item href="/about"  @click.native="isActive = false">(About)</b-nav-item>
-      <b-nav-item href="/signup"  @click.native="isActive = false" >(Signup)</b-nav-item>
-      <b-nav-item href="/login" @click="logout" >(Logout)</b-nav-item>
+      <b-nav-item to="/about"  @click.native="isActive = false">(About)</b-nav-item>
+      <b-nav-item to="/signup"  @click.native="isActive = false" >(Signup)</b-nav-item>
+      <b-nav-item to="/login" @click="logout" >(Logout)</b-nav-item>
     </b-navbar-nav>
 
     <!-- Right aligned nav items -->
 
      <b-navbar-nav class="ml-auto" v-if="!$root.user">
-    <b-button  variant='outline-primary' href="/login"  @click.native="isActive = false">Login</b-button>
+    <b-button  variant='outline-dark' to="/login"  @click.native="isActive = false">Login</b-button>
     </b-navbar-nav>
 
 
     <b-navbar-nav class="ml-auto align-items-center" v-else>
 
-       <b-nav-item href="/dashboard" >Dashboard</b-nav-item>
+       <b-nav-item to="/dashboard" >Dashboard</b-nav-item>
 
       <b-nav-item-dropdown id="ddown-right" right text="Right align">
       <template slot="button-content">
@@ -38,12 +38,12 @@
           </div>
         </em>
       </template>
-        <b-dropdown-item href="/profile"  @click.native="isActive = false">See my profile</b-dropdown-item>
-        <b-dropdown-item href="/edit"  @click.native="isActive = false">Edit my profile</b-dropdown-item>
+        <b-dropdown-item to="/profile"  @click.native="isActive = false">See my profile</b-dropdown-item>
+        <b-dropdown-item to="/edit"  @click.native="isActive = false">Edit my profile</b-dropdown-item>
         <b-dropdown-divider></b-dropdown-divider>
-        <b-dropdown-item href="/wishlist"  @click.native="isActive = false">My wishlist</b-dropdown-item>
+        <b-dropdown-item to="/wishlist"  @click.native="isActive = false">My wishlist</b-dropdown-item>
         <b-dropdown-divider></b-dropdown-divider>
-        <b-dropdown-item href="/login" @click="logout">Logout</b-dropdown-item>
+        <b-dropdown-item to="/login" @click="logout">Logout</b-dropdown-item>
       </b-nav-item-dropdown>
   
     </b-navbar-nav>  

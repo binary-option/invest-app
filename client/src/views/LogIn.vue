@@ -19,17 +19,36 @@
 
 
  <b-form @submit.prevent="login">
+
+    
         <b-form-group label="Username">
+         <div class="input-group mb-3">
          <b-form-input maxlength="10" v-model="username" required ></b-form-input>
+         <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon1">
+              <span class="oi oi-person"></span>
+            </span>
+          </div>
+          </div>
         </b-form-group>
+
+
         <b-form-group label="Password">
-         <b-form-input type="password" v-model="password" required></b-form-input>
+          <div class="input-group mb-3">
+          <b-form-input type="password"  class="form-control" v-model="password" required> </b-form-input>
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon1">
+              <span class="oi oi-lock-locked"></span>
+            </span>
+          </div>
+          </div>
         </b-form-group>
+         
  <!-- icon="lock"
 password-reveal> -->
       <br>
        <div class="row justify-content-md-center">
-       <b-button type="submit" variant="primary">Login</b-button>
+       <b-button type="submit" variant="dark">Login</b-button>
         </div>
      <br >
       <br>

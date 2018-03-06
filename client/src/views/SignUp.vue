@@ -35,15 +35,30 @@
         </b-form-group>
 
         <b-form-group label="Enter your username" :invalid-feedback="invalidFeedback" :message="usernameError">
+          <div class="input-group mb-3">
           <b-form-input v-model="username"></b-form-input>
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon1">
+              <span class="oi oi-person"></span>
+            </span>
+          </div>
+          </div>
           </b-form-group>
 
         <b-form-group label="Enter your password">
+           <div class="input-group mb-3">
           <b-form-input type="password" v-model="password" required password-reveal></b-form-input>
+          <div class="input-group-append">
+            <span class="input-group-text" id="basic-addon1">
+              <span class="oi oi-lock-locked"></span>
+            </span>
+          </div>
+          </div>
           </b-form-group>
            <br>
+
         <div class="row justify-content-md-center">
-        <b-button type="submit" variant="primary">Signup</b-button>
+        <b-button type="submit" variant="dark">Signup</b-button>
         </div>
            <br>
             <br>
