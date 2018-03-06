@@ -7,7 +7,7 @@ const stockSchema = new Schema(
     stockValue: Number,
     stockStartingDate: Date,
     holdingValue: Number,
-    lastUpdated: Date
+    lastUpdatedDate: Date
   },
   { noId: true }
 );
