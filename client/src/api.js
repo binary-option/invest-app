@@ -76,13 +76,7 @@ export function getPortfolio(portfolioId) {
     .catch(errHandler);
 }
 
-export function getManager(managerId) {
-  return service
-    .get(`/users/${managerId}`)
-    .then(res => res.data)
-    .catch(errHandler);
-}
-
+//Function recieves an object as an argument patches the user
 export function updateUser(userId, userInfo) {
   const formData = new FormData();
   Object.keys(userInfo).forEach(key => formData.append(key, userInfo[key]));
@@ -93,13 +87,6 @@ export function updateUser(userId, userInfo) {
         "Content-Type": "multipart/form-data"
       }
     })
-    .then(res => res.data)
-    .catch(errHandler);
-}
-
-export function createPortfolio(portfolioInfo) {
-  return service
-    .post("/portfolios", portfolioInfo)
     .then(res => res.data)
     .catch(errHandler);
 }
@@ -124,11 +111,11 @@ const quandl = axios.create({
 export function getStockDelta(stockInfo) {
   return quandl
     .get(
-    `${stockInfo.name}.json?column_index=1&start_date=${
-    stockInfo.startDate
-    }&end_date=${stockInfo.endDate}&collapse=${
-    stockInfo.frequency
-    }&transform=rdiff_from`
+      `${stockInfo.name}.json?column_index=1&start_date=${
+        stockInfo.startDate
+      }&end_date=${stockInfo.endDate}&collapse=${
+        stockInfo.frequency
+      }&transform=rdiff_from`
     )
     .then(res => {
       return res.data;
@@ -140,11 +127,11 @@ export function getStockDelta(stockInfo) {
 export function getStockValue(stockInfo) {
   return quandl
     .get(
-    `${stockInfo.name}.json?column_index=1&start_date=${
-    stockInfo.startDate
-    }&end_date=${stockInfo.endDate}&collapse=${
-    stockInfo.frequency
-    }&transform=none`
+      `${stockInfo.name}.json?column_index=1&start_date=${
+        stockInfo.startDate
+      }&end_date=${stockInfo.endDate}&collapse=${
+        stockInfo.frequency
+      }&transform=none`
     )
     .then(res => {
       return res.data;
