@@ -29,7 +29,7 @@
 
        <b-nav-item href="/dashboard" >Dashboard</b-nav-item>
 
-      <b-nav-item-dropdown   left>
+      <b-nav-item-dropdown id="ddown-right" right text="Right align">
       <template slot="button-content">
         <em> 
           <div  v-if="!$root.user.picture">{{$root.user.name}}</div>

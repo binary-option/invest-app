@@ -1,6 +1,8 @@
 <template>
-<div><pre>{{allResults}}</pre>
-  <div class="container col-lg-11 col-sm-11">
+<div><pre>{{allResults}}
+
+</pre>
+  <div v-if="allResults===[]" class="container col-lg-11 col-sm-11">
 	  <div class="modal-content ">
 	      	
     <div class="modal-heading text-center p-3 mb-2 bg-info text-white mb-0">
@@ -31,17 +33,18 @@
         <b-button href="#" variant="primary">Get the details</b-button>
         </b-card>
          </div>
-   
-   
-  
+    </div>
+  </div>
+  </div>
 
 
+    <div v-else class="container col-lg-11 col-sm-11 text-center">
+      <h3>Sorry we couldn't find any porfolio</h3>
     </div>
 
+  </div>
 
-  </div>
-  </div>
-  </div>
+ 
   
 
 </template>
@@ -61,11 +64,13 @@ export default {
 
   methods: {
     searchByWord(word) {
+      console.log("word ", word);
       return getAllPortfolios().then(portfolios =>
         portfolios.filter(portfolio => {
           const stocksNames = portfolio.stocks
             .map(stock => stock.stockName)
             .join();
+          console.log("stocksNames ", stocksNames);
           return (
             portfolio.portfolioName.toLowerCase().indexOf(word.toLowerCase()) >
               -1 ||
@@ -111,7 +116,7 @@ export default {
     //using this or not?
     const word = this.$root.searchWord;
     this.searchByWord(word).then(results => (this.allResults = results));
-    this.$root.searchWord = "";
+    // this.$root.searchWord = "";
   }
 };
 </script>

@@ -1,158 +1,154 @@
 <template>
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-  <pre>{{userInfo}}</pre>
- <b-container  fluid class="bv-example-row">
-     
-      <div  class="row justify-content-md-center mb-3 p-3 mb-2 bg-info text-white mb-0">
-          <h3>{{$root.user.name}} dashboard </h3>
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <pre>{{userInfo}}</pre>
+    <b-container fluid class="bv-example-row">
+
+      <div class="row justify-content-md-center mb-3 p-3 mb-2 bg-info text-white mb-0">
+        <h3>{{$root.user.name}} dashboard </h3>
       </div>
-      
-    
-    <b-row class="row-eq-height mt-0">
 
-        
-        <div  v-if="$root.user.role==='client'" id="side-column"  class="col-lg-3 col-sm-12 border d-flex flex-column justify-content-start " >
-        <div class="pt-5">
-	     <p>Risk profile:</p>
-       <p>Number of portfolios:</p>
-       <p>Total investment:</p>
-       <p>Total benefit:</p>
-       </div>
-        </div>
 
-           <div  v-else id="side-column"  class="col-lg-3 col-sm-12 border d-flex flex-column justify-content-start " >
-        <div class="pt-5">
-	      <p>Portfolios number: {{managerPortfoliosNumber}}</p>
-        <!-- to fill this we need to populae the portfolioIds to see who is the owner -->
-        <p>Total clients: {{managerTotalClients}}</p>
-        <!-- We need to add the field in the model? -->
-        <p>Total followers: {{managerTotalFollowers}}</p>
-        <!-- Also for this we need to populate the portfolios -->
-        <p>Total managed money: {{managerTotalManagedMoney}}</p>
-        <div>
-        <b-button type="button" class="btn btn-info" @click="modal1IsVisible = !modal1IsVisible" >
-          Add a portfolio
-        </b-button>
+      <b-row class="row-eq-height mt-0">
 
-            <b-modal v-model="modal1IsVisible" style="color:black" ref="modal1"  @ok="submitModal">
-              <form @submit.stop.prevent="submitModal">
-                <p><strong>Portfolio informations:</strong></p>
-                 <b-form-input  class="mt-2 mb-2" type="text"
-                      placeholder="Enter the portfolio name"
-                      v-model="newPortfolio.portfolioName"></b-form-input>
-                <b-form-textarea  class="mt-2 mb-2" type="text"
-                      placeholder="Enter the portfolio description"
-                      v-model="newPortfolio.description"></b-form-textarea>
-                <hr>
-                  <div class="modal-footer">
-                  <button  class="btn btn-info" @click.prevent="addInformations">Add the stocks</button>
-                  <button  class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </div>  
-              </form>
-              </b-modal>
-
-                  <b-modal  style="color:black" ref="modal2"  @ok="submitModal">
-                <form @submit.stop.prevent="submitModal">
-                <p><strong>Stock:</strong></p>
-                <b-form-input class="mt-2 mb-2" type="text"
-                      placeholder="Enter the stock name"
-                      v-model="stock.stockName"></b-form-input>
-                <b-form-input  class="mt-2 mb-2" type="text"
-                      placeholder="Enter the stock value"
-                      v-model="stock.stockValue"></b-form-input>
-
-                  <div class="row">
-                <div class="col-md-12">
-                <date-picker v-model="stock.stockStartingDate" placeholder="Enter the starting date" :config="config">
-                </date-picker>
-                <span class="oi oi-calendar" title="icon name" aria-hidden="true"></span>
-                </div>
-                 </div>
-
-                <b-form-input  class="mt-2 mb-2" type="text"
-                      placeholder="Enter the holding value"
-                      v-model="stock.holdingValue"></b-form-input>
-              <hr>
-              <b-button  variant="outline-info" size="sm" @click.prevent="addSingleStock"> Add one more stock</b-button>
-               <div class="modal-footer">
-                  <button  class="btn btn-info" @click="submitModal">Save</button>
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              </div> 
-              </form>
-
-            </b-modal>
+<!-- Side colomn for clients  -->
+        <div v-if="$root.user.role==='client'" id="side-column" class="col-lg-3 col-sm-12 border d-flex flex-column justify-content-start align-items-center  ">
+          <div class="pt-5">
+            <p>Risk profile:</p>
+            <p>Number of portfolios:</p>
+            <p>Total investment:</p>
+            <p>Total benefit:</p>
           </div>
-
-          <div class="modal fade bd-example-modal-lg " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-           ...
-        </div>
-        </div>
         </div>
 
+<!-- Side colomn for managers  -->
+        <div v-else id="side-column" class="col-lg-3 col-sm-12 border d-flex flex-column justify-content-start align-items-center ">
+          <div class="pt-5">
+            <p>Portfolios number: {{managerPortfoliosNumber}}</p>
+            <!-- to fill this we need to populae the portfolioIds to see who is the owner -->
+            <p>Total clients: {{managerTotalClients}}</p>
+            <!-- We need to add the field in the model? -->
+            <p>Total followers: {{managerTotalFollowers}}</p>
+            <!-- Also for this we need to populate the portfolios -->
+            <p>Total managed money: {{managerTotalManagedMoney}}</p>
+            <div>
+              <b-button type="button" class="btn btn-info" @click="modal1IsVisible = !modal1IsVisible">
+                Add a portfolio
+              </b-button>
+
+<!-- Add a portfolio: first modal  -->
+              <b-modal v-model="modal1IsVisible" style="color:black" ref="modal1" :hide-footer="true">
+                <form>
+                  <b-alert variant="danger"  show v-if="displayAlert" >
+                     Fill all the fields please
+                 </b-alert>
+                  <p>
+                    <strong>Portfolio informations:</strong>
+                  </p>
+                  <b-form-input require class="mt-2 mb-2" type="text" placeholder="Enter the portfolio name" v-model="newPortfolio.portfolioName"></b-form-input>
+                  <b-form-textarea require class="mt-2 mb-2" type="text" placeholder="Enter the portfolio description" v-model="newPortfolio.description"></b-form-textarea>
+                  <hr>
+                  <div class="modal-footer">
+                    <button class="btn btn-info" @click.prevent="addInformations">Add the stocks</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal" @click="closeModal1">Cancel</button>
+                  </div>
+                </form>
+              </b-modal>
+<!-- Ending Modal 1 -->
+<!-- Add a portfolio:  second modal  -->
+              <b-modal v-model="modal2IsVisible" style="color:black" ref="modal2" :hide-footer="true">
+                <form @submit.stop.prevent="submitModal">
+                  <p>
+                    <strong>Stock:</strong>
+                  </p>
+                  <b-form-input class="mt-2 mb-2" type="text" placeholder="Enter the stock name" v-model="stock.stockName"></b-form-input>
+                  <b-form-input class="mt-2 mb-2" type="text" placeholder="Enter the stock value" v-model="stock.stockValue"></b-form-input>
+
+                  <b-form-input class="mt-2 mb-2" type="text" placeholder="Enter the holding value" v-model="stock.holdingValue"></b-form-input>
+                  
+                    <div class="col-md-12 text-center">
+                      <div class="input-group ">
+                      <date-picker v-model="stock.stockStartingDate" placeholder="Enter the starting date" :config="config">
+                      </date-picker>
+                     <label class="input-group-addon btn" for="testdate">
+                     <span class="input-group-text" id="basic-addon1">
+                        <span class="oi oi-calendar" title="icon name" aria-hidden="true"></span>
+                     </span>
+                     </label>                    
+                    </div>
+                    </div>
+                 
+                 <br>
+                   <br>
+                  <b-button variant="outline-info" size="sm" @click.prevent="addSingleStock"> Add one more stock</b-button>
+                  <br>
+                   <br>
+                  
+                  <div class="modal-footer">
+                    <button class="btn btn-info">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeModal2">Close</button>
+                  </div>
+                </form>
+
+              </b-modal>
+<!-- Ending Modal 2 -->
+            </div>
 
 
-       </div>
+
+          </div>
         </div>
-      
-  
-       
-        <div id="card-column"  class="col-lg-9 col-sm-12 border  d-flex flex-row  align-items-center flex-wrap" >
-	   
-        
-       <b-card  class="card" bg-variant="dark" text-variant="white">
-             <p class="card-text">
-            Some quick example text to build on the <em>card title</em> and make up the bulk of the card's content.
+
+
+
+        <div id="card-column" class="col-lg-9 col-sm-12 border  d-flex flex-row  align-items-center justify-content-center flex-wrap">
+
+
+          <b-card class="card" bg-variant="dark" text-variant="white">
+            <p class="card-text">
+              Some quick example text to build on the
+              <em>card title</em> and make up the bulk of the card's content.
             </p>
             <br>
             <br>
             <br>
             <br>
             <br>
-             <br>
             <br>
-            <a href="#"
-            class="card-link">Card link</a>
-             <b-link href="#"
-            class="card-link">Another link</b-link>
-        </b-card>
+            <br>
+            <a href="#" class="card-link">Card link</a>
+            <b-link href="#" class="card-link">Another link</b-link>
+          </b-card>
 
-        <b-card  class="card" bg-variant="secondary" text-variant="white">
-             <p class="card-text">
-            Some quick example text to build on the <em>card title</em> and make up the bulk of the card's content.
+          <b-card class="card" bg-variant="secondary" text-variant="white">
+            <p class="card-text">
+              Some quick example text to build on the
+              <em>card title</em> and make up the bulk of the card's content.
             </p>
             <br>
             <br>
             <br>
             <br>
             <br>
-             <br>
             <br>
-            <a href="#"
-            class="card-link">Card link</a>
-             <b-link href="#"
-            class="card-link">Another link</b-link>
-        </b-card>
+            <br>
+            <a href="#" class="card-link">Card link</a>
+            <b-link href="#" class="card-link">Another link</b-link>
+          </b-card>
 
-        <b-card border-variant="dark" title="Title"
-                header-tag="header"
-                footer-tag="footer">
-            <h6 slot="header"
-            class="mb-0">Header Slot</h6>
+          <b-card border-variant="dark" title="Title" header-tag="header" footer-tag="footer">
+            <h6 slot="header" class="mb-0">Header Slot</h6>
             <em slot="footer">Footer Slot</em>
             <p class="card-text">Header and footers using slots.</p>
-            <b-button href="#"
-                      variant="primary">Go somewhere</b-button>
-        </b-card>
-         
-      
-         </div>
-    </b-row>
-</b-container>
+            <b-button href="#" variant="primary">Go somewhere</b-button>
+          </b-card>
 
 
-</div>
+        </div>
+      </b-row>
+    </b-container>
+
+
+  </div>
 </template>
 
 <script>
@@ -167,12 +163,14 @@ export default {
 
   data() {
     return {
+      userInfo: {},
       config: {
-        format: "DD/MM/YYYY",
+        format: "YYYY-MM-DD",
         useCurrent: false
       },
       modal1IsVisible: false,
-      userInfo: {},
+      modal2IsVisible: false,
+      displayAlert: false,
       managerPortfoliosNumber: "",
       managerTotalClients: "",
       managerTotalFollowers: "",
@@ -180,8 +178,6 @@ export default {
       stock: {},
       newStocks: [],
       newPortfolio: {},
-      numberOfStocks: "",
-      clientRiskProfile: "",
       clientPortfoliosNumber: "",
       clientTotalInvestment: "",
       clientTotalBenefit: ""
@@ -197,47 +193,71 @@ export default {
           (this.managerTotalFollowers = ""),
           (this.managerTotalManagedMoney = "");
       } else {
-        this.clientRiskProfile = userInfo.riskProfile;
         this.clientPortfoliosNumber = userInfo.customerPortfoliosOwned.length;
         (this.clientTotalInvestment = ""), (this.clientTotalBenefit = "");
       }
     });
   },
   methods: {
-    addInformations() {
+    // Modal 1 buttons
+    closeModal1() {
       this.modal1IsVisible = false;
-      this.$refs.modal2.show();
+      this.newPortfolio.portfolioName = "";
+      this.newPortfolio.description = "";
+    },
+    addInformations() {
+      if (this.newPortfolio.portfolioName && this.newPortfolio.description) {
+        this.modal1IsVisible = false;
+        this.$refs.modal2.show();
+      } else {
+        this.newPortfolio.portfolioName = "";
+        this.newPortfolio.description = "";
+        this.$refs.modal1.show();
+        this.displayAlert = true;
+      }
+    },
+    //Modal2 buttons
+    closeModal2() {
+      this.modal2IsVisible = false;
+      this.stock = {};
+      this.newStocks = [];
+      this.newPortfolio.portfolioName = "";
+      this.newPortfolio.description = "";
     },
     addSingleStock() {
+      const lastUpdatedDate = this.stock.stockStartingDate;
+      this.stock = {
+        ...this.stock,
+        lastUpdatedDate
+      };
       this.newStocks.push(this.stock);
       this.stock = {};
-      this.$refs.modal2.show();
-      this.numberOfStocks = this.newStocks.length + 1;
+      this.modal2IsVisible = true;
     },
     submitModal() {
-      this.newStocks.push(this.stock);
-      this.stock = {};
-      this.$refs.modal2.hide();
-
+      this.addSingleStock();
+      this.modal2IsVisible = false;
       const newStocks = this.newStocks;
       const newPortfolio = {
         ...this.newPortfolio,
         stocks: newStocks
       };
-      console.log("DEBUG newPortfolio = ", newPortfolio);
-      createPortfolio(newStocks)
+      createPortfolio(newPortfolio)
         .then(() => {
           this.$router.push("/dashboard");
         })
         .catch(err => {
           this.error = err;
         });
+      this.newStocks = [];
+      this.newPortfolio.portfolioName = "";
+      this.newPortfolio.description = "";
     }
   }
 };
 </script>
 
-<style >
+<style>
 #title {
   height: 50px;
   color: rgb(246, 250, 252);
