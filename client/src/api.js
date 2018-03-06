@@ -76,6 +76,13 @@ export function getPortfolio(portfolioId) {
     .catch(errHandler);
 }
 
+export function getManager(managerId) {
+  return service
+    .get(`/users/${managerId}`)
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
 export function updateUser(userId, userInfo) {
   const formData = new FormData();
   Object.keys(userInfo).forEach(key => formData.append(key, userInfo[key]));
@@ -86,6 +93,13 @@ export function updateUser(userId, userInfo) {
         "Content-Type": "multipart/form-data"
       }
     })
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
+export function createPortfolio(portfolioInfo) {
+  return service
+    .post("/portfolios", portfolioInfo)
     .then(res => res.data)
     .catch(errHandler);
 }

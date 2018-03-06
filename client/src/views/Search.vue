@@ -3,16 +3,18 @@
   <div class="container col-lg-11 col-sm-11">
 	  <div class="modal-content ">
 	      	
-    <div class="modal-heading text-center ">
+    <div class="modal-heading text-center p-3 mb-2 bg-info text-white mb-0">
     <br>
-		<h2>Search portfolios page</h2>
-    <select v-model="selected" @change="sort">
+		<h2>Search results</h2>
+    <div>
+      <span>Sort by: </span>
+      <select v-model="selected" @change="sort">
       <option disabled value="">Select</option>
       <option value="risk">Risk</option>
       <option value="rating">Rating</option>
       <option value="performance1y">Performance</option>
     </select>
-
+    </div>
 	  </div>
     
     

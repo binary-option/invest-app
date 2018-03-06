@@ -1,20 +1,85 @@
 <template>
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+  <pre>{{userInfo}}</pre>
  <b-container  fluid class="bv-example-row">
      
-      <div id="title" class="row justify-content-md-center mb-3">
+      <div  class="row justify-content-md-center mb-3 p-3 mb-2 bg-info text-white mb-0">
           <h3>{{$root.user.name}} dashboard </h3>
       </div>
       
     
-    <b-row class="row-eq-height">
+    <b-row class="row-eq-height mt-0">
 
         
-        <div id="side-column"  class="col-lg-3 col-sm-12 border d-flex flex-column justify-content-start " >
+        <div  v-if="$root.user.role==='client'" id="side-column"  class="col-lg-3 col-sm-12 border d-flex flex-column justify-content-start " >
         <div class="pt-5">
-	   <p>Total risk</p>
-       <p>Total investment</p>
-       <p>Total benefit</p>
+	     <p>Risk profile:</p>
+       <p>Number of portfolios:</p>
+       <p>Total investment:</p>
+       <p>Total benefit:</p>
+       </div>
+        </div>
+
+           <div  v-else id="side-column"  class="col-lg-3 col-sm-12 border d-flex flex-column justify-content-start " >
+        <div class="pt-5">
+	      <p>Portfolios number: {{managerPortfoliosNumber}}</p>
+        <!-- to fill this we need to populae the portfolioIds to see who is the owner -->
+        <p>Total clients: {{managerTotalClients}}</p>
+        <!-- We need to add the field in the model? -->
+        <p>Total followers: {{managerTotalFollowers}}</p>
+        <!-- Also for this we need to populate the portfolios -->
+        <p>Total managed money: {{managerTotalManagedMoney}}</p>
+        <div>
+        <b-button type="button" class="btn btn-info" @click="modalIsVisible = !modalIsVisible" >
+          Add a portfolio
+        </b-button>
+
+            <b-modal v-model="modalIsVisible" style="color:black" ref="modal"  @ok="submitModal">
+              <form @submit.stop.prevent="submitModal">
+                <p><strong>Portfolio informations:</strong></p>
+                 <b-form-input  class="mt-2 mb-2" type="text"
+                      placeholder="Enter the portfolio name"
+                      v-model="newPortfolio.portfolioName"></b-form-input>
+                <b-form-textarea  class="mt-2 mb-2" type="text"
+                      placeholder="Enter the portfolio description"
+                      v-model="newPortfolio.description"></b-form-textarea>
+              <hr>
+                <p><strong>Stock {{numberOfStocks}}:</strong></p>
+              <b-form-input class="mt-2 mb-2" type="text"
+                      placeholder="Enter the stock name"
+                      v-model="stock.stockName"></b-form-input>
+              <b-form-input  class="mt-2 mb-2" type="text"
+                      placeholder="Enter the stock value"
+                      v-model="stock.stockValue"></b-form-input>
+
+              <div class="row">
+             <div class="col-md-12">
+             <date-picker v-model="stock.stockStartingDate" placeholder="Enter the starting date" :config="config">
+             </date-picker>
+             <span class="oi oi-calendar" title="icon name" aria-hidden="true"></span>
+             </div>
+             </div>
+
+              <b-form-input  class="mt-2 mb-2" type="text"
+                      placeholder="Enter the holding value"
+                      v-model="stock.holdingValue"></b-form-input>
+              
+              <hr>
+              <b-button type="submit" variant="outline-info" size="sm" @click="addSingleStock"> Add this stock</b-button>
+              </form>
+            </b-modal>
+          </div>
+
+          <div class="modal fade bd-example-modal-lg " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+           ...
+        </div>
+        </div>
+        </div>
+
+
+
        </div>
         </div>
       
@@ -57,7 +122,7 @@
             class="card-link">Another link</b-link>
         </b-card>
 
-        <b-card title="Title"
+        <b-card border-variant="dark" title="Title"
                 header-tag="header"
                 footer-tag="footer">
             <h6 slot="header"
@@ -78,9 +143,81 @@
 </template>
 
 <script>
+import { getUser } from "../api";
+import { createPortfolio } from "../api";
+import datePicker from "vue-bootstrap-datetimepicker";
+
+export default {
+  components: {
+    datePicker
+  },
+
+  data() {
+    return {
+      config: {
+        format: "DD/MM/YYYY",
+        useCurrent: false
+      },
+      modalIsVisible: false,
+      userInfo: {},
+      managerPortfoliosNumber: "",
+      managerTotalClients: "",
+      managerTotalFollowers: "",
+      managerTotalManagedMoney: "",
+      stock: {},
+      newStocks: [],
+      newPortfolio: {},
+      numberOfStocks: "",
+      clientRiskProfile: "",
+      clientPortfoliosNumber: "",
+      clientTotalInvestment: "",
+      clientTotalBenefit: ""
+    };
+  },
+  created() {
+    const userId = this.$root.user.id;
+    getUser(userId).then(userInfo => {
+      this.userInfo = userInfo;
+      if (userInfo.role === "manager") {
+        this.managerPortfoliosNumber = userInfo.managerPortfolios.length;
+        (this.managerTotalClients = ""),
+          (this.managerTotalFollowers = ""),
+          (this.managerTotalManagedMoney = "");
+      } else {
+        this.clientRiskProfile = userInfo.riskProfile;
+        this.clientPortfoliosNumber = userInfo.customerPortfoliosOwned.length;
+        (this.clientTotalInvestment = ""), (this.clientTotalBenefit = "");
+      }
+    });
+  },
+  methods: {
+    addSingleStock() {
+      this.newStocks.push(this.stock);
+      this.stock = {};
+      this.$refs.modal.show();
+      this.numberOfStocks = this.newStocks.length + 1;
+    },
+    submitModal() {
+      this.addSingleStock();
+      const newStocks = this.newStocks;
+      const newPortfolio = {
+        ...this.newPortfolio,
+        stocks: newStocks
+      };
+      console.log("DEBUG newPortfolio = ", newPortfolio);
+      createPortfolio(newStocks)
+        .then(() => {
+          this.$router.push("/dashboard");
+        })
+        .catch(err => {
+          this.error = err;
+        });
+    }
+  }
+};
 </script>
 
-<style>
+<style >
 #title {
   height: 50px;
   color: rgb(246, 250, 252);
@@ -90,7 +227,7 @@
 
 #side-column {
   color: white;
-  background-color: rgba(61, 64, 78, 0.623);
+  background-color: rgba(96, 100, 114, 0.623);
 }
 
 #card-column {
