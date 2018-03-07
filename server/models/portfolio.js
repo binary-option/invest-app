@@ -21,7 +21,13 @@ const portfolioSchema = new Schema({
   stocks: [stockSchema],
   movements: [{
     date: Date,
-    amountOfMoney: Number
+    amountOfMoney: Number,
+    user: { type: Schema.Types.ObjectId, ref: "User" },
+    action: {
+      type: Number,
+      enum: ["buy", "sell"],
+      default: "buy"
+    }
   }],
   description: {
     type: String,
@@ -39,7 +45,8 @@ const portfolioSchema = new Schema({
   alreadyRated: {
     type: Boolean,
     default: false
-  }
+  },
+  ratings: [Number]
 });
 
 module.exports = mongoose.model("Portfolio", portfolioSchema);
