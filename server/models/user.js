@@ -27,12 +27,20 @@ const userSchema = new Schema({
   //Parameters only relevant for the customer:
   riskProfile: Number,
   bankAccount: String,
-  customerPortfoliosOwned: [],
+  customerPortfoliosOwned: [{ type: Schema.Types.ObjectId, ref: "Portfolio" }],
   customerWishList: [],
+  customerInvestements: [
+    {
+      amountOfMoney: Number,
+      portfolio: { type: Schema.Types.ObjectId, ref: "Portfolio" },
+      investmentDate: Date,
+      investmentUpdatedDate: Date
+    }
+  ],
   //Parameters only relevant for the portfolio manager
   certifications: [],
   description: String,
-  managerPortfolios: []
+  managerPortfolios: [{ type: Schema.Types.ObjectId, ref: "Portfolio" }]
 });
 
 userSchema.plugin(passportLocalMongoose);

@@ -1,6 +1,6 @@
 <template>
 <div>
- <b-card border-variant="dark" class="card mb-2 mt-3" :title="portfolio.portfolioName"
+ <b-card border-variant="dark" class="col-sm-12 col-lg-8 card mb-2 mt-3" :title="portfolio.portfolioName"
           header-tag="header"
           footer-tag="footer">
         <h6 slot="header" class="mb-0">Header</h6>

@@ -59,8 +59,6 @@
 import { getAllPortfolios } from "../api";
 import PortfolioGenericCard from "../components/PortfolioGenericCard";
 
-console.log("hi", PortfolioGenericCard);
-
 export default {
   components: {
     PortfolioGenericCard

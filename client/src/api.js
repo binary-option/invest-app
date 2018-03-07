@@ -17,6 +17,13 @@ export function getUser(userId) {
     .catch(errHandler);
 }
 
+export function getUserAndPopulate(userId) {
+  return service
+    .get(`/users/${userId}/populate`)
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
 export function signup(userInfo) {
   return service
     .post("/signup", userInfo)
@@ -76,11 +83,18 @@ export function getPortfolio(portfolioId) {
     .catch(errHandler);
 }
 
+export function addInvestor(clientId) {
+  return service
+    .patch(`/portfolio/${portfolioId}`, clientId)
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
 //Function recieves an object as an argument patches the user
 export function updateUser(userId, userInfo) {
   const formData = new FormData();
   Object.keys(userInfo).forEach(key => formData.append(key, userInfo[key]));
-  console.log("DEBUG userInfo", userInfo);
+
   return service
     .patch(`/users/${userId}`, formData, {
       headers: {
