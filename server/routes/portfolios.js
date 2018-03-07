@@ -3,6 +3,7 @@ const router = express.Router();
 const { ensureLoggedIn, ensureLoggedOut } = require("connect-ensure-login");
 const Portfolio = require("../models/portfolio");
 const User = require("../models/user");
+const Message = require("../models/message");
 
 /* GET home page. */
 router.get("/", ensureLoggedIn(), function(req, res, next) {
@@ -81,6 +82,26 @@ router.patch(
 
 router.get("/:portfolioId", ensureLoggedIn(), function(req, res, next) {
   const portfolioId = req.params.portfolioId;
+  Portfolio.findById(portfolioId)
+    // .populate("messages")
+    // .populate("messages.user")
+    .populate({
+      path: "messages",
+      populate: {
+        path: "user"
+      }
+    })
+    .then(message => {
+      res.json(message);
+    });
+});
+
+router.get("/:portfolioId/comments", ensureLoggedIn(), function(
+  req,
+  res,
+  next
+) {
+  const portfolioId = req.params.portfolioId;
   Portfolio.findById(portfolioId, (err, portfolio) => {
     if (err) return next(err);
     res.json(portfolio);
@@ -100,17 +121,24 @@ router.patch("/:portfolioId/returns", ensureLoggedIn(), (req, res, next) => {
   );
 });
 
-router.patch("/:portfolioId/comment", ensureLoggedIn(), (req, res, next) => {
+router.post("/:portfolioId/comment", ensureLoggedIn(), (req, res, next) => {
   const messageObject = req.body.messageObject;
 
-  Portfolio.findByIdAndUpdate(
-    req.params.portfolioId,
-    { $push: { messages: messageObject } },
-    (err, portfolioReturns) => {
-      if (err) return next(err);
-      res.json("portfolioReturns");
-    }
-  );
+  const newMessage = new Message(messageObject);
+
+  newMessage.save(err => {
+    if (err) return next(err);
+    Portfolio.findByIdAndUpdate(
+      req.params.portfolioId,
+      {
+        $push: { messages: newMessage.id }
+      },
+      (err, portfolio) => {
+        if (err) return next(err);
+        res.json(portfolio);
+      }
+    );
+  });
 });
 
 router.patch("/:portfolioId", ensureLoggedIn(), (req, res, next) => {

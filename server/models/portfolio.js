@@ -37,13 +37,7 @@ const portfolioSchema = new Schema({
   investors: [{ type: Schema.Types.ObjectId, ref: "User" }],
   followers: [],
   manager: { type: Schema.Types.ObjectId, ref: "User" },
-  messages: [
-    {
-      content: String,
-      user: { type: Schema.Types.ObjectId, ref: "User" },
-      date: Date
-    }
-  ],
+  messages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
   returns: [],
   alreadyRated: {
     type: Boolean,

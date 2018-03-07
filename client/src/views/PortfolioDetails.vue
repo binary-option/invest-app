@@ -60,6 +60,7 @@ import { getStockValue } from "@/api";
 import { updatePortfolioReturns } from "@/api";
 import { retrieveBenchmarkData } from "@/api";
 import { addPortfolioComment } from "@/api";
+import { getPortfolioComments } from "@/api";
 import PieChart from "@/components/PieChart.vue";
 import LineChart from "@/components/LineChart.vue";
 import IndicatorCard from "@/components/IndicatorCard.vue";
@@ -162,10 +163,14 @@ export default {
         });
 
         this.portfolioId = this.$root.portfolioId;
-        console.log("AAAAAAA ", this.$root.user.id);
+        this.userId = this.$root.user.id;
         updatePortfolioReturns(this.$root.portfolioId, portfolioReturns).then(
           res => {}
         );
+
+        getPortfolioComments(this.portfolioId).then(res => {
+          console.log("Comments ", res);
+        });
         console.log(portfolioReturns);
 
         console.log(this.portfolioReturn);
@@ -181,6 +186,8 @@ export default {
   mounted() {},
   data() {
     return {
+      //Locally store the userId
+      userId: "",
       //Locally store the portfolio Id
       portfolioId: "",
       message: {
@@ -361,7 +368,7 @@ export default {
         content: content,
         portfolio: this.portfolioId,
         date: new Date(),
-        user: ""
+        user: this.userId
       };
       addPortfolioComment(this.portfolioId, contentObject).then(res => {});
     },

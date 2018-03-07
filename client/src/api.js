@@ -85,7 +85,7 @@ export function getPortfolio(portfolioId) {
 
 export function getPortfolioComments(portfolioId) {
   return service
-    .get(`/portfolios/${portfolioId}/comments`)
+    .get(`/messages/${portfolioId}`)
     .then(res => res.data)
     .catch(errHandler);
 }
