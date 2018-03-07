@@ -19,7 +19,10 @@ const portfolioSchema = new Schema({
     unique: true
   },
   stocks: [stockSchema],
-  movements: [],
+  movements: [{
+    date: Date,
+    amountOfMoney: Number
+  }],
   description: {
     type: String,
     required: true
@@ -29,7 +32,7 @@ const portfolioSchema = new Schema({
   volatility: [],
   shapiroRate1y: Number,
   risk: Number,
-  investors: [],
+  investors: [{ type: Schema.Types.ObjectId, ref: "User" }],
   followers: [],
   manager: { type: Schema.Types.ObjectId, ref: "User" },
   messages: [],

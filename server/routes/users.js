@@ -43,9 +43,21 @@ router.get("/:userId", ensureLoggedIn(), function (req, res, next) {
   });
 });
 
+router.get("/:userId/populate", ensureLoggedIn(), function (req, res, next) {
+  User.findById(req.params.userId)
+    .populate({
+      path: "managerPortfolios customerPortfoliosOwned",
+      populate: { path: "investors" }
+    })
+    .exec((err, user) => {
+      if (err) return next(err);
+      res.json(user);
+    })
+});
+
+
+
 router.patch("/:userId", ensureLoggedIn(), parser.single('picture'), function (req, res, next) {
-  console.log("req.body ", req.body)
-  console.log("req.file ", req.file)
   const name = req.body.name;
   const familyName = req.body.familyName;
   const role = req.body.role;
@@ -54,7 +66,6 @@ router.patch("/:userId", ensureLoggedIn(), parser.single('picture'), function (r
   const { file } = req;
   const picture = file.secure_url;
   const userInfo = { name, familyName, role, username, bankAccount, picture };
-  console.log("userInfo " + userInfo)
   User.findByIdAndUpdate(req.params.userId, userInfo, { new: true }, (err, user) => {
     if (err) return next(err);
     res.json(user);
