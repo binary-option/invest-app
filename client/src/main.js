@@ -19,7 +19,8 @@ const vm = new Vue({
   router,
   data: {
     user: null,
-    searchWord: ""
+    searchWord: "",
+    portfolioId: ""
   },
   render: h => h(App)
 }).$mount("#app");

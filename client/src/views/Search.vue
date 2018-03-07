@@ -25,19 +25,10 @@
     
   <div id="card-column" class="d-flex flex-row justify-content-center  ">
     
-  <div class="col-12 border pb-3 pt-5  " >
+  <div class="col-6 pb-3 pt-5  " >
    
-  
-        <div v-for="result in allResults" :key="result.id">
-        <b-card border-variant="dark" class="card mb-2 mt-3" :title="result.portfolioName"
-          header-tag="header"
-          footer-tag="footer">
-        <h6 slot="header" class="mb-0">Header</h6>
-        <em slot="footer">Rating: {{result.rating}}</em>
-        <p class="card-text">{{result.description}} </p>
-        <b-button to="#"  variant="dark">Get the details</b-button>
-        </b-card>
-         </div>
+        <PortfolioGenericCard v-for="result in allResults" :key="result.id" :portfolio="result"> </PortfolioGenericCard>
+       
     </div>
   </div>
   </div>
@@ -55,9 +46,14 @@
 
 <script>
 import { getAllPortfolios } from "../api";
+import PortfolioGenericCard from "../components/PortfolioGenericCard";
+
+console.log("hi", PortfolioGenericCard);
 
 export default {
-  components: { PortfolioGenericCardVue },
+  components: {
+    PortfolioGenericCard
+  },
   data() {
     return {
       word: "",
