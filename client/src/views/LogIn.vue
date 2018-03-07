@@ -23,7 +23,7 @@
     
         <b-form-group label="Username">
          <div class="input-group mb-3">
-         <b-form-input maxlength="10" v-model="username" required ></b-form-input>
+         <b-form-input  v-model="username" required ></b-form-input>
          <div class="input-group-append">
             <span class="input-group-text" id="basic-addon1">
               <span class="oi oi-person"></span>

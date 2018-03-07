@@ -1,6 +1,7 @@
 <template>
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <pre>{{userInfo}}</pre>
+   
     <b-container fluid class="bv-example-row">
 
       <div class="row justify-content-md-center mb-3 p-3 mb-2 bg-dark text-white mb-0">
@@ -11,10 +12,10 @@
       <b-row class="row-eq-height mt-0">
 
 <!-- Side colomn for clients  -->
-        <div v-if="$root.user.role==='client'" id="side-column" class="col-lg-3 col-sm-12 border d-flex flex-column justify-content-start align-items-center  ">
+        <div v-if="userInfo.role==='client'" id="side-column" class="col-lg-3 col-sm-12 pb-3 border d-flex flex-column justify-content-start align-items-center  ">
           <div class="pt-5">
             <p>Risk profile:</p>
-            <p>Number of portfolios:</p>
+            <p>Number of portfolios: {{clientPortfoliosNumber}}</p>
             <p>Total investment:</p>
             <p>Total benefit:</p>
           </div>
@@ -101,17 +102,12 @@
 
 
 
-        <div id="card-column" class="col-lg-9 col-sm-12 border  d-flex flex-row  align-items-center justify-content-center flex-wrap">
+        <div id="card-column" class="col-lg-9 col-sm-12 pt-5 border  d-flex flex-row  align-items-center justify-content-center flex-wrap">
 
+          <PortfolioGenericCard v-if="userInfo.role==='manager'" v-for="portfolio in userInfo.managerPortfolios" :key="portfolio.id" :portfolio="portfolio"/> 
 
-        
-
-          <b-card border-variant="dark" title="Title" header-tag="header" footer-tag="footer">
-            <h6 slot="header" class="mb-0">Header Slot</h6>
-            <em slot="footer">Footer Slot</em>
-            <p class="card-text">Header and footers using slots.</p>
-            <b-button to="#" variant="dark">Go somewhere</b-button>
-          </b-card>
+         <PortfolioGenericCard v-if="userInfo.role==='client'" v-for="portfolio in userInfo.customerPortfoliosOwned" :key="portfolio.id" :portfolio="portfolio"/> 
+          
 
 
         </div>
@@ -124,14 +120,15 @@
 
 <script>
 import { getUser } from "../api";
+import { getUserAndPopulate } from "../api";
 import { createPortfolio } from "../api";
 import datePicker from "vue-bootstrap-datetimepicker";
-import PortfolioGenericCardVue from "../components/PortfolioGenericCard.vue";
+import PortfolioGenericCard from "../components/PortfolioGenericCard";
 
 export default {
   components: {
     datePicker,
-    PortfolioGenericCardVue
+    PortfolioGenericCard
   },
 
   data() {
@@ -158,20 +155,53 @@ export default {
   },
   created() {
     const userId = this.$root.user.id;
-    getUser(userId).then(userInfo => {
+
+    getUserAndPopulate(userId).then(userInfo => {
       this.userInfo = userInfo;
+
+      //if he is a manager
       if (userInfo.role === "manager") {
         this.managerPortfoliosNumber = userInfo.managerPortfolios.length;
-        (this.managerTotalClients = ""),
-          (this.managerTotalFollowers = ""),
-          (this.managerTotalManagedMoney = "");
-      } else {
+
+        this.managerPortfoliosMovements = this.getFields(
+          this.userInfo.managerPortfolios,
+          "movements"
+        );
+        if ((this.userInfo.managerPortfolios.investors = []))
+          this.managerTotalClients = 0;
+        else {
+          this.managerTotalClients = this.userInfo.managerPortfolios.investors.reduce(
+            (a, b) => a + b
+          );
+        }
+        if ((this.userInfo.managerPortfolios.followers = []))
+          this.managerTotalFollowers = 0;
+        else {
+          this.managerTotalFollowers = this.userInfo.managerPortfolios.followers.reduce(
+            (a, b) => a + b
+          );
+        }
+        if ((this.userInfo.managerPortfolios.Movement = []))
+          this.managerTotalManagedMoney = 0;
+        else {
+          this.managerTotalManagedMoney = this.managerPortfoliosMovement.reduce(
+            (a, b) => a.amountOfMoney + b.amountOfMoney
+          );
+        }
+      } else if (userInfo.role === "client") {
+        //if he is a client
+
         this.clientPortfoliosNumber = userInfo.customerPortfoliosOwned.length;
         (this.clientTotalInvestment = ""), (this.clientTotalBenefit = "");
       }
     });
   },
   methods: {
+    getFields(input, field) {
+      var output = [];
+      for (var i = 0; i < input.length; i++) output.push(input[i][field]);
+      return output;
+    },
     // Modal 1 buttons
     closeModal1() {
       this.modal1IsVisible = false;
@@ -254,11 +284,5 @@ export default {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-}
-
-.card {
-  width: 550px;
-  height: 300px;
-  margin: 40px;
 }
 </style>
