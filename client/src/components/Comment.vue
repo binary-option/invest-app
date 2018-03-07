@@ -45,6 +45,6 @@ export default {
 
 .user-image {
   border-radius: 50%;
-  height: 50px;
+  height: 40px;
 }
 </style>

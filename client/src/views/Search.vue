@@ -35,7 +35,7 @@
         <h6 slot="header" class="mb-0">Header</h6>
         <em slot="footer">Rating: {{result.rating}}</em>
         <p class="card-text">{{result.description}} </p>
-        <b-button to="#"  variant="dark">Get the details</b-button>
+        <b-button to="details"  variant="dark">See details</b-button>
         </b-card>
          </div>
     </div>
@@ -57,7 +57,7 @@
 import { getAllPortfolios } from "../api";
 
 export default {
-  components: { PortfolioGenericCardVue },
+  // components: { PortfolioGenericCardVue },
   data() {
     return {
       word: "",
