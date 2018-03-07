@@ -57,6 +57,7 @@
 import { getAllPortfolios } from "../api";
 
 export default {
+  components: { PortfolioGenericCardVue },
   data() {
     return {
       word: "",

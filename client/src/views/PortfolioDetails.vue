@@ -1,27 +1,40 @@
 <template>
   <div v-if="dataLoaded" class="about">
-    <indicator-card :rating="3" :read-only="true"></indicator-card>
+    <indicator-card :rating="ratings" :read-only="true"></indicator-card>
+
+    <div class="container">
+        <br/>
+    </div>
     
     <div class="container">
 
-      <div class="row ">
-        <div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
+      <div class="row text-center">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <h3>Single stock development</h3>
-          <line-chart :data="plotObject" :options="plotObject.options">1</line-chart>
+          <br/>
+          <line-chart :data="plotObject" :options="plotObject.options"></line-chart>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
-            <h3>Portfolio vs S&P500 </h3>
-            <line-chart :data="indexPlotObject" :options="indexPlotObject.options">1</line-chart>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <h3>Portfolio vs Benchmark </h3>
+            <br/>
+            <line-chart :data="indexPlotObject" :options="indexPlotObject.options"></line-chart>
         </div>
       </div>
-      <div class="row ">
-                <div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
+      <div class="row text-center">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
           <h3>Portfolio allocation</h3>
+          <br/>
           <pie-chart :data="pieChartObject"></pie-chart>
         </div>
           
         </div>
+
+        <div class="container">
+        <comment :message="message"></comment>
     </div>
+
+    </div>
+    
     
   </div>
 </template>
@@ -35,15 +48,17 @@ import { retrieveBenchmarkData } from "@/api";
 import PieChart from "@/components/PieChart.vue";
 import LineChart from "@/components/LineChart.vue";
 import IndicatorCard from "@/components/IndicatorCard.vue";
+import Comment from "@/components/Comment.vue";
 import _ from "lodash";
 import * as ss from "simple-statistics";
 import moment from "moment";
 export default {
-  name: "test",
+  name: "portfolioDetails",
   components: {
     PieChart,
     LineChart,
-    IndicatorCard
+    IndicatorCard,
+    Comment
   },
   created() {
     // This array of promises makes sure that the functions are carried out when both callbacks are ready
@@ -124,6 +139,20 @@ export default {
   mounted() {},
   data() {
     return {
+      message: {
+        user: "Manuel",
+        content: "Testing a message",
+        date: "2018-02-28",
+        imageURL:
+          "https://cdn.pixabay.com/photo/2014/10/21/14/46/mongoose-496374_960_720.jpg"
+      },
+      //Object holding the different ratings
+      ratings: {
+        alpha: 1,
+        beta: 2,
+        return: 3,
+        returnBenchmark: 4
+      },
       //Boolean to only show the charts when all data is available
       dataLoaded: false,
       //Composite stock: wheighted value of portfolio in rdiff
@@ -134,8 +163,6 @@ export default {
       compoundedStockDevelopment: [],
       //The array with the benchmark data: date, rdiff and value
       benchmarkData: {},
-      //CHECK IF NECESSARY
-      stockData: [],
       //The array with the rdiffs as returned from quandl
       stockRdiffs: [],
       //The array with the values as returned from quandl

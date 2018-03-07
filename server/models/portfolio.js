@@ -31,7 +31,12 @@ const portfolioSchema = new Schema({
   risk: Number,
   investors: [],
   followers: [],
-  manager: { type: Schema.Types.ObjectId, ref: "User" }
+  manager: { type: Schema.Types.ObjectId, ref: "User" },
+  messages: [],
+  alreadyRated: {
+    type: Boolean,
+    default: false
+  }
 });
 
 module.exports = mongoose.model("Portfolio", portfolioSchema);

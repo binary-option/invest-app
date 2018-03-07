@@ -156,10 +156,12 @@
 import { getUser } from "../api";
 import { createPortfolio } from "../api";
 import datePicker from "vue-bootstrap-datetimepicker";
+import PortfolioGenericCardVue from "../components/PortfolioGenericCard.vue";
 
 export default {
   components: {
-    datePicker
+    datePicker,
+    PortfolioGenericCardVue
   },
 
   data() {

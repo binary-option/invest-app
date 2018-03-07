@@ -76,13 +76,7 @@ export function getPortfolio(portfolioId) {
     .catch(errHandler);
 }
 
-export function getManager(managerId) {
-  return service
-    .get(`/users/${managerId}`)
-    .then(res => res.data)
-    .catch(errHandler);
-}
-
+//Function recieves an object as an argument patches the user
 export function updateUser(userId, userInfo) {
   const formData = new FormData();
   Object.keys(userInfo).forEach(key => formData.append(key, userInfo[key]));
