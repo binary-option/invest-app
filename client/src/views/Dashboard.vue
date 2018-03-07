@@ -104,37 +104,7 @@
         <div id="card-column" class="col-lg-9 col-sm-12 border  d-flex flex-row  align-items-center justify-content-center flex-wrap">
 
 
-          <b-card class="card" bg-variant="dark" text-variant="white">
-            <p class="card-text">
-              Some quick example text to build on the
-              <em>card title</em> and make up the bulk of the card's content.
-            </p>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <a to="#" class="card-link">Card link</a>
-            <b-link to="#" class="card-link">Another link</b-link>
-          </b-card>
-
-          <b-card class="card" bg-variant="secondary" text-variant="white">
-            <p class="card-text">
-              Some quick example text to build on the
-              <em>card title</em> and make up the bulk of the card's content.
-            </p>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <a to="#" class="card-link">Card link</a>
-            <b-link to="#" class="card-link">Another link</b-link>
-          </b-card>
+        
 
           <b-card border-variant="dark" title="Title" header-tag="header" footer-tag="footer">
             <h6 slot="header" class="mb-0">Header Slot</h6>

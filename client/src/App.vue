@@ -6,6 +6,7 @@
     <section class="section">
       <pre>{{$root.user}}
       searchWord {{$root.searchWord}}
+      portfolioId {{$root.portfolioId}}
       </pre>
       <router-view/>
      
