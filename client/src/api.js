@@ -94,7 +94,6 @@ export function addInvestor(clientId) {
 export function updateUser(userId, userInfo) {
   const formData = new FormData();
   Object.keys(userInfo).forEach(key => formData.append(key, userInfo[key]));
-
   return service
     .patch(`/users/${userId}`, formData, {
       headers: {
