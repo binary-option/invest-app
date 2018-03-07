@@ -15,8 +15,8 @@ const config = require("./config");
 const { Strategy, ExtractJwt } = require("passport-jwt");
 const { ensureLoggedIn, ensureLoggedOut } = require("connect-ensure-login");
 
-//mongoose.connect("mongodb://localhost/invest-app");
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect("mongodb://localhost/invest-app");
+//mongoose.connect(process.env.MONGODB_URI);
 
 const app = express();
 

@@ -10,7 +10,7 @@
         <br/>
         <textarea class="form-control" v-model="content"></textarea>
         <br/>
-        <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+        <button type="submit" @click="$emit('addComment',content)" class="btn btn-primary btn-sm">Submit</button>
       </div>
     </div>
     </div>
