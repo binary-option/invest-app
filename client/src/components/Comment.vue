@@ -1,15 +1,20 @@
 <template>
-  
+<div class="container">
+  <div class="row ">
+    <div class="col-lg-6 col-sm-12">
 
-<el-card class="box-card">
-  <div slot="header" class="clearfix">
-      <img :src="message.imageURL" class="user-image">
-    <span>{{message.user}}</span> wrote on <span>{{message.date}}</span>
+    <div class="card">
+      <div class="card-body">
+        <img :src="message.imageURL" class="user-image"><span class="h5">   {{message.user}} wrote on </span><span class="h5 pull-right">{{message.date}}</span>
+          <div class="text item">
+          {{message.content}}
+          </div>
+      </div>
+    </div>
+    </div>
   </div>
-  <div class="text item">
-      {{message.content}}
-  </div>
-</el-card>
+</div>
+
 
 </template>
 
@@ -22,27 +27,6 @@ export default {
 
 
 <style>
-.text {
-  font-size: 14px;
-}
-
-.item {
-  margin-bottom: 18px;
-}
-
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-.clearfix:after {
-  clear: both;
-}
-
-.box-card {
-  /* width: 480px; */
-}
-
 .user-image {
   border-radius: 50%;
   height: 40px;

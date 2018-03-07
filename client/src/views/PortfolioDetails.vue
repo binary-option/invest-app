@@ -1,5 +1,7 @@
 <template>
-  <div v-if="dataLoaded" class="about">
+<div>
+  <div v-loading="!dataLoaded" v-if="!dataLoaded&&!quandlErrorFlag"></div>
+  <div v-loading="!dataLoaded" v-if="dataLoaded" class="about">
     <indicator-card :rating="ratings" :read-only="true"></indicator-card>
 
     <div class="container">
@@ -8,34 +10,42 @@
     
     <div class="container">
 
-      <div class="row text-center">
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+      <div class="row text-center justify-content-center">
+        <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
           <h3>Single stock development</h3>
           <br/>
           <line-chart :data="plotObject" :options="plotObject.options"></line-chart>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-            <h3>Portfolio vs Benchmark </h3>
-            <br/>
-            <line-chart :data="indexPlotObject" :options="indexPlotObject.options"></line-chart>
-        </div>
-      </div>
-      <div class="row text-center">
-                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
           <h3>Portfolio allocation</h3>
           <br/>
           <pie-chart :data="pieChartObject"></pie-chart>
         </div>
-          
+      </div>
+
+      <div class="row text-center justify-content-center">
+        <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+          <h3>Portfolio vs Benchmark </h3>
+          <br/>
+          <line-chart :data="indexPlotObject" :options="indexPlotObject.options"></line-chart>
+        </div>  
+      </div>
+
+        <div class="container">
+          <new-comment :user="message"></new-comment>
         </div>
 
         <div class="container">
-        <comment :message="message"></comment>
-    </div>
+          <comment :message="message"></comment>
+        </div>
 
     </div>
     
     
+    </div>
+    <div v-if="quandlErrorFlag">
+      <quandl-error></quandl-error>
+    </div>
   </div>
 </template>
 
@@ -49,6 +59,8 @@ import PieChart from "@/components/PieChart.vue";
 import LineChart from "@/components/LineChart.vue";
 import IndicatorCard from "@/components/IndicatorCard.vue";
 import Comment from "@/components/Comment.vue";
+import NewComment from "@/components/NewComment.vue";
+import QuandlError from "@/components/QuandlError.vue";
 import _ from "lodash";
 import * as ss from "simple-statistics";
 import moment from "moment";
@@ -58,11 +70,13 @@ export default {
     PieChart,
     LineChart,
     IndicatorCard,
-    Comment
+    Comment,
+    QuandlError,
+    NewComment
   },
   created() {
     // This array of promises makes sure that the functions are carried out when both callbacks are ready
-    getPortfolio("5a96bc309826b01503719a30")
+    getPortfolio(this.$root.portfolioId)
       .then(portfolio => {
         portfolio.stocks.forEach(pf => {
           let name = pf.stockName;
@@ -134,6 +148,11 @@ export default {
         console.log(this.portfolioReturn);
         console.log(this.portfolioAlpha);
         console.log(this.benchmarkReturn);
+      })
+      .catch(err => {
+        if (err) {
+          this.quandlErrorFlag = true;
+        }
       });
   },
   mounted() {},
@@ -153,6 +172,8 @@ export default {
         return: 3,
         returnBenchmark: 4
       },
+      //Boolean to show a message if there is a problem with Quandl
+      quandlErrorFlag: false,
       //Boolean to only show the charts when all data is available
       dataLoaded: false,
       //Composite stock: wheighted value of portfolio in rdiff
@@ -202,7 +223,8 @@ export default {
         options: {
           title: {
             display: true,
-            text: "Portfolio allocation"
+            text: "Portfolio allocation",
+            maintainAspectRatio: false
           }
         }
       },
@@ -211,6 +233,11 @@ export default {
         datasets: [],
         options: {
           scales: {
+            xAxes: [
+              {
+                display: false
+              }
+            ],
             yAxes: [
               {
                 id: "dollar",
