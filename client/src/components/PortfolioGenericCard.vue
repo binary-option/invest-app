@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 <template>
 <div>
  <b-card border-variant="dark" class="col-sm-12 col-lg-8 card mb-2 mt-3" :title="portfolio.portfolioName"
@@ -25,3 +27,4 @@ export default {
 };
 </script>
 
+>>>>>>> 44eb24542b4f31308bf47f2cdb2e70db25fe0d8b

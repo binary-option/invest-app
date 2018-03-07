@@ -4,7 +4,7 @@
     <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
       <div class="card mx-auto" >
         <div class="card-body">
-            <h5 class="card-title text-center" v-b-tooltip title="Increase in value in percent, for the given period.">Portfolio's return</h5>
+            <h5 class="card-title text-center" v-b-tooltip title="Increase in value in percent, for the given period.">Portfolio return</h5>
             <h2 class="card-text text-center">16%</h2>
             <star-rating class="star-rating" :rating="rating.return" :read-only="true" :show-rating="false" :star-size="25"></star-rating>
         </div>
@@ -13,7 +13,7 @@
     <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
       <div class="card mx-auto" >
         <div class="card-body">
-            <h5 class="card-title text-center" v-b-tooltip title="Increase in value in percent, for the given period of Standard&Poors 500 index.">Benchmarks's return</h5>
+            <h5 class="card-title text-center" v-b-tooltip title="Increase in value in percent, for the given period of Standard&Poors 500 index.">Benchmark return</h5>
             <h2 class="card-text text-center">16%</h2>
             <star-rating class="star-rating" :rating="rating.returnBenchmark" :read-only="true" :show-rating="false" :star-size="25"></star-rating>
         </div>
