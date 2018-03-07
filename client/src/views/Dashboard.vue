@@ -16,8 +16,8 @@
           <div class="pt-5">
             <p>Risk profile:</p>
             <p>Number of portfolios: {{clientPortfoliosNumber}}</p>
-            <p>Total investment:</p>
-            <p>Total benefit:</p>
+            <p>Total investment: {{clientTotalInvestment}}</p>
+            <p>Total benefit: {{clientTotalBenefit}}</p>
           </div>
         </div>
 
@@ -104,9 +104,9 @@
 
         <div id="card-column" class="col-lg-9 col-sm-12 pt-5 border  d-flex flex-row  align-items-center justify-content-center flex-wrap">
 
-          <PortfolioGenericCard v-if="userInfo.role==='manager'" v-for="portfolio in userInfo.managerPortfolios" :key="portfolio.id" :portfolio="portfolio"/> 
+          <PortfolioGenericCard v-if="userInfo.role==='manager'" v-for="portfolio in userInfo.managerPortfolios" :key="portfolio.id" :portfolio="portfolio" /> 
 
-         <PortfolioGenericCard v-if="userInfo.role==='client'" v-for="portfolio in userInfo.customerPortfoliosOwned" :key="portfolio.id" :portfolio="portfolio"/> 
+         <PortfolioGenericCard v-if="userInfo.role==='client'" v-for="portfolio in userInfo.customerPortfoliosOwned" :key="portfolio.id" :portfolio="portfolio" /> 
           
 
 
@@ -122,22 +122,26 @@
 import { getUser } from "../api";
 import { getUserAndPopulate } from "../api";
 import { createPortfolio } from "../api";
+import StarRating from "vue-star-rating";
 import datePicker from "vue-bootstrap-datetimepicker";
 import PortfolioGenericCard from "../components/PortfolioGenericCard";
 
 export default {
   components: {
+    StarRating,
     datePicker,
     PortfolioGenericCard
   },
 
   data() {
     return {
+      //information for both client and manager
       userInfo: {},
       config: {
         format: "YYYY-MM-DD",
         useCurrent: false
       },
+      //information for managers
       modal1IsVisible: false,
       modal2IsVisible: false,
       displayAlert: false,
@@ -145,9 +149,12 @@ export default {
       managerTotalClients: "",
       managerTotalFollowers: "",
       managerTotalManagedMoney: "",
+      //information for portfolios
       stock: {},
       newStocks: [],
       newPortfolio: {},
+      averageRate: "",
+      //information for the client
       clientPortfoliosNumber: "",
       clientTotalInvestment: "",
       clientTotalBenefit: ""
@@ -155,44 +162,33 @@ export default {
   },
   created() {
     const userId = this.$root.user.id;
-
     getUserAndPopulate(userId).then(userInfo => {
       this.userInfo = userInfo;
-
       //if he is a manager
       if (userInfo.role === "manager") {
-        this.managerPortfoliosNumber = userInfo.managerPortfolios.length;
-
-        this.managerPortfoliosMovements = this.getFields(
-          this.userInfo.managerPortfolios,
-          "movements"
+        this.userInfo.managerPortfolios.forEach(
+          portfolio =>
+            (this.averageRate = this.calculateAverageRating(portfolio.ratings))
         );
-        if ((this.userInfo.managerPortfolios.investors = []))
-          this.managerTotalClients = 0;
-        else {
-          this.managerTotalClients = this.userInfo.managerPortfolios.investors.reduce(
-            (a, b) => a + b
-          );
-        }
-        if ((this.userInfo.managerPortfolios.followers = []))
-          this.managerTotalFollowers = 0;
-        else {
-          this.managerTotalFollowers = this.userInfo.managerPortfolios.followers.reduce(
-            (a, b) => a + b
-          );
-        }
-        if ((this.userInfo.managerPortfolios.Movement = []))
-          this.managerTotalManagedMoney = 0;
-        else {
-          this.managerTotalManagedMoney = this.managerPortfoliosMovement.reduce(
-            (a, b) => a.amountOfMoney + b.amountOfMoney
-          );
-        }
+        this.managerPortfoliosNumber = userInfo.managerPortfolios.length;
+        this.managerTotalClients = this.getManagerTotalClients(this.userInfo);
+        this.managerTotalFollowers = this.getManagerTotalFollowers(
+          this.userInfo
+        );
+        this.managerTotalManagedMoney = this.getManagerTotalManagedMoney(
+          this.userInfo
+        );
       } else if (userInfo.role === "client") {
-        //if he is a client
-
+        // if he is a client
+        this.userInfo.customerPortfoliosOwned.forEach(
+          portfolio =>
+            (this.averageRate = this.calculateAverageRating(portfolio.ratings))
+        );
         this.clientPortfoliosNumber = userInfo.customerPortfoliosOwned.length;
-        (this.clientTotalInvestment = ""), (this.clientTotalBenefit = "");
+        (this.clientTotalInvestment = this.getClientTotalInvestment(
+          this.userInfo
+        )),
+          (this.clientTotalBenefit = "");
       }
     });
   },
@@ -202,6 +198,56 @@ export default {
       for (var i = 0; i < input.length; i++) output.push(input[i][field]);
       return output;
     },
+
+    calculateAverageRating(portfolio) {
+      if (portfolio.ratings)
+        return portfolio.ratings.reduce((a, b) => a + b, 0);
+      else return 0;
+    },
+
+    getManagerTotalClients(manager) {
+      if ((manager.managerPortfolios.investors = [])) return 0;
+      else {
+        return manager.managerPortfolios.investors.reduce((a, b) => a + b);
+      }
+    },
+
+    getManagerTotalFollowers(manager) {
+      if ((manager.managerPortfolios.followers = [])) return 0;
+      else {
+        return manager.managerPortfolios.followers.reduce((a, b) => a + b);
+      }
+    },
+
+    getManagerTotalManagedMoney(manager) {
+      let movements = this.getFields(manager.managerPortfolios, "movements");
+      if ((manager.managerPortfolios.Movement = [])) return 0;
+      else {
+        return movemets.reduce((a, b) => a.amountOfMoney + b.amountOfMoney);
+      }
+    },
+
+    getClientTotalInvestment(client) {
+      if (
+        client.customerPortfoliosOwned === [] ||
+        client.customerPortfoliosOwned.movements === []
+      )
+        return 0;
+      let movements = this.getFields(
+        client.customerPortfoliosOwned,
+        "movements"
+      );
+      let total = movements.reduce(
+        (a, b) => a.amountOfMoney + b.amountOfMoney,
+        0
+      );
+      console.log(total);
+      if (total) return total;
+      else return 0;
+    },
+
+    getClientTotalBenefit(client) {},
+
     // Modal 1 buttons
     closeModal1() {
       this.modal1IsVisible = false;
