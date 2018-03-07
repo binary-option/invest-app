@@ -3,7 +3,7 @@
 <div class="container">
    
     <div class="col-lg-10">
-    <div class="modal-dialog">
+    <div class="modal-dialog" >
 		<div class="modal-content">
    
     <div class="modal-heading text-center">
@@ -38,7 +38,7 @@
         </b-form-group>
       
     <br>
-        <b-button href="/edit" variant="primary">Edit</b-button>
+        <b-button to="/edit" variant="dark">Edit</b-button>
       <br>
       <br>
     </b-form>

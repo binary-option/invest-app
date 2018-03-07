@@ -91,6 +91,13 @@ export function updateUser(userId, userInfo) {
     .catch(errHandler);
 }
 
+export function createPortfolio(portfolioInfo) {
+  return service
+    .post("/portfolios", portfolioInfo)
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
 export function retrieveBenchmarkData(startDate, endDate) {
   return service
     .get(`/benchmark/${startDate}/${endDate}`)
@@ -111,11 +118,11 @@ const quandl = axios.create({
 export function getStockDelta(stockInfo) {
   return quandl
     .get(
-      `${stockInfo.name}.json?column_index=1&start_date=${
-        stockInfo.startDate
-      }&end_date=${stockInfo.endDate}&collapse=${
-        stockInfo.frequency
-      }&transform=rdiff_from`
+    `${stockInfo.name}.json?column_index=1&start_date=${
+    stockInfo.startDate
+    }&end_date=${stockInfo.endDate}&collapse=${
+    stockInfo.frequency
+    }&transform=rdiff_from`
     )
     .then(res => {
       return res.data;
@@ -127,11 +134,11 @@ export function getStockDelta(stockInfo) {
 export function getStockValue(stockInfo) {
   return quandl
     .get(
-      `${stockInfo.name}.json?column_index=1&start_date=${
-        stockInfo.startDate
-      }&end_date=${stockInfo.endDate}&collapse=${
-        stockInfo.frequency
-      }&transform=none`
+    `${stockInfo.name}.json?column_index=1&start_date=${
+    stockInfo.startDate
+    }&end_date=${stockInfo.endDate}&collapse=${
+    stockInfo.frequency
+    }&transform=none`
     )
     .then(res => {
       return res.data;

@@ -3,7 +3,7 @@
     <pre>{{userInfo}}</pre>
     <b-container fluid class="bv-example-row">
 
-      <div class="row justify-content-md-center mb-3 p-3 mb-2 bg-info text-white mb-0">
+      <div class="row justify-content-md-center mb-3 p-3 mb-2 bg-dark text-white mb-0">
         <h3>{{$root.user.name}} dashboard </h3>
       </div>
 
@@ -31,7 +31,7 @@
             <!-- Also for this we need to populate the portfolios -->
             <p>Total managed money: {{managerTotalManagedMoney}}</p>
             <div>
-              <b-button type="button" class="btn btn-info" @click="modal1IsVisible = !modal1IsVisible">
+              <b-button type="button" class="btn btn-dark" @click="modal1IsVisible = !modal1IsVisible">
                 Add a portfolio
               </b-button>
 
@@ -41,14 +41,14 @@
                   <b-alert variant="danger"  show v-if="displayAlert" >
                      Fill all the fields please
                  </b-alert>
-                  <p>
+                  <p class="text-center">
                     <strong>Portfolio informations:</strong>
                   </p>
                   <b-form-input require class="mt-2 mb-2" type="text" placeholder="Enter the portfolio name" v-model="newPortfolio.portfolioName"></b-form-input>
                   <b-form-textarea require class="mt-2 mb-2" type="text" placeholder="Enter the portfolio description" v-model="newPortfolio.description"></b-form-textarea>
                   <hr>
                   <div class="modal-footer">
-                    <button class="btn btn-info" @click.prevent="addInformations">Add the stocks</button>
+                    <button class="btn btn-dark" @click.prevent="addInformations">Add the stocks</button>
                     <button class="btn btn-secondary" type="button" data-dismiss="modal" @click="closeModal1">Cancel</button>
                   </div>
                 </form>
@@ -57,7 +57,7 @@
 <!-- Add a portfolio:  second modal  -->
               <b-modal v-model="modal2IsVisible" style="color:black" ref="modal2" :hide-footer="true">
                 <form @submit.stop.prevent="submitModal">
-                  <p>
+                  <p class="text-center">
                     <strong>Stock:</strong>
                   </p>
                   <b-form-input class="mt-2 mb-2" type="text" placeholder="Enter the stock name" v-model="stock.stockName"></b-form-input>
@@ -65,26 +65,27 @@
 
                   <b-form-input class="mt-2 mb-2" type="text" placeholder="Enter the holding value" v-model="stock.holdingValue"></b-form-input>
                   
-                    <div class="col-md-12 text-center">
+                    <div>
                       <div class="input-group ">
                       <date-picker v-model="stock.stockStartingDate" placeholder="Enter the starting date" :config="config">
                       </date-picker>
-                     <label class="input-group-addon btn" for="testdate">
-                     <span class="input-group-text" id="basic-addon1">
-                        <span class="oi oi-calendar" title="icon name" aria-hidden="true"></span>
-                     </span>
-                     </label>                    
+                      <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon1">
+                        <span class="oi oi-calendar"></span>
+                       </span>
                     </div>
+                   </div>                   
                     </div>
+                    
                  
                  <br>
-                   <br>
-                  <b-button variant="outline-info" size="sm" @click.prevent="addSingleStock"> Add one more stock</b-button>
-                  <br>
+                <br>
+                  <b-button variant="outline-dark" size="sm" @click.prevent="addSingleStock"> Add one more stock</b-button>
+                <br>
                    <br>
                   
                   <div class="modal-footer">
-                    <button class="btn btn-info">Save</button>
+                    <button class="btn btn-dark">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeModal2">Close</button>
                   </div>
                 </form>
@@ -115,8 +116,8 @@
             <br>
             <br>
             <br>
-            <a href="#" class="card-link">Card link</a>
-            <b-link href="#" class="card-link">Another link</b-link>
+            <a to="#" class="card-link">Card link</a>
+            <b-link to="#" class="card-link">Another link</b-link>
           </b-card>
 
           <b-card class="card" bg-variant="secondary" text-variant="white">
@@ -131,15 +132,15 @@
             <br>
             <br>
             <br>
-            <a href="#" class="card-link">Card link</a>
-            <b-link href="#" class="card-link">Another link</b-link>
+            <a to="#" class="card-link">Card link</a>
+            <b-link to="#" class="card-link">Another link</b-link>
           </b-card>
 
           <b-card border-variant="dark" title="Title" header-tag="header" footer-tag="footer">
             <h6 slot="header" class="mb-0">Header Slot</h6>
             <em slot="footer">Footer Slot</em>
             <p class="card-text">Header and footers using slots.</p>
-            <b-button href="#" variant="primary">Go somewhere</b-button>
+            <b-button to="#" variant="dark">Go somewhere</b-button>
           </b-card>
 
 
@@ -155,10 +156,12 @@
 import { getUser } from "../api";
 import { createPortfolio } from "../api";
 import datePicker from "vue-bootstrap-datetimepicker";
+import PortfolioGenericCardVue from "../components/PortfolioGenericCard.vue";
 
 export default {
   components: {
-    datePicker
+    datePicker,
+    PortfolioGenericCardVue
   },
 
   data() {
