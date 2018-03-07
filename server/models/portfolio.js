@@ -19,25 +19,18 @@ const portfolioSchema = new Schema({
     unique: true
   },
   stocks: [stockSchema],
-<<<<<<< HEAD
-  movements: [{
-    date: Date,
-    amountOfMoney: Number,
-    user: { type: Schema.Types.ObjectId, ref: "User" },
-    action: {
-      type: Number,
-      enum: ["buy", "sell"],
-      default: "buy"
-    }
-  }],
-=======
   movements: [
     {
       date: Date,
-      amountOfMoney: Number
+      amountOfMoney: Number,
+      user: { type: Schema.Types.ObjectId, ref: "User" },
+      action: {
+        type: Number,
+        enum: ["buy", "sell"],
+        default: "buy"
+      }
     }
   ],
->>>>>>> c450092dc1da0bc57c33fe1da2dbd922e93e2a49
   description: {
     type: String,
     required: true
