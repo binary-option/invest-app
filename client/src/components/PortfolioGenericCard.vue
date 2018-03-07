@@ -10,7 +10,7 @@
           
           </em>
         <p class="card-text">{{portfolio.description}} </p>
-        <b-button to="#"  variant="dark" @click="storePortfolioId">Get the details</b-button>
+        <b-button to="details"  variant="dark" @click="storePortfolioId">Get the details</b-button>
         </b-card>
 </div>
 </template>

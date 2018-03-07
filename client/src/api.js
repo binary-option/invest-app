@@ -83,6 +83,13 @@ export function getPortfolio(portfolioId) {
     .catch(errHandler);
 }
 
+export function getPortfolioComments(portfolioId) {
+  return service
+    .get(`/portfolios/${portfolioId}/comments`)
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
 export function addInvestor(clientId) {
   return service
     .patch(`/portfolio/${portfolioId}`, clientId)
@@ -111,9 +118,23 @@ export function createPortfolio(portfolioInfo) {
     .catch(errHandler);
 }
 
+export function addPortfolioComment(portfolioId, messageObject) {
+  return service
+    .post(`/portfolios/${portfolioId}/comment`, { messageObject })
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
 export function retrieveBenchmarkData(startDate, endDate) {
   return service
     .get(`/benchmark/${startDate}/${endDate}`)
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
+export function updatePortfolioReturns(portfolioId, portfolioReturns) {
+  return service
+    .patch(`/portfolios/${portfolioId}/returns`, { portfolioReturns })
     .then(res => res.data)
     .catch(errHandler);
 }
@@ -131,11 +152,11 @@ const quandl = axios.create({
 export function getStockDelta(stockInfo) {
   return quandl
     .get(
-    `${stockInfo.name}.json?column_index=1&start_date=${
-    stockInfo.startDate
-    }&end_date=${stockInfo.endDate}&collapse=${
-    stockInfo.frequency
-    }&transform=rdiff_from`
+      `${stockInfo.name}.json?column_index=1&start_date=${
+        stockInfo.startDate
+      }&end_date=${stockInfo.endDate}&collapse=${
+        stockInfo.frequency
+      }&transform=rdiff_from`
     )
     .then(res => {
       return res.data;
@@ -147,11 +168,11 @@ export function getStockDelta(stockInfo) {
 export function getStockValue(stockInfo) {
   return quandl
     .get(
-    `${stockInfo.name}.json?column_index=1&start_date=${
-    stockInfo.startDate
-    }&end_date=${stockInfo.endDate}&collapse=${
-    stockInfo.frequency
-    }&transform=none`
+      `${stockInfo.name}.json?column_index=1&start_date=${
+        stockInfo.startDate
+      }&end_date=${stockInfo.endDate}&collapse=${
+        stockInfo.frequency
+      }&transform=none`
     )
     .then(res => {
       return res.data;

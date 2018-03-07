@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const history = require("connect-history-api-fallback");
+const history = require("express-history-api-fallback");
 
 const passport = require("passport");
 const User = require("./models/user");
@@ -16,7 +16,7 @@ const { Strategy, ExtractJwt } = require("passport-jwt");
 const { ensureLoggedIn, ensureLoggedOut } = require("connect-ensure-login");
 
 mongoose.connect("mongodb://localhost/invest-app");
-//mongoose.connect(process.env.MONGODB_URI, { useMongoClient: true });
+//mongoose.connect(process.env.MONGODB_URI);
 
 const app = express();
 

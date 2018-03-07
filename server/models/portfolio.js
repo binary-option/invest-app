@@ -19,6 +19,7 @@ const portfolioSchema = new Schema({
     unique: true
   },
   stocks: [stockSchema],
+<<<<<<< HEAD
   movements: [{
     date: Date,
     amountOfMoney: Number,
@@ -29,6 +30,14 @@ const portfolioSchema = new Schema({
       default: "buy"
     }
   }],
+=======
+  movements: [
+    {
+      date: Date,
+      amountOfMoney: Number
+    }
+  ],
+>>>>>>> c450092dc1da0bc57c33fe1da2dbd922e93e2a49
   description: {
     type: String,
     required: true
@@ -41,7 +50,14 @@ const portfolioSchema = new Schema({
   investors: [{ type: Schema.Types.ObjectId, ref: "User" }],
   followers: [],
   manager: { type: Schema.Types.ObjectId, ref: "User" },
-  messages: [],
+  messages: [
+    {
+      content: String,
+      user: { type: Schema.Types.ObjectId, ref: "User" },
+      date: Date
+    }
+  ],
+  returns: [],
   alreadyRated: {
     type: Boolean,
     default: false
