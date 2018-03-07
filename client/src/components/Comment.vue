@@ -4,7 +4,7 @@
 <el-card class="box-card">
   <div slot="header" class="clearfix">
       <img :src="message.imageURL" class="user-image">
-    <span>{{message.user}}</span> <span>{{message.date}}</span>
+    <span>{{message.user}}</span> wrote on <span>{{message.date}}</span>
   </div>
   <div class="text item">
       {{message.content}}
