@@ -5,7 +5,7 @@
     <br>
     <section class="section">
       <pre>{{$root.user}}
-      searchWord {{$root.searchWord}}
+      searchWord {{this.$root.searchWord}}
       portfolioId {{$root.portfolioId}}
       </pre>
       <router-view/>

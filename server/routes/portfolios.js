@@ -104,6 +104,26 @@ router.patch("/:portfolioId", ensureLoggedIn(), (req, res, next) => {
   );
 });
 
+router.patch(
+  "/:portfolioId/addInvestor",
+  ensureLoggedIn(),
+  (req, res, next) => {
+    const portfolioId = req.params.portfolioId;
+
+    Portfolio.findByIdAndUpdate(
+      req.params.portfolioId,
+      {
+        $push: { investors: req.user._id },
+
+      },
+      (err, portfolio) => {
+        if (err) return next(err);
+        res.json(portfolio);
+      }
+    );
+  }
+);
+
 // router.get("/benchmark", ensureLoggedIn(), function(req, res, next) {
 //   // const startDate = req.params.startDate;
 //   // const endDate = req.params.endDate;

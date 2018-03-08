@@ -1,7 +1,15 @@
 <template>
-  <div>
+
+    <div class="text-center row justify-content-center">
+      <h2>this is the landing page</h2>
+      <div class="col-lg-8 col-sm-8">
+            <b-button  type="button" to="/signup" variant="dark">Signup</b-button>
+      </div>
+    </div>
+ 
+  <!-- <div>
     <new-comment :user="message"></new-comment>
-  </div>
+  </div> -->
   
 </template>
 

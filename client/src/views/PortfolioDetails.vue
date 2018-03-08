@@ -40,12 +40,16 @@
       <hr />
       <br/>
 
+<<<<<<< HEAD
     <div class="container">
       <div class="row text-center justify-content-start">
         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" >
         <div class="container">
+=======
+        <!-- <div class="container">
+>>>>>>> 463047be6cf277008ffb20f724e482e6591df487
           <new-comment :user="message" @addComment="addComment"></new-comment>
-        </div>
+        </div> -->
 
         <br/>
 
