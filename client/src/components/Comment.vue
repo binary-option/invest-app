@@ -1,11 +1,11 @@
 <template>
 <div>
-<div class="container">
-  <div class="row ">
-    <div class="col-lg-8 col-sm-12">
+<div>
+  <div class="row">
+    <div class="col-lg-12 col-sm-12">
 
     <div class="card">
-      <div class="card-body">
+      <div class="card-body text-left">
         <img :src="imageURL" class="user-image"><span class="h5">   {{name}} wrote on </span><span class="h5 pull-right">{{date}}</span>
           <div class="text item">
           {{content}}
@@ -25,7 +25,12 @@
 import moment from "moment";
 export default {
   props: ["imageURL", "name", "date", "content"],
-  name: "Comment"
+  name: "Comment",
+  data() {
+    return {
+      content: ""
+    };
+  }
 };
 </script>
 

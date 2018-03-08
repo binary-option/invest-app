@@ -6,29 +6,7 @@ const User = require("../models/user");
 const Message = require("../models/message");
 
 /* GET home page. */
-
-router.post("/:portfolioId/comment", ensureLoggedIn(), (req, res, next) => {
-  const messageObject = req.body.messageObject;
-  console.log("DBG3 ", messageObject);
-
-  const newMessage = new Message(messageObject);
-
-  newMessage.save(err => {
-    if (err) return next(err);
-    Portfolio.findByIdAndUpdate(
-      req.params.portfolioId,
-      {
-        $push: { messages: newMessage._id }
-      },
-      (err, portfolio) => {
-        if (err) return next(err);
-        res.json(portfolio);
-      }
-    );
-  });
-});
-
-router.get("/", ensureLoggedIn(), function(req, res, next) {
+router.get("/", ensureLoggedIn(), function (req, res, next) {
   Portfolio.find({}, (err, portfolios) => {
     if (err) return next(err);
 
@@ -73,43 +51,33 @@ router.post("/", ensureLoggedIn(), (req, res, next) => {
   });
 });
 
-router.get("/:portfolioId/comments", ensureLoggedIn(), function(
-  req,
-  res,
-  next
-) {
-  Message.find({ portfolio: req.params.portfolioId })
-    .populate("user")
-    .exec((err, messages) => {
-      if (err) return next(err);
-      res.json(messages.reverse());
-    });
-});
-
-router.patch("/:portfolioId", ensureLoggedIn(), (req, res, next) => {
-  const portfolioId = req.params.portfolioId;
-  console.log("portfolioId in user", portfolioId);
-  const rate = Object.keys(req.body);
-  console.log("rate in user", rate);
-  Portfolio.findByIdAndUpdate(
-    req.params.portfolioId,
-    {
-      $push: { investors: req.user._id },
-      $push: { ratings: rate }
-    },
-    (err, portfolio) => {
-      if (err) return next(err);
-      res.json(portfolio);
-    }
-  );
-});
+router.patch(
+  "/:portfolioId",
+  ensureLoggedIn(),
+  (req, res, next) => {
+    const portfolioId = req.params.portfolioId;
+    console.log("portfolioId in user", portfolioId)
+    const rate = Object.keys(req.body)
+    console.log("rate in user", rate)
+    Portfolio.findByIdAndUpdate(
+      req.params.portfolioId,
+      {
+        $push: { investors: req.user._id },
+        $push: { ratings: rate }
+      },
+      (err, portfolio) => {
+        if (err) return next(err);
+        res.json(portfolio);
+      }
+    );
+  }
+);
 
 router.patch(
   "/:portfolioId/addInvestor",
   ensureLoggedIn(),
   (req, res, next) => {
     const portfolioId = req.params.portfolioId;
-
     Portfolio.findByIdAndUpdate(
       req.params.portfolioId,
       {
@@ -135,7 +103,27 @@ router.patch(
 //   });
 // });
 
-router.get("/:portfolioId", ensureLoggedIn(), function(req, res, next) {
+router.get("/:portfolioId", ensureLoggedIn(), function (req, res, next) {
+  const portfolioId = req.params.portfolioId;
+  Portfolio.findById(portfolioId)
+    // .populate("messages")
+    // .populate("messages.user")
+    .populate({
+      path: "messages",
+      populate: {
+        path: "user"
+      }
+    })
+    .then(message => {
+      res.json(message);
+    });
+});
+
+router.get("/:portfolioId/comments", ensureLoggedIn(), function (
+  req,
+  res,
+  next
+) {
   const portfolioId = req.params.portfolioId;
   Portfolio.findById(portfolioId, (err, portfolio) => {
     if (err) return next(err);
@@ -144,23 +132,36 @@ router.get("/:portfolioId", ensureLoggedIn(), function(req, res, next) {
 });
 
 router.patch("/:portfolioId/returns", ensureLoggedIn(), (req, res, next) => {
-  const portfolioReturns = req.body.updateObject.returns;
-  const performance1y = req.body.updateObject.performance;
-  const risk = req.body.updateObject.risk;
-  console.log("hEREEEE", req.body.updateObject);
+  const portfolioReturns = req.body.portfolioReturns;
 
   Portfolio.findByIdAndUpdate(
     req.params.portfolioId,
-    {
-      returns: portfolioReturns,
-      performance1y: performance1y,
-      risk: risk
-    },
+    { returns: portfolioReturns },
     (err, portfolioReturns) => {
       if (err) return next(err);
       res.json("portfolioReturns");
     }
   );
+});
+
+router.post("/:portfolioId/comment", ensureLoggedIn(), (req, res, next) => {
+  const messageObject = req.body.messageObject;
+
+  const newMessage = new Message(messageObject);
+
+  newMessage.save(err => {
+    if (err) return next(err);
+    Portfolio.findByIdAndUpdate(
+      req.params.portfolioId,
+      {
+        $push: { messages: newMessage.id }
+      },
+      (err, portfolio) => {
+        if (err) return next(err);
+        res.json(portfolio);
+      }
+    );
+  });
 });
 
 router.patch("/:portfolioId", ensureLoggedIn(), (req, res, next) => {

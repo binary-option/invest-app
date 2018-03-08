@@ -27,8 +27,16 @@ const userSchema = new Schema({
     enum: ["client", "manager"],
     default: "client"
   },
+  accountBalance: {
+    type: Number,
+    default: 10000
+  },
   //Parameters only relevant for the customer:
   riskProfile: Number,
+  riskProfileCompleted: {
+    type: Boolean,
+    default: false
+  },
   bankAccount: String,
   customerPortfoliosOwned: [{ type: Schema.Types.ObjectId, ref: "Portfolio" }],
   customerWishList: [],

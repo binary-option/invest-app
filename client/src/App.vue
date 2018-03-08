@@ -2,7 +2,10 @@
   <div id="app" class="app-size">
     <NavBar/>
     <section class="section">
+<<<<<<< HEAD
+=======
   
+>>>>>>> cc60fd2c7d488bb181061388eb5d8c3e29f5752e
       <router-view/>
      
     </section>

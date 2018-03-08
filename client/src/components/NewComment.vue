@@ -1,16 +1,16 @@
 <template>
 
-<div class="container">
+<div>
   <div class="row ">
-    <div class="col-lg-8 col-sm-12">
+    <div class="col-lg-12 col-sm-12">
 
     <div class="card">
-      <div class="card-body">
+      <div class="card-body text-left">
         <span class="card-title h5"> Add a commment: </span>
         <br/>
         <textarea class="form-control" v-model="content"></textarea>
         <br/>
-        <button type="submit" @click="$emit('addComment',content)" class="btn btn-primary btn-sm">Submit</button>
+        <button type="submit" @click="$emit('addComment',content)" class="btn btn-primary">Submit</button>
       </div>
     </div>
     </div>
@@ -21,12 +21,6 @@
 
 <script>
 export default {
-  props: ["user"],
-  name: "NewComment",
-  data() {
-    return {
-      content: ""
-    };
-  }
+  name: "NewComment"
 };
 </script>
