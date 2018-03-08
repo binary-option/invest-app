@@ -1,6 +1,5 @@
 <template>
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <pre>{{userInfo}}</pre>
    
     <b-container fluid class="bv-example-row">
 

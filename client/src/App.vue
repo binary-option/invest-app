@@ -4,10 +4,6 @@
     <br>
     <br>
     <section class="section">
-      <pre>{{$root.user}}
-      searchWord {{this.$root.searchWord}}
-      portfolioId {{$root.portfolioId}}
-      </pre>
       <router-view/>
      
     </section>

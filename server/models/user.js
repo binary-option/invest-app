@@ -27,6 +27,10 @@ const userSchema = new Schema({
     enum: ["client", "manager"],
     default: "client"
   },
+  accountBalance: {
+    type: Number,
+    default: 10000
+  },
   //Parameters only relevant for the customer:
   riskProfile: Number,
   bankAccount: String,
