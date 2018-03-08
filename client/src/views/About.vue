@@ -1,37 +1,41 @@
 <template>
-
+  <div class="container">
+    <h2>This is the search page</h2>
     <div class="text-center row justify-content-center">
-      <h2>this is the landing page</h2>
       <div class="col-lg-8 col-sm-8">
-            <b-button  type="button" to="/signup" variant="dark">Signup</b-button>
+
+        	<b-alert variant ="danger" show v-if="noWord" >
+          Insert a word!
+         </b-alert> 
+
+        <b-form>
+            <b-form-input  type="text"  v-model="$root.searchWord" placeholder="Type a word or stock handler (e.g. AAPL for Apple Inc."/>
+            <br>
+          
+            <b-button  type="submit" variant="dark"  @click.prevent="search">Search</b-button>
+          
+        </b-form>
       </div>
     </div>
- 
-  <!-- <div>
-    <new-comment :user="message"></new-comment>
-  </div> -->
-  
+  </div>
 </template>
 
-
 <script>
-import NewComment from "@/components/NewComment.vue";
-
 export default {
-  name: "About",
-  components: {
-    NewComment
-  },
+  name: "home",
   data() {
     return {
-      message: {
-        user: "Manuel",
-        content: "Testing a message",
-        date: "2018-02-28",
-        imageURL:
-          "https://cdn.pixabay.com/photo/2014/10/21/14/46/mongoose-496374_960_720.jpg"
-      }
+      noWord: false
     };
+  },
+  methods: {
+    search() {
+      if (this.$root.searchWord) this.$router.push("/search");
+      else {
+        this.noWord = true;
+        this.$router.push("/");
+      }
+    }
   }
 };
 </script>

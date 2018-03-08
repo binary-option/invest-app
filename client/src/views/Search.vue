@@ -3,11 +3,11 @@
     <pre>{{allResults}}</pre>
 
 
-<div  class="container col-lg-11 col-sm-11 text-center">
+<!-- <div  v-if="allResults!== []" class="container col-lg-11 col-sm-11 text-center">
       <h3>Sorry we couldn't find any porfolio</h3>
-</div>  
+</div>   -->
 
- <div  class="container col-lg-10 col-sm-12  "> 
+ <div class="container col-lg-10 col-sm-12  "> 
 	
     <div class="modal-heading text-center p-3 mb-2 bg-dark text-white mb-0">
         <br>

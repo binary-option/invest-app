@@ -1,12 +1,12 @@
 <template>
 
-<b-navbar toggleable="md" type="light" variant="light">
+<b-navbar toggleable="md" type="dark" variant="dark">
 
   <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
   <b-navbar-brand>
       <router-link class="navbar-item" to="/about">
-      <img src="https://bulma.io/images/bulma-logo.png"  alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
+      <img type="dark" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrPq_RyBMImOqGPGBEeBrL70eo6sQzjW2ThXRKA4Wki82wMJ8R"  alt="Bulma: a modern CSS framework based on Flexbox" width="60" height="50">
     </router-link>
   </b-navbar-brand>
 
