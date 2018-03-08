@@ -17,7 +17,10 @@ const userSchema = new Schema({
   email: {
     type: String
   },
-  picture: String,
+  picture: {
+    type: String,
+    default: ""
+  },
   accountCreated: Date,
   role: {
     type: String,

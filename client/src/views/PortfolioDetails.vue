@@ -2,48 +2,66 @@
 <div>
   <div v-loading="!dataLoaded" v-if="!dataLoaded&&!quandlErrorFlag"></div>
   <div v-loading="!dataLoaded" v-if="dataLoaded" class="about">
-    <indicator-card :rating="ratings" :read-only="true"></indicator-card>
+    <indicator-card :rating="ratings" :ratingValues="ratingValues" :read-only="true"></indicator-card>
 
     <div class="container">
         <br/>
     </div>
+
+    
     
     <div class="container">
+      <hr />
+      <br/>
 
       <div class="row text-center justify-content-center">
-        <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12" >
           <h3>Single stock development</h3>
           <br/>
           <line-chart :data="plotObject" :options="plotObject.options"></line-chart>
-          <span class="">From 02/17 to 03/18</span>
+          <span class="text-muted">From Feb 17 to Mar 18</span>
         </div>
-        <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+        <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
           <h3>Portfolio allocation</h3>
           <br/>
           <pie-chart :data="pieChartObject"></pie-chart>
-          <span>Per stock in [%]</span>
+          <span class="text-muted">Per stock in [%]</span>
         </div>
-      </div>
-
-      <div class="row text-center justify-content-center">
-        <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+        <div class="col-lg-4 col-md-8 col-sm-12 col-xs-12">
           <h3>Portfolio vs Benchmark </h3>
           <br/>
           <line-chart :data="indexPlotObject" :options="indexPlotObject.options"></line-chart>
-          <span>From 02/17 to 03/18</span>
-        </div>  
+          <span class="text-muted">From Feb 17 to Mar 18</span>
+        </div>
       </div>
+      <br/>
+      <br/>
+      <br/>
+      <hr />
+      <br/>
 
+<<<<<<< HEAD
+    <div class="container">
+      <div class="row text-center justify-content-start">
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" >
+        <div class="container">
+=======
         <!-- <div class="container">
+>>>>>>> 463047be6cf277008ffb20f724e482e6591df487
           <new-comment :user="message" @addComment="addComment"></new-comment>
         </div> -->
 
+        <br/>
+
         <div class="container">
-          <comment v-for="(message, i) in messages" :key="i" 
-          :imageURL="message.user.picture"
-          :name="message.user.name"
+          <comment v-if="messagesLoaded" v-for="(message, i) in messages" :key="i" 
+          :imageURL="message.imageURL"
+          :name="message.name"
           :date="message.date"
-          :content="message.content"></comment>
+          :content="message.content">111</comment>
+        </div>
+        </div>
+        </div>
         </div>
 
     </div>
@@ -61,7 +79,7 @@
 import { getPortfolio } from "@/api";
 import { getStockDelta } from "@/api";
 import { getStockValue } from "@/api";
-import { updatePortfolioReturns } from "@/api";
+import { updatePortfolio } from "@/api";
 import { retrieveBenchmarkData } from "@/api";
 import { addPortfolioComment } from "@/api";
 import { getPortfolioComments } from "@/api";
@@ -88,7 +106,6 @@ export default {
     // This array of promises makes sure that the functions are carried out when both callbacks are ready
     getPortfolio(this.$root.portfolioId)
       .then(portfolio => {
-        this.messages = portfolio.messages;
         portfolio.stocks.forEach(pf => {
           let name = pf.stockName;
           let date = new Date();
@@ -124,7 +141,6 @@ export default {
         ]);
       })
       .then(([stockRdiff, stockValue, benchmarkData]) => {
-        console.log("bmd ", benchmarkData);
         this.benchmarkData = benchmarkData;
         this.stockRdiffs = stockRdiff;
         this.filterStockRdiffs();
@@ -152,6 +168,7 @@ export default {
             ).toFixed(0)
           );
         }
+        this.portfolioBeta = this.portfolioBeta.toFixed(2);
         this.caclulateCompositeStock();
         this.preparePlotData();
         this.prepareIndexPlotData();
@@ -165,21 +182,30 @@ export default {
             date: this.stockDateFiltered[i]
           });
         });
+        var updateObject = {
+          risk: 100 - this.portfolioBetaRating * 20,
+          performance: this.portfolioReturn,
+          returns: portfolioReturns
+        };
 
         this.portfolioId = this.$root.portfolioId;
         this.userId = this.$root.user.id;
-        updatePortfolioReturns(this.$root.portfolioId, portfolioReturns).then(
-          res => {}
-        );
+        updatePortfolio(this.$root.portfolioId, updateObject).then(res => {});
+
+        this.addRatings();
 
         getPortfolioComments(this.portfolioId).then(res => {
-          console.log("Comments ", res);
+          res.forEach(message => {
+            let messageObject = {
+              imageURL: message.user.picture,
+              name: message.user.name,
+              date: message.date,
+              content: message.content
+            };
+            this.messages.push(messageObject);
+            this.messagesLoaded = true;
+          });
         });
-        console.log(portfolioReturns);
-
-        console.log(this.portfolioReturn);
-        console.log(this.portfolioAlpha);
-        console.log(this.benchmarkReturn);
       })
       .catch(err => {
         if (err) {
@@ -194,16 +220,16 @@ export default {
       userId: "",
       //Locally store the portfolio Id
       portfolioId: "",
-      message: {
-        user: "Manuel",
-        content: "Testing a message",
-        date: "2018-02-28",
-        imageURL:
-          "https://cdn.pixabay.com/photo/2014/10/21/14/46/mongoose-496374_960_720.jpg"
-      },
       messages: [],
+      messagesLoaded: false,
       //Object holding the different ratings
       ratings: {
+        alpha: 1,
+        beta: 2,
+        return: 3,
+        returnBenchmark: 4
+      },
+      ratingValues: {
         alpha: 1,
         beta: 2,
         return: 3,
@@ -341,7 +367,67 @@ export default {
             this.compositeStockValue[0]) *
           100 -
         100
-      ).toFixed(2);
+      ).toFixed(0);
+    },
+    portfolioReturnRating() {
+      if (this.portfolioReturn < 5) {
+        return 0;
+      } else if (this.portfolioReturn > 5 && this.portfolioReturn < 8) {
+        return 1;
+      } else if (this.portfolioReturn > 8 && this.portfolioReturn < 11) {
+        return 2;
+      } else if (this.portfolioReturn > 11 && this.portfolioReturn < 17) {
+        return 3;
+      } else if (this.portfolioReturn > 17 && this.portfolioReturn < 20) {
+        return 4;
+      } else if (this.portfolioReturn > 20) {
+        return 5;
+      }
+    },
+    portfolioAlphaRating() {
+      if (this.portfolioAlpha < 5) {
+        return 0;
+      } else if (this.portfolioAlpha > 5 && this.portfolioAlpha < 10) {
+        return 1;
+      } else if (this.portfolioAlpha > 10 && this.portfolioAlpha < 12) {
+        return 2;
+      } else if (this.portfolioAlpha > 12 && this.portfolioAlpha < 17) {
+        return 3;
+      } else if (this.portfolioAlpha > 17 && this.portfolioAlpha < 20) {
+        return 4;
+      } else if (this.portfolioAlpha > 20) {
+        return 5;
+      }
+    },
+    portfolioBetaRating() {
+      if (this.portfolioBeta < -5) {
+        return 5;
+      } else if (this.portfolioBeta > -5 && this.portfolioBeta < 0) {
+        return 4;
+      } else if (this.portfolioBeta > 0 && this.portfolioBeta < 0.5) {
+        return 3;
+      } else if (this.portfolioBeta > 0.5 && this.portfolioBeta < 1) {
+        return 2;
+      } else if (this.portfolioBeta > 1 && this.portfolioBeta < 1.5) {
+        return 1;
+      } else if (this.portfolioBeta > 2) {
+        return 1;
+      }
+    },
+    benchmarkReturnRating() {
+      if (this.benchmarkReturn < 5) {
+        return 0;
+      } else if (this.benchmarkReturn > 5 && this.benchmarkReturn < 8) {
+        return 1;
+      } else if (this.benchmarkReturn > 8 && this.benchmarkReturn < 11) {
+        return 2;
+      } else if (this.benchmarkReturn > 11 && this.benchmarkReturn < 17) {
+        return 3;
+      } else if (this.benchmarkReturn > 17 && this.benchmarkReturn < 20) {
+        return 4;
+      } else if (this.benchmarkReturn > 20) {
+        return 5;
+      }
     },
     //The value of the risk-free return needs to be update periodically until an
     //API is available
@@ -356,7 +442,7 @@ export default {
           riskFreeReturn -
           this.portfolioBeta * (marketReturn - riskFreeReturn)) *
         100
-      ).toFixed(2);
+      ).toFixed(0);
     },
     benchmarkReturn() {
       return (
@@ -364,7 +450,7 @@ export default {
           this.benchmarkData.value[0]) /
         this.benchmarkData.value[0] *
         100
-      ).toFixed(2);
+      ).toFixed(1);
     }
   },
   methods: {
@@ -375,6 +461,13 @@ export default {
         date: new Date(),
         user: this.userId
       };
+      let messageObject = {
+        imageURL: this.$root.user.name,
+        name: this.$root.user.name,
+        date: new Date(),
+        content: content
+      };
+      this.messages.unshift(messageObject);
       addPortfolioComment(this.portfolioId, contentObject).then(res => {});
     },
     //Returns an array with the weighted value of the stock
@@ -409,7 +502,7 @@ export default {
       //A Matrix, containing in each row the wheighted stock contributions to the
       //composite stock per period
       var tempWeightedStock = [];
-      //Calculate the weighted rdiffs a Vi/Vtotal * rdiffi
+      //Calculate the weighted rdiffs as Vi/Vtotal * rdiffi
       for (var i = 0; i < stockValueVector.length - 1; i++) {
         //Holds temporarily a single wheighted stock for a given period. Is pushed
         //afterwards to tempWeightedStock matrix
@@ -425,7 +518,6 @@ export default {
         }
         tempWeightedStock.push(weightedStockHolder);
       }
-      //console.log("tws ", tempWeightedStock);
       //Array holding the value of the composite stock per period in rdiff
       for (var i = 0; i < tempWeightedStock.length; i++) {
         this.compositeStockRdiff.push(
@@ -544,6 +636,20 @@ export default {
       };
       this.pieChartObject.datasets.push(dataset);
       this.dataLoaded = true;
+    },
+    addRatings() {
+      this.ratings = {
+        alpha: this.portfolioAlphaRating,
+        beta: this.portfolioBetaRating,
+        return: this.portfolioReturnRating,
+        returnBenchmark: this.benchmarkReturnRating
+      };
+      this.ratingValues = {
+        alpha: this.portfolioAlpha,
+        beta: this.portfolioBeta,
+        return: this.portfolioReturn,
+        returnBenchmark: this.benchmarkReturn
+      };
     }
   }
 };

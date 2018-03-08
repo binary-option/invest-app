@@ -49,7 +49,7 @@ const strategy = new Strategy(
   (payload, done) => {
     // payload is the object we encrypted at the route /api/token
     // We get the user id, make sure the user exist by looking it up
-    console.log("In Strategy");
+    console.log("In Strategy", payload.id);
     User.findById(payload.id).then(user => {
       if (user) {
         // make the user accessible in req.user
