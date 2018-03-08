@@ -18,7 +18,7 @@
 
 <!-- if not logged in -->
      <b-navbar-nav class="ml-auto" v-if="!$root.user">
-    <b-button  variant='outline-dark' to="/login"  @click.native="isActive = false">Login</b-button>
+    <b-button  variant='outline-secondary' to="/login"  @click.native="isActive = false">Login</b-button>
     </b-navbar-nav>
 
 <!-- if logged in -->
