@@ -5,9 +5,9 @@
 
     <div class="card">
       <div class="card-body">
-        <img :src="message.imageURL" class="user-image"><span class="h5">   {{message.user}} wrote on </span><span class="h5 pull-right">{{message.date}}</span>
+        <img :src="imageURL" class="user-image"><span class="h5">   {{name}} wrote on </span><span class="h5 pull-right">{{date}}</span>
           <div class="text item">
-          {{message.content}}
+          {{content}}
           </div>
       </div>
     </div>
@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  props: ["message"],
+  props: ["imageURL", "name", "date", "content"],
   name: "Comment"
 };
 </script>

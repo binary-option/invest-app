@@ -39,7 +39,11 @@
         </div>
 
         <div class="container">
-          <comment :message="message"></comment>
+          <comment v-for="(message, i) in messages" :key="i" 
+          :imageURL="message.user.picture"
+          :name="message.user.name"
+          :date="message.date"
+          :content="message.content"></comment>
         </div>
 
     </div>
@@ -84,7 +88,7 @@ export default {
     // This array of promises makes sure that the functions are carried out when both callbacks are ready
     getPortfolio(this.$root.portfolioId)
       .then(portfolio => {
-        console.log("DEBUG getPortfolio this", this);
+        this.messages = portfolio.messages;
         portfolio.stocks.forEach(pf => {
           let name = pf.stockName;
           let date = new Date();
@@ -197,6 +201,7 @@ export default {
         imageURL:
           "https://cdn.pixabay.com/photo/2014/10/21/14/46/mongoose-496374_960_720.jpg"
       },
+      messages: [],
       //Object holding the different ratings
       ratings: {
         alpha: 1,
