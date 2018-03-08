@@ -6,7 +6,7 @@ const User = require("../models/user");
 const Message = require("../models/message");
 
 /* GET home page. */
-router.get("/", ensureLoggedIn(), function(req, res, next) {
+router.get("/", ensureLoggedIn(), function (req, res, next) {
   Portfolio.find({}, (err, portfolios) => {
     if (err) return next(err);
 
@@ -52,14 +52,18 @@ router.post("/", ensureLoggedIn(), (req, res, next) => {
 });
 
 router.patch(
-  "/:portfolioId/addInvestor",
+  "/:portfolioId",
   ensureLoggedIn(),
   (req, res, next) => {
     const portfolioId = req.params.portfolioId;
+    console.log("portfolioId in user", portfolioId)
+    const rate = Object.keys(req.body)
+    console.log("rate in user", rate)
     Portfolio.findByIdAndUpdate(
       req.params.portfolioId,
       {
-        $push: { investors: req.user._id }
+        $push: { investors: req.user._id },
+        $push: { ratings: rate }
       },
       (err, portfolio) => {
         if (err) return next(err);
@@ -80,7 +84,7 @@ router.patch(
 //   });
 // });
 
-router.get("/:portfolioId", ensureLoggedIn(), function(req, res, next) {
+router.get("/:portfolioId", ensureLoggedIn(), function (req, res, next) {
   const portfolioId = req.params.portfolioId;
   Portfolio.findById(portfolioId)
     // .populate("messages")
@@ -96,7 +100,7 @@ router.get("/:portfolioId", ensureLoggedIn(), function(req, res, next) {
     });
 });
 
-router.get("/:portfolioId/comments", ensureLoggedIn(), function(
+router.get("/:portfolioId/comments", ensureLoggedIn(), function (
   req,
   res,
   next
