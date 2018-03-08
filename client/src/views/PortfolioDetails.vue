@@ -41,11 +41,12 @@
     <div class="container">
       <div class="row text-center justify-content-start">
         <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 lg-push-right">
+          <complete-profile v-if="!this.$root.user.role==='manager'"></complete-profile>
           <invest></invest>
         </div>
         <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
           <div class="container">
-            <new-comment :user="message" @addComment="addComment"></new-comment>
+            <new-comment @addComment="addComment"></new-comment>
           </div>
 
           <br/>
@@ -87,6 +88,7 @@ import Comment from "@/components/Comment.vue";
 import Invest from "@/components/Invest.vue";
 import NewComment from "@/components/NewComment.vue";
 import QuandlError from "@/components/QuandlError.vue";
+import CompleteProfile from "@/components/CompleteProfile.vue";
 import _ from "lodash";
 import * as ss from "simple-statistics";
 import moment from "moment";
@@ -99,7 +101,8 @@ export default {
     Comment,
     QuandlError,
     NewComment,
-    Invest
+    Invest,
+    CompleteProfile
   },
   created() {
     // This array of promises makes sure that the functions are carried out when both callbacks are ready
@@ -189,6 +192,7 @@ export default {
 
         this.portfolioId = this.$root.portfolioId;
         this.userId = this.$root.user.id;
+        console.log(this.$root.user);
         updatePortfolio(this.$root.portfolioId, updateObject).then(res => {});
 
         this.addRatings();

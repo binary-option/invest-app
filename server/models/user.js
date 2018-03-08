@@ -33,6 +33,10 @@ const userSchema = new Schema({
   },
   //Parameters only relevant for the customer:
   riskProfile: Number,
+  riskProfileCompleted: {
+    type: Boolean,
+    default: false
+  },
   bankAccount: String,
   customerPortfoliosOwned: [{ type: Schema.Types.ObjectId, ref: "Portfolio" }],
   customerWishList: [],
