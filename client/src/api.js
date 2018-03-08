@@ -97,6 +97,14 @@ export function addInvestor(clientId) {
     .catch(errHandler);
 }
 
+export function addRating(rate, portfolioId) {
+  console.log("rate in client api", rate)
+  return service
+    .patch(`/portfolios/${portfolioId}`, rate)
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
 //Function recieves an object as an argument patches the user
 export function updateUser(userId, userInfo) {
   const formData = new FormData();
@@ -152,11 +160,11 @@ const quandl = axios.create({
 export function getStockDelta(stockInfo) {
   return quandl
     .get(
-      `${stockInfo.name}.json?column_index=1&start_date=${
-        stockInfo.startDate
-      }&end_date=${stockInfo.endDate}&collapse=${
-        stockInfo.frequency
-      }&transform=rdiff_from`
+    `${stockInfo.name}.json?column_index=1&start_date=${
+    stockInfo.startDate
+    }&end_date=${stockInfo.endDate}&collapse=${
+    stockInfo.frequency
+    }&transform=rdiff_from`
     )
     .then(res => {
       return res.data;
@@ -168,11 +176,11 @@ export function getStockDelta(stockInfo) {
 export function getStockValue(stockInfo) {
   return quandl
     .get(
-      `${stockInfo.name}.json?column_index=1&start_date=${
-        stockInfo.startDate
-      }&end_date=${stockInfo.endDate}&collapse=${
-        stockInfo.frequency
-      }&transform=none`
+    `${stockInfo.name}.json?column_index=1&start_date=${
+    stockInfo.startDate
+    }&end_date=${stockInfo.endDate}&collapse=${
+    stockInfo.frequency
+    }&transform=none`
     )
     .then(res => {
       return res.data;

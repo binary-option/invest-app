@@ -104,9 +104,9 @@
 
         <div id="card-column" class="col-lg-9 col-sm-12 pt-5 border  d-flex flex-row  align-items-center justify-content-center flex-wrap">
 
-          <PortfolioGenericCard v-if="userInfo.role==='manager'" v-for="portfolio in userInfo.managerPortfolios" :key="portfolio.id" :portfolio="portfolio" /> 
+          <PortfolioGenericCard v-if="userInfo.role==='manager'" v-for="portfolio in userInfo.managerPortfolios" :key="portfolio.id" :portfolio="portfolio" :averageRate="calculateAverageRating(portfolio.ratings)" v-on:rate="addRating"  /> 
 
-         <PortfolioGenericCard v-if="userInfo.role==='client'" v-for="portfolio in userInfo.customerPortfoliosOwned" :key="portfolio.id" :portfolio="portfolio" /> 
+         <PortfolioGenericCard v-if="userInfo.role==='client'" v-for="portfolio in userInfo.customerPortfoliosOwned" :key="portfolio.id" :portfolio="portfolio" :averageRate="calculateAverageRating(portfolio.ratings)" v-on:rate="addRating" /> 
           
 
 
@@ -122,6 +122,7 @@
 import { getUser } from "../api";
 import { getUserAndPopulate } from "../api";
 import { createPortfolio } from "../api";
+import { addRating } from "../api";
 import StarRating from "vue-star-rating";
 import datePicker from "vue-bootstrap-datetimepicker";
 import PortfolioGenericCard from "../components/PortfolioGenericCard";
@@ -154,6 +155,7 @@ export default {
       newStocks: [],
       newPortfolio: {},
       averageRate: "",
+      portfolioId: "",
       //information for the client
       clientPortfoliosNumber: "",
       clientTotalInvestment: "",
@@ -166,11 +168,15 @@ export default {
       this.userInfo = userInfo;
       //if he is a manager
       if (userInfo.role === "manager") {
-        this.userInfo.managerPortfolios.forEach(
-          portfolio =>
-            (this.averageRate = this.calculateAverageRating(portfolio.ratings))
-        );
-        this.managerPortfoliosNumber = userInfo.managerPortfolios.length;
+        console.log("I'm a manager");
+
+        this.userInfo.managerPortfolios.forEach(item => {
+          console.log(item.portfolioName, " + ", item.ratings);
+          this.averageRate = this.calculateAverageRating(item.ratings);
+          console.log("foreach media", this.averageRate);
+        });
+
+        this.managerPortfoliosNumber = this.userInfo.managerPortfolios.length;
         this.managerTotalClients = this.getManagerTotalClients(this.userInfo);
         this.managerTotalFollowers = this.getManagerTotalFollowers(
           this.userInfo
@@ -179,10 +185,10 @@ export default {
           this.userInfo
         );
       } else if (userInfo.role === "client") {
-        // if he is a client
+        //if he is a client
+        console.log("I'm a client");
         this.userInfo.customerPortfoliosOwned.forEach(
-          portfolio =>
-            (this.averageRate = this.calculateAverageRating(portfolio.ratings))
+          item => (this.averageRate = this.calculateAverageRating(item.ratings))
         );
         this.clientPortfoliosNumber = userInfo.customerPortfoliosOwned.length;
         (this.clientTotalInvestment = this.getClientTotalInvestment(
@@ -199,10 +205,22 @@ export default {
       return output;
     },
 
-    calculateAverageRating(portfolio) {
-      if (portfolio.ratings)
-        return portfolio.ratings.reduce((a, b) => a + b, 0);
+    calculateAverageRating(item) {
+      this.averageRate = 0;
+      if (item.length > 0) return item.reduce((a, b) => a + b, 0) / item.length;
       else return 0;
+    },
+
+    addRating(payload) {
+      console.log("payload ", payload);
+      this.rate = parseInt(payload.rate);
+      this.rate = payload.rate;
+      console.log("payload rate in client", payload.rate);
+      this.portfolioId = payload.portfolioId;
+      console.log("portfolioID ", this.portfolioId);
+      addRating(this.rate, this.portfolioId)
+        .then(() => $router.push("/dashboard"))
+        .catch(err => (this.err = err));
     },
 
     getManagerTotalClients(manager) {
