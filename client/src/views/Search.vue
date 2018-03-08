@@ -1,7 +1,6 @@
 <template>
 <div>
 
-
 <!-- <div  v-if="allResults!== []" class="container col-lg-11 col-sm-11 text-center">
       <h3>Sorry we couldn't find any porfolio</h3>
 </div>   -->
@@ -33,7 +32,7 @@
           :totalInvestors="getPortfolioTotalClients(portfolio)"
           :totalFollowers="getPortfolioTotalFollowers(portfolio)"
           :averageRate="calculateAverageRating(portfolio.ratings)"
-           v-on:rate="addRating"  /> 
+            /> 
 
          <PortfolioGenericCard v-if="userInfo.role==='client'" v-for="portfolio in allResults" 
          :key="portfolio.id" 
@@ -41,7 +40,7 @@
           :totalInvestors="getPortfolioTotalClients(portfolio)"
           :totalFollowers="getPortfolioTotalFollowers(portfolio)"
          :averageRate="calculateAverageRating(portfolio.ratings)" 
-         v-on:rate="addRating" /> 
+          /> 
          
 
 
@@ -95,18 +94,6 @@ export default {
           );
         })
       );
-    },
-
-    addRating(payload) {
-      console.log("payload ", payload);
-      this.rate = parseInt(payload.rate);
-      this.rate = payload.rate;
-      console.log("payload rate in client", payload.rate);
-      this.portfolioId = payload.portfolioId;
-      console.log("portfolioID ", this.portfolioId);
-      addRating(this.rate, this.portfolioId)
-        .then(() => $router.push("/dashboard"))
-        .catch(err => (this.err = err));
     },
 
     sortByRating(allResults) {
