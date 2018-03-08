@@ -34,13 +34,13 @@
         </div>  
       </div>
 
-        <div class="container">
+        <!-- <div class="container">
           <new-comment :user="message" @addComment="addComment"></new-comment>
-        </div>
+        </div> -->
 
-        <div class="container">
+        <!-- <div class="container">
           <comment :message="message"></comment>
-        </div>
+        </div> -->
 
     </div>
     

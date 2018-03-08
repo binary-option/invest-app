@@ -104,9 +104,21 @@
 
         <div id="card-column" class="col-lg-9 col-sm-12 pt-5 border  d-flex flex-row  align-items-center justify-content-center flex-wrap">
 
-          <PortfolioGenericCard v-if="userInfo.role==='manager'" v-for="portfolio in userInfo.managerPortfolios" :key="portfolio.id" :portfolio="portfolio" :averageRate="calculateAverageRating(portfolio.ratings)" v-on:rate="addRating"  /> 
+          <PortfolioGenericCard v-if="userInfo.role==='manager'" v-for="portfolio in userInfo.managerPortfolios" 
+          :key="portfolio.id" 
+          :portfolio="portfolio" 
+          :totalInvestors="getPortfolioTotalClients(portfolio)"
+          :totalFollowers="getPortfolioTotalFollowers(portfolio)"
+          :averageRate="calculateAverageRating(portfolio.ratings)"
+           v-on:rate="addRating"  /> 
 
-         <PortfolioGenericCard v-if="userInfo.role==='client'" v-for="portfolio in userInfo.customerPortfoliosOwned" :key="portfolio.id" :portfolio="portfolio" :averageRate="calculateAverageRating(portfolio.ratings)" v-on:rate="addRating" /> 
+         <PortfolioGenericCard v-if="userInfo.role==='client'" v-for="portfolio in userInfo.customerPortfoliosOwned" 
+         :key="portfolio.id" 
+         :portfolio="portfolio" 
+          :totalInvestors="getPortfolioTotalClients(portfolio)"
+          :totalFollowers="getPortfolioTotalFollowers(portfolio)"
+         :averageRate="calculateAverageRating(portfolio.ratings)" 
+         v-on:rate="addRating" /> 
           
 
 
@@ -156,6 +168,8 @@ export default {
       newPortfolio: {},
       averageRate: "",
       portfolioId: "",
+      portfolioTotalClients: "",
+      portfolioTotalFollowers: "",
       //information for the client
       clientPortfoliosNumber: "",
       clientTotalInvestment: "",
@@ -169,11 +183,8 @@ export default {
       //if he is a manager
       if (userInfo.role === "manager") {
         console.log("I'm a manager");
-
         this.userInfo.managerPortfolios.forEach(item => {
-          console.log(item.portfolioName, " + ", item.ratings);
           this.averageRate = this.calculateAverageRating(item.ratings);
-          console.log("foreach media", this.averageRate);
         });
 
         this.managerPortfoliosNumber = this.userInfo.managerPortfolios.length;
@@ -187,9 +198,13 @@ export default {
       } else if (userInfo.role === "client") {
         //if he is a client
         console.log("I'm a client");
-        this.userInfo.customerPortfoliosOwned.forEach(
-          item => (this.averageRate = this.calculateAverageRating(item.ratings))
-        );
+        // this.userInfo.customerPortfoliosOwned.forEach(item => {
+        //   this.averageRate = this.calculateAverageRating(item.ratings);
+        //   this.portfolioTotalClients = this.getPortfolioTotalClients(item);
+        //   console.log(this.portfolioTotalClients);
+        //   this.portfolioTotalFollowers = this.getPortfolioTotalFollowers(item);
+        // });
+
         this.clientPortfoliosNumber = userInfo.customerPortfoliosOwned.length;
         (this.clientTotalInvestment = this.getClientTotalInvestment(
           this.userInfo
@@ -243,6 +258,15 @@ export default {
       else {
         return movemets.reduce((a, b) => a.amountOfMoney + b.amountOfMoney);
       }
+    },
+
+    getPortfolioTotalClients(item) {
+      console.log(item.investors.length);
+      return item.investors.length;
+    },
+
+    getPortfolioTotalFollowers(item) {
+      return item.followers.length;
     },
 
     getClientTotalInvestment(client) {

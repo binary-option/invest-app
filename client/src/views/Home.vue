@@ -1,7 +1,13 @@
 <template>
   <div class="container">
+    <h2>This is the search page</h2>
     <div class="text-center row justify-content-center">
       <div class="col-lg-8 col-sm-8">
+
+        	<b-alert variant ="danger" show v-if="noWord" >
+          Insert a word!
+         </b-alert> 
+
         <b-form>
             <b-form-input  type="text"  v-model="$root.searchWord" placeholder="Type a word or stock handler (e.g. AAPL for Apple Inc."/>
             <br>
@@ -17,9 +23,18 @@
 <script>
 export default {
   name: "home",
+  data() {
+    return {
+      noWord: false
+    };
+  },
   methods: {
     search() {
-      this.$router.push("/search");
+      if (this.$root.searchWord) this.$router.push("/search");
+      else {
+        this.noWord = true;
+        this.$router.push("/");
+      }
     }
   }
 };

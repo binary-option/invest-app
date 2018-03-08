@@ -5,30 +5,27 @@
   <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
   <b-navbar-brand>
-      <router-link class="navbar-item" to="/">
+      <router-link class="navbar-item" to="/about">
       <img src="https://bulma.io/images/bulma-logo.png"  alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
     </router-link>
   </b-navbar-brand>
 
   <b-collapse is-nav id="nav_collapse">
 
-    <b-navbar-nav class="align-items-center">
-      <b-nav-item to="/about"  @click.native="isActive = false">(About)</b-nav-item>
-      <b-nav-item to="/signup"  @click.native="isActive = false" >(Signup)</b-nav-item>
-      <b-nav-item to="/login" @click="logout" >(Logout)</b-nav-item>
-    </b-navbar-nav>
+  
 
     <!-- Right aligned nav items -->
 
+<!-- if not logged in -->
      <b-navbar-nav class="ml-auto" v-if="!$root.user">
     <b-button  variant='outline-dark' to="/login"  @click.native="isActive = false">Login</b-button>
     </b-navbar-nav>
 
-
+<!-- if logged in -->
     <b-navbar-nav class="ml-auto align-items-center" v-else>
 
        <b-nav-item to="/dashboard" >Dashboard</b-nav-item>
-
+      <b-nav-item to="/"  @click.native="isActive = false">Find portfolio</b-nav-item>
       <b-nav-item-dropdown id="ddown-right" right text="Right align">
       <template slot="button-content">
         <em> 
