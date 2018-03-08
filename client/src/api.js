@@ -83,13 +83,6 @@ export function getPortfolio(portfolioId) {
     .catch(errHandler);
 }
 
-export function getPortfolioComments(portfolioId) {
-  return service
-    .get(`/messages/${portfolioId}`)
-    .then(res => res.data)
-    .catch(errHandler);
-}
-
 export function addInvestor(clientId) {
   return service
     .patch(`/portfolio/${portfolioId}`, clientId)
@@ -98,7 +91,7 @@ export function addInvestor(clientId) {
 }
 
 export function addRating(rate, portfolioId) {
-  console.log("rate in client api", rate)
+  console.log("rate in client api", rate);
   return service
     .patch(`/portfolios/${portfolioId}`, rate)
     .then(res => res.data)
@@ -133,6 +126,13 @@ export function addPortfolioComment(portfolioId, messageObject) {
     .catch(errHandler);
 }
 
+export function getPortfolioComments(portfolioId) {
+  return service
+    .get(`/portfolios/${portfolioId}/comments`)
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
 export function retrieveBenchmarkData(startDate, endDate) {
   return service
     .get(`/benchmark/${startDate}/${endDate}`)
@@ -140,9 +140,9 @@ export function retrieveBenchmarkData(startDate, endDate) {
     .catch(errHandler);
 }
 
-export function updatePortfolioReturns(portfolioId, portfolioReturns) {
+export function updatePortfolio(portfolioId, updateObject) {
   return service
-    .patch(`/portfolios/${portfolioId}/returns`, { portfolioReturns })
+    .patch(`/portfolios/${portfolioId}/returns`, { updateObject })
     .then(res => res.data)
     .catch(errHandler);
 }
@@ -160,11 +160,11 @@ const quandl = axios.create({
 export function getStockDelta(stockInfo) {
   return quandl
     .get(
-    `${stockInfo.name}.json?column_index=1&start_date=${
-    stockInfo.startDate
-    }&end_date=${stockInfo.endDate}&collapse=${
-    stockInfo.frequency
-    }&transform=rdiff_from`
+      `${stockInfo.name}.json?column_index=1&start_date=${
+        stockInfo.startDate
+      }&end_date=${stockInfo.endDate}&collapse=${
+        stockInfo.frequency
+      }&transform=rdiff_from`
     )
     .then(res => {
       return res.data;
@@ -176,11 +176,11 @@ export function getStockDelta(stockInfo) {
 export function getStockValue(stockInfo) {
   return quandl
     .get(
-    `${stockInfo.name}.json?column_index=1&start_date=${
-    stockInfo.startDate
-    }&end_date=${stockInfo.endDate}&collapse=${
-    stockInfo.frequency
-    }&transform=none`
+      `${stockInfo.name}.json?column_index=1&start_date=${
+        stockInfo.startDate
+      }&end_date=${stockInfo.endDate}&collapse=${
+        stockInfo.frequency
+      }&transform=none`
     )
     .then(res => {
       return res.data;
