@@ -1,16 +1,13 @@
 <template>
   <div id="app" class="app-size">
     <NavBar/>
-    <section class="section">
-<<<<<<< HEAD
-=======
+    <div>
   
->>>>>>> cc60fd2c7d488bb181061388eb5d8c3e29f5752e
       <router-view/>
      
-    </section>
+    </div>
       <div slot="footer" class="text-center mt-5">
-        <small class="text-muted"><strong>Invest-app</strong> by Manuel Rojas & Hanna Mazzoni <br> Ironhack Web Cor 2018</small>
+        <small class="text-muted"><strong>iInvest</strong> by Manuel Rojas & Hanna Mazzoni <br> Ironhack Web Dev 2018</small>
       </div>
     <footer class="footer">
       

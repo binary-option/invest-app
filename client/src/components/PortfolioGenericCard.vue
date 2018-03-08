@@ -1,6 +1,8 @@
 <template>
 <div>
- <b-card border-variant="dark" class="col-sm-12 col-lg-12 card mb-2 mt-3" :title="portfolio.portfolioName"
+  <router-link to="details" @click="storePortfolioId">
+      <div class="row">
+ <b-card border-variant="light" class="col-sm-12 col-lg-12 card" :title="portfolio.portfolioName"
           header-tag="header"
           footer-tag="footer">
 
@@ -19,18 +21,21 @@
            :star-size="25"></star-rating>
           </em>
 
-          <div class= "d-flex flex-row justify-content-between">
+          <div class= "flex-row ">
             <div>
         <p class="card-text">{{portfolio.description}} </p>
-        <b-button to="details"  variant="dark" @click="storePortfolioId">Get the details</b-button>
+      
             </div>
-            <div>
-              <h6> Risk: {{portfolio.risk}}</h6>
+              <span> Risk: {{portfolio.risk}}</span>
             
-              <h6> Performance: {{portfolio.performancey1}}</h6>
-              </div>
+              <span> Performance: {{portfolio.performancey1}}</span>
+              <br/>
+              <br/>
+              <b-button to="details"  variant="dark" @click="storePortfolioId">See the details</b-button>
         </div>
         </b-card>
+        </div>
+        </router-link>
 </div>
 </template>
 
@@ -68,4 +73,3 @@ export default {
   }
 };
 </script>
-

@@ -21,6 +21,11 @@
 
 <script>
 export default {
-  name: "NewComment"
+  name: "NewComment",
+  data() {
+    return {
+      content: ""
+    };
+  }
 };
 </script>

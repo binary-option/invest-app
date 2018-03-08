@@ -112,6 +112,13 @@ export function updateUser(userId, userInfo) {
     .catch(errHandler);
 }
 
+export function updateUserRisk(userId, userInfo) {
+  return service
+    .patch(`/users/${userId}/risk`, { userInfo })
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
 export function createPortfolio(portfolioInfo) {
   return service
     .post("/portfolios", portfolioInfo)

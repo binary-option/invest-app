@@ -84,7 +84,8 @@ router.post("/login", (req, res, next) => {
           name: user.name,
           id: user._id,
           role: user.role,
-          picture: user.picture
+          picture: user.picture,
+          riskAssessded: user.riskProfileCompleted
           //picture: user.picture
         });
       }
