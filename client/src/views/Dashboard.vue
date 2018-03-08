@@ -1,17 +1,17 @@
 <template>
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
    
-    <b-container fluid class="bv-example-row">
+    <b-container fluid class="bv-example-row col-lg-10 col-sm-12 mt-3">
 
       <div class="row justify-content-md-center mb-3 p-3 mb-2 bg-dark text-white mb-0">
         <h3>{{$root.user.name}} dashboard </h3>
       </div>
 
 
-      <b-row class="row-eq-height mt-0">
+      <b-row class="row-eq-height mt-0 mb-3">
 
 <!-- Side colomn for clients  -->
-        <div v-if="userInfo.role==='client'" id="side-column" class="col-lg-3 col-sm-12 pb-3 border d-flex flex-column justify-content-start align-items-center  ">
+        <div v-if="userInfo.role==='client'" id="side-column" class="col-lg-3 col-sm-12 pb-3 border d-flex flex-column justify-content-start align-items-center  pb-5 mb-3">
           <div class="pt-5">
             <p>Risk profile:</p>
             <p>Number of portfolios: {{clientPortfoliosNumber}}</p>
@@ -21,7 +21,7 @@
         </div>
 
 <!-- Side colomn for managers  -->
-        <div v-else id="side-column" class="col-lg-3 col-sm-12 border d-flex flex-column justify-content-start align-items-center ">
+        <div v-else id="side-column" class="col-lg-3 col-sm-12 border d-flex flex-column justify-content-start align-items-center pb-5 mb-3">
           <div class="pt-5">
             <p>Portfolios number: {{managerPortfoliosNumber}}</p>
             <!-- to fill this we need to populae the portfolioIds to see who is the owner -->
@@ -101,7 +101,7 @@
 
 
 
-        <div id="card-column" class="col-lg-9 col-sm-12 pt-5 border  d-flex flex-row  align-items-center justify-content-center flex-wrap">
+        <div id="card-column" class="col-lg-9 col-sm-12 pt-5 d-flex flex-row  align-items-center justify-content-center flex-wrap">
 
           <PortfolioGenericCard v-if="userInfo.role==='manager'" v-for="portfolio in userInfo.managerPortfolios" 
           :key="portfolio.id" 

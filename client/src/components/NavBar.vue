@@ -1,6 +1,6 @@
 <template>
 
-<b-navbar toggleable="md" type="dark" variant="dark">
+<b-navbar class="container col-lg-10 col-sm-12 mt-3" toggleable="md" type="dark" variant="dark">
 
   <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
 
@@ -25,7 +25,7 @@
     <b-navbar-nav class="ml-auto align-items-center" v-else>
 
        <b-nav-item to="/dashboard" >Dashboard</b-nav-item>
-      <b-nav-item to="/"  @click.native="isActive = false">Find portfolio</b-nav-item>
+      <b-nav-item to="/about"  @click.native="isActive = false">Find portfolio</b-nav-item>
       <b-nav-item-dropdown id="ddown-right" right text="Right align">
       <template slot="button-content">
         <em> 
