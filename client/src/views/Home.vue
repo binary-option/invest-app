@@ -1,41 +1,68 @@
 <template>
-  <div class="container">
-    <h2>This is the search page</h2>
+
+<div id="slider">
+  <slider animation="fade" style="height: 700px">
+  <p style="line-height: 280px; font-size: 5rem;  text-align: center;" v-if="!list.length">Loading...</p>
+  <slider-item v-for="(i, index) in list" :key="index">
+    <div :style="i">
+      <p style="line-height: 1000px; font-size: 2rem; text-align: center; "> 
+        <b-button  class= "btn btn-lg align-self-center" type="button" to="/signup" variant="dark">Signup</b-button>
+      </p>
+    </div>
+  </slider-item>
+</slider>
+</div>
+<!-- 
     <div class="text-center row justify-content-center">
+      <h2>this is the landing page</h2>
       <div class="col-lg-8 col-sm-8">
-
-        	<b-alert variant ="danger" show v-if="noWord" >
-          Insert a word!
-         </b-alert> 
-
-        <b-form>
-            <b-form-input  type="text"  v-model="$root.searchWord" placeholder="Type a word or stock handler (e.g. AAPL for Apple Inc."/>
-            <br>
-          
-            <b-button  type="submit" variant="dark"  @click.prevent="search">Search</b-button>
-          
-        </b-form>
+            <b-button  type="button" to="/signup" variant="dark">Signup</b-button>
       </div>
     </div>
-  </div>
+  -->
+ 
 </template>
 
+
 <script>
+import NewComment from "@/components/NewComment.vue";
+import { Slider, SliderItem } from "vue-easy-slider";
+
 export default {
-  name: "home",
+  name: "About",
+  components: {
+    Slider,
+    SliderItem
+  },
   data() {
     return {
-      noWord: false
+      list: [
+        { backgroundColor: "#3f51b5", width: "100%", height: "100%" },
+        { backgroundColor: "#eee", width: "100%", height: "100%" },
+        { backgroundColor: "#f44336", width: "100%", height: "100%" }
+      ]
     };
   },
   methods: {
-    search() {
-      if (this.$root.searchWord) this.$router.push("/search");
-      else {
-        this.noWord = true;
-        this.$router.push("/");
-      }
+    test() {
+      console.log(1);
     }
+  },
+
+  mounted() {
+    setTimeout(() => {
+      this.list = [
+        { backgroundColor: "#3f51b5", width: "100%", height: "100%" },
+        { backgroundColor: "#eee", width: "100%", height: "100%" },
+        { backgroundColor: "#f44336", width: "100%", height: "100%" }
+      ];
+    }, 1000);
   }
 };
 </script>
+
+<style>
+p {
+  margin: 0;
+}
+</style>

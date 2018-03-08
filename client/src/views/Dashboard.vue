@@ -182,7 +182,6 @@ export default {
       this.userInfo = userInfo;
       //if he is a manager
       if (userInfo.role === "manager") {
-        console.log("I'm a manager");
         this.userInfo.managerPortfolios.forEach(item => {
           this.averageRate = this.calculateAverageRating(item.ratings);
         });
@@ -197,14 +196,6 @@ export default {
         );
       } else if (userInfo.role === "client") {
         //if he is a client
-        console.log("I'm a client");
-        // this.userInfo.customerPortfoliosOwned.forEach(item => {
-        //   this.averageRate = this.calculateAverageRating(item.ratings);
-        //   this.portfolioTotalClients = this.getPortfolioTotalClients(item);
-        //   console.log(this.portfolioTotalClients);
-        //   this.portfolioTotalFollowers = this.getPortfolioTotalFollowers(item);
-        // });
-
         this.clientPortfoliosNumber = userInfo.customerPortfoliosOwned.length;
         (this.clientTotalInvestment = this.getClientTotalInvestment(
           this.userInfo

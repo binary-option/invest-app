@@ -1,18 +1,13 @@
 <template>
   <div id="app" class="app-size">
     <NavBar/>
-    <br>
-    <br>
     <section class="section">
-      <pre>{{$root.user}}
-      searchWord {{this.$root.searchWord}}
-      portfolioId {{$root.portfolioId}}
-      </pre>
+  
       <router-view/>
      
     </section>
-      <div slot="footer">
-        <small class="text-muted"><span class="oi oi-aperture" title="icon name" aria-hidden="true"></span><strong>Invest-app</strong> by Ironhack WebDev Cohort (c) 2018</small>
+      <div slot="footer" class="text-center mt-5">
+        <small class="text-muted"><strong>Invest-app</strong> by Manuel Rojas & Hanna Mazzoni <br> Ironhack Web Cor 2018</small>
       </div>
     <footer class="footer">
       
