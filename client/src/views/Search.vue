@@ -5,7 +5,7 @@
       <h3>Sorry we couldn't find any porfolio</h3>
 </div>   -->
 
- <div class="container col-lg-10 col-sm-12 mt-3 "> 
+ <div class="col-lg-12 col-sm-12"> 
 	
     <div class="modal-heading text-center p-3 mb-2 bg-dark text-white mb-0">
         <br>
@@ -23,7 +23,7 @@
 
 	  </div>
     
-    <div id="card-column" class="col-lg-9 col-sm-12 pt-5 border  d-flex flex-row  align-items-center justify-content-center flex-wrap">
+    <div id="card-column" class="col-lg-12 col-sm-12 pt-5 border  d-flex flex-row  align-items-center justify-content-center flex-wrap">
     
         <div v-for="result in allResults" :key="result.id">
           <PortfolioGenericCard v-if="userInfo.role==='manager'" v-for="portfolio in userInfo.managerPortfolios" 

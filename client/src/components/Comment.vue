@@ -6,7 +6,7 @@
 
     <div class="card">
       <div class="card-body text-left">
-        <img :src="imageURL" class="user-image"><span class="h5">   {{name}} wrote on </span><span class="h5 pull-right">{{date}}</span>
+        <img :src="imageURL" class="user-image"><span class="h5">   {{name}} wrote on </span><span class="h5 pull-right">{{date | moment }}</span>
           <div class="text item">
           {{content}}
           </div>
@@ -27,10 +27,13 @@ export default {
   props: ["imageURL", "name", "date", "content"],
   name: "Comment",
   data() {
-    return {
-      content: ""
-    };
+    return {};
+  },
+  filters: {
+  moment: function (date) {
+    return moment(date).format('MMMM Do YYYY, h:mm a');
   }
+}
 };
 </script>
 

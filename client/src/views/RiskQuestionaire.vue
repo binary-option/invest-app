@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import { updateUser } from "@/api";
+import { updateUserRisk } from "@/api";
 export default {
   methods: {
     //Takes the time horizon (q1 and q2) and multiplies it with the risk tolerance
@@ -126,9 +126,10 @@ export default {
 
       const userId = this.$root.user.id;
       const userInfo = {
-        riskProfile: this.riskProfile
+        riskProfile: this.riskProfile,
+        riskProfileCompleted: true
       };
-      updateUser(userId, userInfo)
+      updateUserRisk(userId, userInfo)
         .then(() => {
           this.$router.push("/profile");
         })

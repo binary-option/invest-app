@@ -2,14 +2,19 @@
 
 <b-navbar class="container col-lg-10 col-sm-12 mt-3" toggleable="md" type="dark" variant="dark">
 
-  <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+  
 
   <b-navbar-brand>
       <router-link class="navbar-item" to="/about">
-      <img type="dark" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrPq_RyBMImOqGPGBEeBrL70eo6sQzjW2ThXRKA4Wki82wMJ8R"  alt="Bulma: a modern CSS framework based on Flexbox" width="60" height="50">
+      <img type="dark" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrPq_RyBMImOqGPGBEeBrL70eo6sQzjW2ThXRKA4Wki82wMJ8R"  width="60" height="50">
     </router-link>
   </b-navbar-brand>
+  <b-navbar-nav>
+  <b-nav-item to="/dashboard" >Dashboard</b-nav-item>
+  <b-nav-item to="/about"  @click.native="isActive = false">Search</b-nav-item>
+  </b-navbar-nav>
 
+<b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
   <b-collapse is-nav id="nav_collapse">
 
   
@@ -35,7 +40,7 @@
           </div>
         </em>
       </template>
-        <b-dropdown-item to="/profile"  @click.native="isActive = false">See my profile</b-dropdown-item>
+        <b-dropdown-item to="/profile"  @click.native="isActive = false">My profile</b-dropdown-item>
         <b-dropdown-item to="/edit"  @click.native="isActive = false">Edit my profile</b-dropdown-item>
         <b-dropdown-divider></b-dropdown-divider>
         <b-dropdown-item to="/wishlist"  @click.native="isActive = false">My wishlist</b-dropdown-item>

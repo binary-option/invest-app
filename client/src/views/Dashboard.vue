@@ -1,35 +1,36 @@
 <template>
-  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+<div class="">
+  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard-container">
    
     <b-container fluid class="bv-example-row col-lg-10 col-sm-12 mt-3">
 
-      <div class="row justify-content-md-center mb-3 p-3 mb-2 bg-dark text-white mb-0">
-        <h3>{{$root.user.name}} dashboard </h3>
+      <div class="row justify-content-md-center mb-3 p-3 mb-2  text-white mb-0 dashboard-banner">
+        <h4>Your dashboard </h4>
       </div>
 
 
       <b-row class="row-eq-height mt-0 mb-3">
 
 <!-- Side colomn for clients  -->
-        <div v-if="userInfo.role==='client'" id="side-column" class="col-lg-3 col-sm-12 pb-3 border d-flex flex-column justify-content-start align-items-center  pb-5 mb-3">
+        <div v-if="userInfo.role==='client'" id="side-column" class="col-lg-3 col-md-4 col-sm-4 pb-3 border d-flex flex-column justify-content-start align-items-center text-left">
           <div class="pt-5">
             <p>Risk profile:</p>
             <p>Number of portfolios: {{clientPortfoliosNumber}}</p>
-            <p>Total investment: {{clientTotalInvestment}}</p>
-            <p>Total benefit: {{clientTotalBenefit}}</p>
+            <p>Invested amount: {{clientTotalInvestment}}</p>
+            <p>Your profit: {{clientTotalBenefit}}</p>
           </div>
         </div>
 
 <!-- Side colomn for managers  -->
-        <div v-else id="side-column" class="col-lg-3 col-sm-12 border d-flex flex-column justify-content-start align-items-center pb-5 mb-3">
+        <div v-else id="side-column" class="col-lg-3 col-md-4 col-sm-4 border d-flex flex-column justify-content-start align-items-center ">
           <div class="pt-5">
-            <p>Portfolios number: {{managerPortfoliosNumber}}</p>
+            <p>Number of portfolios: {{managerPortfoliosNumber}}</p>
             <!-- to fill this we need to populae the portfolioIds to see who is the owner -->
             <p>Total clients: {{managerTotalClients}}</p>
             <!-- We need to add the field in the model? -->
             <p>Total followers: {{managerTotalFollowers}}</p>
             <!-- Also for this we need to populate the portfolios -->
-            <p>Total managed money: {{managerTotalManagedMoney}}</p>
+            <p>Managed funds: {{managerTotalManagedMoney}}</p>
             <div>
               <b-button type="button" class="btn btn-dark" @click="modal1IsVisible = !modal1IsVisible">
                 Add a portfolio
@@ -127,6 +128,7 @@
 
 
   </div>
+</div>
 </template>
 
 <script>
@@ -362,5 +364,16 @@ export default {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+}
+
+.dashboard-container {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.dashboard-banner {
+  padding-bottom: 0;
+  margin-bottom: 0 !important;
+  background-color: #33495c;
 }
 </style>

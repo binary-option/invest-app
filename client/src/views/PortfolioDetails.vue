@@ -41,8 +41,8 @@
     <div class="container">
       <div class="row text-center justify-content-start">
         <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 lg-push-right">
-          <complete-profile v-if="!this.$root.user.role==='manager'"></complete-profile>
-          <invest></invest>
+          <complete-profile v-if="this.$root.user.role!=='manager' && this.$root.user.riskAssessded===false"></complete-profile>
+          <invest v-if="this.$root.user.role!=='manager' && this.$root.user.riskAssessded===true"></invest>
         </div>
         <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
           <div class="container">
@@ -465,7 +465,7 @@ export default {
         user: this.userId
       };
       let messageObject = {
-        imageURL: this.$root.user.name,
+        imageURL: this.$root.user.picture,
         name: this.$root.user.name,
         date: new Date(),
         content: content

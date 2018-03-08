@@ -1,7 +1,7 @@
 <template>
 
 <div id="slider">
-  <slider animation="fade" style="height: 700px">
+  <slider animation="fade" style="height: 400px">
   <p style="line-height: 280px; font-size: 5rem;  text-align: center;" v-if="!list.length">Loading...</p>
   <slider-item v-for="(i, index) in list" :key="index">
     <div :style="i">
@@ -56,7 +56,7 @@ export default {
         { backgroundColor: "#eee", width: "100%", height: "100%" },
         { backgroundColor: "#f44336", width: "100%", height: "100%" }
       ];
-    }, 1000);
+    }, 1000000);
   }
 };
 </script>
