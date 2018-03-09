@@ -17,5 +17,6 @@
   "bugs": {
     "url": "https://github.com/manuelrs/invest-app/issues"
   },
-  "homepage": "https://github.com/manuelrs/invest-app#readme"
+  "homepage": "https://github.com/manuelrs/invest-app#readme",
+  "dependencies": {}
 }

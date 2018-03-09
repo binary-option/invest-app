@@ -91,7 +91,7 @@
             <span class="p">Your selection:</span><b-form-radio-group id="radios7" v-model="q7" :options="optionsq7" name="radiosQ7" required></b-form-radio-group>
             </b-form-group>
                         <div class="row justify-content-md-center">
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="submit" variant="dark">Submit</b-button>
         </div>
             </b-form>
 
