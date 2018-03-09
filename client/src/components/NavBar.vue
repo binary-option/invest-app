@@ -1,6 +1,6 @@
 <template>
 
-<b-navbar toggleable="sm" type="dark" variant="dark">
+<b-navbar class="navbar-class" toggleable="sm" type="dark" variant="dark">
 
   
 
@@ -82,6 +82,10 @@ export default {
   float: left;
   width: 30px;
   height: 30px;
+}
+
+.navbar-class {
+  background-color: transparent;
 }
 </style>
 

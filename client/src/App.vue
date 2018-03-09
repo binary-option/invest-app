@@ -6,21 +6,23 @@
       <router-view/>
      
     </div>
-      <div slot="footer" class="text-center mt-5">
-        <small class="text-muted"><strong>iInvest</strong> by Manuel Rojas & Hanna Mazzoni <br> Ironhack Web Dev 2018</small>
-      </div>
     <footer class="footer">
       
     </footer>
+    <app-footer></app-footer>
   </div>
 </template>
 
 <script>
 import NavBar from "./components/NavBar";
 import { loadUser } from "./api";
+import AppFooter from "./components/AppFooter";
 
 export default {
-  components: { NavBar },
+  components: {
+    NavBar,
+    AppFooter
+  },
 
   created() {
     const user = loadUser();
@@ -34,6 +36,10 @@ export default {
 <style>
 .app-size {
   min-width: 370px;
+}
+
+#app {
+  font-family: "Raleway", sans-serif;
 }
 </style>
 

@@ -1,6 +1,5 @@
 <template>
-<div>
-  <router-link to="details" @click="storePortfolioId">
+<div class="portfolio-card-text">
       <div class="row">
  <b-card border-variant="light" class="col-sm-12 col-lg-12 card" :title="portfolio.portfolioName"
           header-tag="header"
@@ -35,7 +34,7 @@
         </div>
         </b-card>
         </div>
-        </router-link>
+
 </div>
 </template>
 
@@ -73,3 +72,6 @@ export default {
   }
 };
 </script>
+
+
+
