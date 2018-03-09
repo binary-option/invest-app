@@ -1,15 +1,13 @@
 <template>
   <div id="app" class="app-size">
     <NavBar/>
-    <div>
-  
+    <section class="section">  
       <router-view/>
+    </section>
+
+      <app-footer></app-footer>
      
-    </div>
-    <footer class="footer">
-      
-    </footer>
-    <app-footer></app-footer>
+    
   </div>
 </template>
 

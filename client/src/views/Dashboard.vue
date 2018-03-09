@@ -2,14 +2,14 @@
 <div class="">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard-container">
    
-    <b-container fluid class="bv-example-row">
+    <b-container fluid class="bv-example-row col-lg-10 col-sm-12 mt-3">
 
       <div class="row justify-content-md-center mb-3 p-3 mb-2  text-white mb-0 dashboard-banner">
         <h4>Your dashboard </h4>
       </div>
 
 
-      <b-row class="row-eq-height mt-0">
+      <b-row class="row-eq-height mt-0 mb-3">
 
 <!-- Side colomn for clients  -->
         <div v-if="userInfo.role==='client'" id="side-column" class="col-lg-3 col-md-4 col-sm-4 pb-3 border d-flex flex-column justify-content-start align-items-center text-left">
@@ -102,7 +102,7 @@
 
 
 
-        <div id="card-column" class="col-lg-9 col-sm-12 pt-5 border  d-flex flex-row  align-items-center justify-content-center flex-wrap">
+        <div id="card-column" class="col-lg-9 col-sm-12 pt-5 d-flex flex-row  align-items-center justify-content-center flex-wrap">
 
           <PortfolioGenericCard v-if="userInfo.role==='manager'" v-for="portfolio in userInfo.managerPortfolios" 
           :key="portfolio.id" 
@@ -374,6 +374,6 @@ export default {
 .dashboard-banner {
   padding-bottom: 0;
   margin-bottom: 0 !important;
-  background-color: #33495C;
+  background-color: #33495c;
 }
 </style>

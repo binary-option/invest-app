@@ -95,6 +95,7 @@ export default {
     updateUser() {
       const userId = this.$root.user.id;
       const picture = this.file;
+      console.log("this.file", this.file);
       const userInfo = {
         ...this.userInfo,
         picture: picture
