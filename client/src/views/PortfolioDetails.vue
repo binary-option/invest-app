@@ -195,8 +195,6 @@ export default {
         console.log(this.$root.user);
         updatePortfolio(this.$root.portfolioId, updateObject).then(res => {});
 
-        this.addRatings();
-
         getPortfolioComments(this.portfolioId).then(res => {
           res.forEach(message => {
             let messageObject = {
@@ -457,6 +455,32 @@ export default {
     }
   },
   methods: {
+    addMoneyToPortfolio(payload) {
+      this.portfolioId = this.$route.params.portfolioId;
+      console.log("I'm here", payload);
+      this.quantity = parseInt(payload.quantity);
+      this.clientId = this.userInfo._id;
+
+      // this.newBalance = this.userInfo.accountBalance - this.quantity;
+      // console.log("new balance", this.newBalance);
+      console.log("T want to add this quantity of Money ", this.quantity);
+      console.log("by this user ", this.clientId);
+      console.log("to this portfolio", this.portfolioId);
+      addMoney(this.quantity, this.portfolioId, this.clientId, this.newBalance)
+        .then(() => {
+          console.log("added Money");
+          this.$router.push("/dashboard");
+        })
+        .catch(err => {
+          console.log(err);
+          this.err = err;
+        });
+    },
+
+    getClientTotalBalance(clientId) {
+      get;
+    },
+
     addComment(content) {
       let contentObject = {
         content: content,

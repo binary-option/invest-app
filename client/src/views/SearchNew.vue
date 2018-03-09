@@ -17,7 +17,7 @@
         <b-form>
 
           <div class="row justify-content-center">
-            <b-form-input class="search-input col col-lg-8 align-self-center" type="text"  v-model="$root.searchWord" placeholder="Type a word or stock handler (e.g. AMZN for Amazon Inc.)"/>
+            <b-form-input class="search-input col col-lg-8 align-self-center" type="text"  v-model="word" placeholder="Type a word or stock handler (e.g. AMZN for Amazon Inc.)"/>
           </div>
           <br/>
           <br/>
@@ -40,15 +40,17 @@ export default {
   name: "home",
   data() {
     return {
-      noWord: false
+      noWord: false,
+      word: ""
     };
   },
   methods: {
     search() {
+      this.$root.searchWord = this.word;
       if (this.$root.searchWord) this.$router.push("/search");
       else {
         this.noWord = true;
-        this.$router.push("/");
+        (this.word = ""), this.$router.push("/");
       }
     }
   }
@@ -65,7 +67,6 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
 }
-
 .search-input {
   width: 80%;
 }

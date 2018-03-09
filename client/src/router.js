@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
+import SearchNew from "./views/SearchNew.vue";
 import SignUp from "./views/SignUp.vue";
 import LogIn from "./views/LogIn.vue";
 import Profile from "./views/Profile.vue";
@@ -10,7 +11,6 @@ import Dashboard from "./views/Dashboard.vue";
 import Search from "./views/Search.vue";
 import Risk from "./views/RiskQuestionaire.vue";
 import PortfolioDetails from "./views/PortfolioDetails.vue";
-import SearchNew from "./views/SearchNew.vue";
 
 Vue.use(Router);
 
@@ -25,7 +25,10 @@ export default new Router({
     {
       path: "/searchNew",
       name: "searchNew",
-      component: SearchNew
+      component: SearchNew,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: "/signup",

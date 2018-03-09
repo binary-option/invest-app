@@ -69,12 +69,22 @@
    
 			</div>
 		</div>
+
+    
 	</div>
 
-  </div>
-  </div>
-</div>
 
+
+  </div>
+
+  </div>
+
+  
+</div>
+<div class="text-center">
+Already regitered?
+ <router-link to="/login">Login</router-link>
+ </div>
 
   </section>
 </template>
