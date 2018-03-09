@@ -28,7 +28,8 @@
           <br/>
           <b-button variant="dark" @click="storePortfolioId">See the details</b-button>
         </div>
-
+</b-card>
+</div>
 </div>
 </template>
 

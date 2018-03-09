@@ -1,7 +1,6 @@
 <template>
 <div>
-  {{$root.user.id}}
-  {{this.userInfo.accountBalance}}
+
   <div v-loading="!dataLoaded" v-if="!dataLoaded&&!quandlErrorFlag"></div>
   <div v-loading="!dataLoaded" v-if="dataLoaded" class="about">
     <indicator-card :rating="ratings" :ratingValues="ratingValues" :read-only="true"></indicator-card>
@@ -208,7 +207,6 @@ export default {
         console.log(this.$root.user);
         updatePortfolio(this.$root.portfolioId, updateObject).then(res => {});
 
-        this.addRatings();
 
         getPortfolioComments(this.portfolioId).then(res => {
           res.forEach(message => {
@@ -479,8 +477,8 @@ export default {
       this.quantity = parseInt(payload.quantity);
       this.clientId = this.userInfo._id;
 
-      this.newBalance = this.userInfo.accountBalance - this.quantity;
-      console.log("account balance", this.newBalance);
+      // this.newBalance = this.userInfo.accountBalance - this.quantity;
+      // console.log("new balance", this.newBalance);
       console.log("T want to add this quantity of Money ", this.quantity);
       console.log("by this user ", this.clientId);
       console.log("to this portfolio", this.portfolioId);

@@ -2,19 +2,6 @@
 <div>
 <div>
 
-<<<<<<< HEAD
-<div id="slider">
-  <slider animation="fade" style="height: 400px">
-  <p style="line-height: 280px; font-size: 5rem;  text-align: center;" v-if="!list.length">Loading...</p>
-  <slider-item v-for="(i, index) in list" :key="index">
-    <div :style="i">
-       <b-button  type="button" to="/signup" variant="dark">Signup</b-button>
-      <p style="line-height: 1000px; font-size: 2rem; text-align: center; "> 
-          
-        <b-button  class= "btn btn-lg align-self-center" type="button" to="/signup" variant="primary">Signup</b-button>
-      </p>
-     
-=======
 <div class="container justify-content-center justify-text-center search-container">
     <br/>
     <br/>
@@ -45,7 +32,6 @@
         <br/>
         <br/>
       </div>
->>>>>>> f48c67e1c0c5100dd9f0514198f064bcac62c3b6
     </div>
   </div>
 
