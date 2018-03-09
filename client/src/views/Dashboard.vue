@@ -48,7 +48,7 @@
                   <b-form-textarea require class="mt-2 mb-2" type="text" placeholder="Enter the portfolio description" v-model="newPortfolio.description"></b-form-textarea>
                   <hr>
                   <div class="modal-footer">
-                    <button class="btn btn-dark" @click.prevent="addInformations">Add the stocks</button>
+                    <button class="btn btn-dark" @click.prevent="addInformations">Add stocks</button>
                     <button class="btn btn-secondary" type="button" data-dismiss="modal" @click="closeModal1">Cancel</button>
                   </div>
                 </form>
