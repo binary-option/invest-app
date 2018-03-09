@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <div class="row">
-      <b-card border-variant="light" class="col-sm-12 col-lg-12 card" :title="portfolio.portfolioName" header-tag="header" footer-tag="footer">
+<div class="portfolio-card-text">
+      <div class="row">
+ <b-card border-variant="light" class="col-sm-12 col-lg-12 card" :title="portfolio.portfolioName"
+          header-tag="header"
+          footer-tag="footer">
 
         <h6 slot="header" class="mb-0">
           <div class="d-flex flex-row justify-content-between">
@@ -26,9 +28,8 @@
           <br/>
           <b-button variant="dark" @click="storePortfolioId">See the details</b-button>
         </div>
-      </b-card>
-    </div>
-  </div>
+
+</div>
 </template>
 
 <script>
@@ -67,3 +68,6 @@ export default {
   }
 };
 </script>
+
+
+

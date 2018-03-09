@@ -1,17 +1,17 @@
 <template>
 
-<b-navbar class="container col-lg-10 col-sm-12 mt-3" toggleable="md" type="dark" variant="dark">
+<b-navbar class="navbar-class" toggleable="sm" type="dark" variant="dark">
 
   
 
   <b-navbar-brand>
-      <router-link class="navbar-item" to="/about">
-      <img type="dark" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrPq_RyBMImOqGPGBEeBrL70eo6sQzjW2ThXRKA4Wki82wMJ8R"  width="60" height="50">
+      <router-link class="navbar-item" to="/searchNew">
+      <img type="dark" src="/pictures/icon.png" height="45">
     </router-link>
   </b-navbar-brand>
   <b-navbar-nav>
   <b-nav-item to="/dashboard" >Dashboard</b-nav-item>
-  <b-nav-item to="/about"  @click.native="isActive = false">Search</b-nav-item>
+  <b-nav-item to="/searchNew"  @click.native="isActive = false">Search</b-nav-item>
   </b-navbar-nav>
 
 <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
@@ -83,6 +83,10 @@ export default {
   float: left;
   width: 30px;
   height: 30px;
+}
+
+.navbar-class {
+  background-color: transparent;
 }
 </style>
 

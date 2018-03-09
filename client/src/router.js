@@ -23,9 +23,9 @@ export default new Router({
       component: Home
     },
     {
-      path: "/about",
-      name: "about",
-      component: About
+      path: "/searchNew",
+      name: "searchNew",
+      component: SearchNew
     },
     {
       path: "/signup",
