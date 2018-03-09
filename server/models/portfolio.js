@@ -23,11 +23,10 @@ const portfolioSchema = new Schema({
     date: Date,
     amountOfMoney: Number,
     user: { type: Schema.Types.ObjectId, ref: "User" },
-    action: {
-      type: Number,
-      enum: ["buy", "sell"],
-      default: "buy"
-    }
+    // action: {
+    //   enum: ["buy", "sell"],
+    //   default: "buy"
+    // }
   }],
   description: {
     type: String,

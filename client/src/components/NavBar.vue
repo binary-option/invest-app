@@ -5,13 +5,13 @@
   
 
   <b-navbar-brand>
-      <router-link class="navbar-item" to="/about">
+      <router-link class="navbar-item" to="/searchNew">
       <img type="dark" src="/pictures/icon.png" height="45">
     </router-link>
   </b-navbar-brand>
   <b-navbar-nav>
   <b-nav-item to="/dashboard" >Dashboard</b-nav-item>
-  <b-nav-item to="/about"  @click.native="isActive = false">Search</b-nav-item>
+  <b-nav-item to="/searchNew"  @click.native="isActive = false">Search</b-nav-item>
   </b-navbar-nav>
 
 <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
@@ -29,8 +29,6 @@
 <!-- if logged in -->
     <b-navbar-nav class="ml-auto align-items-center" v-else>
 
-       <b-nav-item to="/dashboard" >Dashboard</b-nav-item>
-      <b-nav-item to="/about"  @click.native="isActive = false">Find portfolio</b-nav-item>
       <b-nav-item-dropdown id="ddown-right" right text="Right align">
       <template slot="button-content">
         <em> 

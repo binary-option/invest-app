@@ -54,8 +54,12 @@ password-reveal> -->
       <br>
    </b-form>
 </div>
+
   </div>
+ 
 </div>
+ You don't have an account? 
+  <router-link to="/signup">Create one</router-link>
   </div>
 </div>
 </div>
@@ -79,7 +83,7 @@ export default {
       login(this.username, this.password)
         .then(user => {
           this.$root.user = user;
-          this.$router.push("/about");
+          this.$router.push("/searchNew");
         })
         .catch(err => {
           this.error = err;
