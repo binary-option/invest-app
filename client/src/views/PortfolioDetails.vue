@@ -201,13 +201,14 @@ export default {
           returns: portfolioReturns
         };
 
-        this.portfolioId = this.$root.portfolioId;
         this.userId = this.$root.user.id;
-        console.log(this.$root.user);
-        updatePortfolio(this.$root.portfolioId, updateObject).then(res => {});
+        console.log("aa ", this.$route.params);
+        this.portfolioId = this.$route.params.portfolioId;
+        updatePortfolio(this.portfolioId, updateObject).then(res => {});
 
         getPortfolioComments(this.portfolioId).then(res => {
-          res.forEach(message => {
+          console.log("res ", res.messages);
+          res.messages.forEach(message => {
             let messageObject = {
               imageURL: message.user.picture,
               name: message.user.name,

@@ -19,15 +19,17 @@ const portfolioSchema = new Schema({
     unique: true
   },
   stocks: [stockSchema],
-  movements: [{
-    date: Date,
-    amountOfMoney: Number,
-    user: { type: Schema.Types.ObjectId, ref: "User" },
-    // action: {
-    //   enum: ["buy", "sell"],
-    //   default: "buy"
-    // }
-  }],
+  movements: [
+    {
+      date: Date,
+      amountOfMoney: Number,
+      user: { type: Schema.Types.ObjectId, ref: "User" }
+      // action: {
+      //   enum: ["buy", "sell"],
+      //   default: "buy"
+      // }
+    }
+  ],
   description: {
     type: String,
     required: true
@@ -40,13 +42,7 @@ const portfolioSchema = new Schema({
   investors: [{ type: Schema.Types.ObjectId, ref: "User" }],
   followers: [],
   manager: { type: Schema.Types.ObjectId, ref: "User" },
-  messages: [
-    {
-      content: String,
-      user: { type: Schema.Types.ObjectId, ref: "User" },
-      date: Date
-    }
-  ],
+  messages: [{ type: Schema.Types.ObjectId, ref: "Message" }],
   returns: [],
   alreadyRated: {
     type: Boolean,
