@@ -15,10 +15,8 @@ const config = require("./config");
 const { Strategy, ExtractJwt } = require("passport-jwt");
 const { ensureLoggedIn, ensureLoggedOut } = require("connect-ensure-login");
 
-mongoose.connect("mongodb://localhost/invest-app");
-
-
-//mongoose.connect(process.env.MONGODB_URI);
+//mongoose.connect("mongodb://localhost/invest-app");
+mongoose.connect(process.env.MONGODB_URI);
 
 const app = express();
 
@@ -126,7 +124,7 @@ app.use("/", express.static(clientRoot));
 app.use(history("index.html", { root: clientRoot }));
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   var err = new Error("Not Found");
   err.status = 404;
   next(err);

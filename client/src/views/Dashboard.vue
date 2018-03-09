@@ -2,8 +2,7 @@
 <div class="">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard-container">
    
-    <b-container fluid class="bv-example-row col-lg-10 col-sm-12 mt-3">
-
+    <b-container fluid class="bv-example-row col-lg-12 col-sm-12 mt-3">
       <div class="row justify-content-md-center mb-3 p-3 mb-2  text-white mb-0 dashboard-banner">
         <h4>Your dashboard </h4>
       </div>
@@ -373,6 +372,7 @@ export default {
 
 .dashboard-banner {
   padding-bottom: 0;
+  margin-top: -16px !important;
   margin-bottom: 0 !important;
   background-color: #33495c;
 }

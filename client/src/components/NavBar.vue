@@ -6,7 +6,7 @@
 
   <b-navbar-brand>
       <router-link class="navbar-item" to="/about">
-      <img type="dark" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrPq_RyBMImOqGPGBEeBrL70eo6sQzjW2ThXRKA4Wki82wMJ8R"  width="60" height="50">
+      <img type="dark" src="/pictures/icon.png" height="45">
     </router-link>
   </b-navbar-brand>
   <b-navbar-nav>

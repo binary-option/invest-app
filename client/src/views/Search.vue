@@ -7,7 +7,7 @@
 
  <div class="col-lg-12 col-sm-12"> 
 	
-    <div class="modal-heading text-center p-3 mb-2 bg-dark text-white mb-0">
+    <div class="modal-heading text-center p-3 mb-2 bg-transparent text-dark mb-0">
         <br>
 		    <h2>Search results</h2>
 

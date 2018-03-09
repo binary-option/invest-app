@@ -1,5 +1,6 @@
 <template>
 <div>
+<div>
 
 <div class="container justify-content-center justify-text-center search-container">
     <br/>
@@ -87,10 +88,21 @@
 <br/>
 <br/>
 </div>
+
+<app-footer></app-footer>
+</div>
 </template>
 
 <script>
+import AppFooter from "@/components/AppFooter";
+
+export default {
+  components: {
+    AppFooter
+  }
+};
 </script>
+
 
 
 <style>

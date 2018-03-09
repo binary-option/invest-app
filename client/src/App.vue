@@ -1,13 +1,17 @@
+
 <template>
   <div id="app" class="app-size">
     <NavBar/>
-    <section class="section">  
-      <router-view/>
-    </section>
-
-      <app-footer></app-footer>
+    <section class="section">
+<router-view/>
      
-    
+    </section>
+      <div slot="footer" class="text-center mt-5">
+        <small class="text-muted"><strong>Invest-app</strong> by Manuel Rojas & Hanna Mazzoni <br> Ironhack Web Dev 2018</small>
+      </div>
+    <footer class="footer">
+      
+    </footer>
   </div>
 </template>
 
