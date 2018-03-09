@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class= "container col-lg-10 col-sm-12 mt-3">
 
 <!-- <div  v-if="allResults!== []" class="container col-lg-11 col-sm-11 text-center">
       <h3>Sorry we couldn't find any porfolio</h3>
@@ -32,7 +32,7 @@
           :totalInvestors="getPortfolioTotalClients(portfolio)"
           :totalFollowers="getPortfolioTotalFollowers(portfolio)"
           :averageRate="calculateAverageRating(portfolio.ratings)"
-            /> 
+           /> 
 
          <PortfolioGenericCard v-if="userInfo.role==='client'" v-for="portfolio in allResults" 
          :key="portfolio.id" 

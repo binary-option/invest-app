@@ -92,6 +92,63 @@ router.patch(
   }
 );
 
+router.patch(
+  "/:portfolioId/addMoney",
+  ensureLoggedIn(),
+  (req, res, next) => {
+    const portfolioId = req.params.portfolioId;
+    const amountOfMoney = req.body.quantity;
+    const investmentDate = new Date();
+    const investmentUpdatedDate = this.investmentDate;
+    const clientId = req.user._id;
+    console.log(req.body)
+    const newBalance = req.body.newBalance
+    console.log("newBalance", newBalance);
+    //Modify the client
+    User.findByIdAndUpdate(
+      clientId,
+      {
+        $push: {
+          customerPort: {
+            amountOfMoney,
+            portfolioId,
+            investmentDate,
+            investmentUpdatedDate
+          },
+          customerPortfoliosOwned: portfolioId,
+        },
+        accountBalance: this.newBalance
+      },
+      (err, portfolio) => {
+        if (err) return next(err);
+        res.json(portfolio);
+      }
+    );
+    //Modify the portfolio
+    Portfolio.findByIdAndUpdate(
+      portfolioId,
+      {
+        $push: {
+          movements: {
+            date: investmentDate,
+            amountOfMoney,
+            clientId,
+
+          },
+          investors: clientId
+        },
+      },
+      (err, portfolio) => {
+        if (err) return next(err);
+        res.json(portfolio);
+      }
+    );
+
+
+  }
+);
+
+
 // router.get("/benchmark", ensureLoggedIn(), function(req, res, next) {
 //   // const startDate = req.params.startDate;
 //   // const endDate = req.params.endDate;

@@ -50,6 +50,10 @@
          <b-form-input ></b-form-input>
         </b-form-group>
 
+         <b-form-group class="ml-3 mr-3" label="Risk Profile" >
+         <b-form-input readonly :value="userInfo.riskProfile"></b-form-input>
+        </b-form-group>
+
         <br>
         <b-button type="submit" variant="dark">Submit</b-button>       
         <br>

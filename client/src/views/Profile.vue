@@ -37,6 +37,10 @@
          <b-form-input readonly ></b-form-input>
         </b-form-group>
       
+      <b-form-group class="ml-3 mr-3" label="Risk Profile" >
+         <b-form-input readonly :value="userInfo.riskProfile"></b-form-input>
+        </b-form-group>
+
     <br>
         <b-button to="/edit" variant="dark">Edit</b-button>
       <br>

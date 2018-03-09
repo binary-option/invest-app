@@ -29,8 +29,6 @@
 <!-- if logged in -->
     <b-navbar-nav class="ml-auto align-items-center" v-else>
 
-       <b-nav-item to="/dashboard" >Dashboard</b-nav-item>
-      <b-nav-item to="/about"  @click.native="isActive = false">Find portfolio</b-nav-item>
       <b-nav-item-dropdown id="ddown-right" right text="Right align">
       <template slot="button-content">
         <em> 

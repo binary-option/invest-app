@@ -7,12 +7,14 @@
       <div class="row justify-content-md-center mb-3 p-3 mb-2  text-white mb-0 dashboard-banner">
         <h4>Your dashboard </h4>
       </div>
+      <br>
+          <b-alert variant="success" show v-if="displayAlertSuccess">Portfolio created succesfully</b-alert>
 
 
       <b-row class="row-eq-height mt-0 mb-3">
 
 <!-- Side colomn for clients  -->
-        <div v-if="userInfo.role==='client'" id="side-column" class="col-lg-3 col-md-4 col-sm-4 pb-3 border d-flex flex-column justify-content-start align-items-center text-left">
+        <div v-if="userInfo.role==='client'" id="side-column" class="col-lg-3 col-md-4 col-sm-4 pb-3 border d-flex flex-column justify-content-start align-items-center text-left pb-5">
           <div class="pt-5">
             <p>Risk profile:</p>
             <p>Number of portfolios: {{clientPortfoliosNumber}}</p>
@@ -22,7 +24,7 @@
         </div>
 
 <!-- Side colomn for managers  -->
-        <div v-else id="side-column" class="col-lg-3 col-md-4 col-sm-4 border d-flex flex-column justify-content-start align-items-center ">
+        <div v-else id="side-column" class="col-lg-3 col-md-4 col-sm-4 border d-flex flex-column justify-content-start align-items-center  pb-5">
           <div class="pt-5">
             <p>Number of portfolios: {{managerPortfoliosNumber}}</p>
             <!-- to fill this we need to populae the portfolioIds to see who is the owner -->
@@ -39,8 +41,11 @@
 <!-- Add a portfolio: first modal  -->
               <b-modal v-model="modal1IsVisible" style="color:black" ref="modal1" :hide-footer="true">
                 <form>
-                  <b-alert variant="danger"  show v-if="displayAlert" >
+                  <b-alert variant="danger"  show v-if="displayAlertOne" >
                      Fill all the fields please
+                 </b-alert>
+                 <b-alert variant="danger"  show v-if="displayAlertTwo" >
+                     Something went wrong, try again!
                  </b-alert>
                   <p class="text-center">
                     <strong>Portfolio informations:</strong>
@@ -58,6 +63,7 @@
 <!-- Add a portfolio:  second modal  -->
               <b-modal v-model="modal2IsVisible" style="color:black" ref="modal2" :hide-footer="true">
                 <form @submit.stop.prevent="submitModal">
+                   
                   <p class="text-center">
                     <strong>Stock:</strong>
                   </p>
@@ -158,7 +164,9 @@ export default {
       //information for managers
       modal1IsVisible: false,
       modal2IsVisible: false,
-      displayAlert: false,
+      displayAlertOne: false,
+      displayAlertTwo: false,
+      displayAlertSuccess: false,
       managerPortfoliosNumber: "",
       managerTotalClients: "",
       managerTotalFollowers: "",
@@ -222,9 +230,7 @@ export default {
       console.log("payload ", payload);
       this.rate = parseInt(payload.rate);
       this.rate = payload.rate;
-      console.log("payload rate in client", payload.rate);
       this.portfolioId = payload.portfolioId;
-      console.log("portfolioID ", this.portfolioId);
       addRating(this.rate, this.portfolioId)
         .then(() => $router.push("/dashboard"))
         .catch(err => (this.err = err));
@@ -253,7 +259,6 @@ export default {
     },
 
     getPortfolioTotalClients(item) {
-      console.log(item.investors.length);
       return item.investors.length;
     },
 
@@ -275,7 +280,6 @@ export default {
         (a, b) => a.amountOfMoney + b.amountOfMoney,
         0
       );
-      console.log(total);
       if (total) return total;
       else return 0;
     },
@@ -327,11 +331,15 @@ export default {
       };
       createPortfolio(newPortfolio)
         .then(() => {
+          this.displayAlertSuccess = true;
           this.$router.push("/dashboard");
         })
         .catch(err => {
           this.error = err;
+          if (err) this.displayAlertTwo = true;
+          this.modal1IsVisible = true;
         });
+
       this.newStocks = [];
       this.newPortfolio.portfolioName = "";
       this.newPortfolio.description = "";

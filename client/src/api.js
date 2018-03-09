@@ -85,7 +85,7 @@ export function getPortfolio(portfolioId) {
 
 export function addInvestor(clientId) {
   return service
-    .patch(`/portfolio/${portfolioId}`, clientId)
+    .patch(`/portfolio/${portfolioId}/addInvestor`, clientId)
     .then(res => res.data)
     .catch(errHandler);
 }
@@ -94,6 +94,17 @@ export function addRating(rate, portfolioId) {
   console.log("rate in client api", rate);
   return service
     .patch(`/portfolios/${portfolioId}`, rate)
+    .then(res => res.data)
+    .catch(errHandler);
+}
+
+export function addMoney(quantity, portfolioId, clientId, newBalance) {
+  console.log("new balance", newBalance)
+  // console.log("T want to add this quantity of Money ", quantity)
+  // console.log("by this user ", clientId)
+  // console.log("to this portfolio", portfolioId)
+  return service
+    .patch(`/portfolios/${portfolioId}/addMoney`, clientId, newBalance)
     .then(res => res.data)
     .catch(errHandler);
 }
@@ -167,11 +178,11 @@ const quandl = axios.create({
 export function getStockDelta(stockInfo) {
   return quandl
     .get(
-      `${stockInfo.name}.json?column_index=1&start_date=${
-        stockInfo.startDate
-      }&end_date=${stockInfo.endDate}&collapse=${
-        stockInfo.frequency
-      }&transform=rdiff_from`
+    `${stockInfo.name}.json?column_index=1&start_date=${
+    stockInfo.startDate
+    }&end_date=${stockInfo.endDate}&collapse=${
+    stockInfo.frequency
+    }&transform=rdiff_from`
     )
     .then(res => {
       return res.data;
@@ -183,11 +194,11 @@ export function getStockDelta(stockInfo) {
 export function getStockValue(stockInfo) {
   return quandl
     .get(
-      `${stockInfo.name}.json?column_index=1&start_date=${
-        stockInfo.startDate
-      }&end_date=${stockInfo.endDate}&collapse=${
-        stockInfo.frequency
-      }&transform=none`
+    `${stockInfo.name}.json?column_index=1&start_date=${
+    stockInfo.startDate
+    }&end_date=${stockInfo.endDate}&collapse=${
+    stockInfo.frequency
+    }&transform=none`
     )
     .then(res => {
       return res.data;

@@ -86,7 +86,7 @@ export default new Router({
       }
     },
     {
-      path: "/details",
+      path: "/portfolios/:portfolioId",
       name: "Details",
       component: PortfolioDetails,
       meta: {

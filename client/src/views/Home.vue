@@ -5,9 +5,12 @@
   <p style="line-height: 280px; font-size: 5rem;  text-align: center;" v-if="!list.length">Loading...</p>
   <slider-item v-for="(i, index) in list" :key="index">
     <div :style="i">
+       <b-button  type="button" to="/signup" variant="dark">Signup</b-button>
       <p style="line-height: 1000px; font-size: 2rem; text-align: center; "> 
-        <b-button  class= "btn btn-lg align-self-center" type="button" to="/signup" variant="dark">Signup</b-button>
+          
+        <b-button  class= "btn btn-lg align-self-center" type="button" to="/signup" variant="primary">Signup</b-button>
       </p>
+     
     </div>
   </slider-item>
 </slider>

@@ -54,8 +54,12 @@ password-reveal> -->
       <br>
    </b-form>
 </div>
+
   </div>
+ 
 </div>
+ You don't have an account? 
+  <router-link to="/signup">Create one</router-link>
   </div>
 </div>
 </div>
