@@ -5,6 +5,7 @@
     <indicator-card :rating="ratings" :ratingValues="ratingValues" :read-only="true"></indicator-card>
 
     <div class="container">
+
         <br/>
     </div>
 
@@ -42,7 +43,9 @@
       <div class="row text-center justify-content-start">
         <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 lg-push-right">
           <complete-profile v-if="this.$root.user.role!=='manager' && this.$root.user.riskAssessded===false"></complete-profile>
-          <invest v-if="this.$root.user.role!=='manager' && this.$root.user.riskAssessded===true"></invest>
+          <invest v-if="this.$root.user.role!=='manager' && this.$root.user.riskAssessded===true"
+          :balance="userInfo.accountBalance"
+          v-on:invest="addMoneyToPortfolio"></invest>
         </div>
         <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
           <div class="container">
@@ -65,22 +68,24 @@
     </div>
     
     
-    </div>
-    <div v-if="quandlErrorFlag">
+     </div>
+    <!-- <div v-if="quandlErrorFlag">
       <quandl-error></quandl-error>
-    </div>
+    </div> -->
   </div>
 </template>
 
 
 <script>
 import { getPortfolio } from "@/api";
+import { getUser } from "@/api";
 import { getStockDelta } from "@/api";
 import { getStockValue } from "@/api";
 import { updatePortfolio } from "@/api";
 import { retrieveBenchmarkData } from "@/api";
 import { addPortfolioComment } from "@/api";
 import { getPortfolioComments } from "@/api";
+import { addMoney } from "../api";
 import PieChart from "@/components/PieChart.vue";
 import LineChart from "@/components/LineChart.vue";
 import IndicatorCard from "@/components/IndicatorCard.vue";
@@ -106,7 +111,9 @@ export default {
   },
   created() {
     // This array of promises makes sure that the functions are carried out when both callbacks are ready
-    getPortfolio(this.$root.portfolioId)
+    this.portfolioId = this.$route.params.portfolioId;
+    console.log(this.portfolioId);
+    getPortfolio(this.$route.params.portfolioId)
       .then(portfolio => {
         portfolio.stocks.forEach(pf => {
           let name = pf.stockName;
@@ -134,6 +141,10 @@ export default {
             lastHoldingValue: lastHoldingValue
           };
           this.stockInfo.push(stock);
+        });
+        getUser(this.$root.user.id).then(user => {
+          console.log("user", this.userInfo);
+          this.userInfo = user;
         });
 
         return Promise.all([
@@ -218,11 +229,14 @@ export default {
   data() {
     return {
       //Locally store the userId
-      userId: "",
+      userInfo: {},
       //Locally store the portfolio Id
-      portfolioId: "",
       messages: [],
       messagesLoaded: false,
+      portfolioId: "",
+      //Store the quantity of money invested in a portfolio
+      quantity: 0,
+      newBalance: 0,
       //Object holding the different ratings
       ratings: {
         alpha: 1,
