@@ -43,9 +43,8 @@ router.get("/:startDate/:endDate", ensureLoggedIn(), function(req, res, next) {
     let queryDataDate = [];
     let queryDataValue = [];
     let queryIndex = queryEnd - queryLength * 5;
-    console.log("qi", queryIndex);
+
     for (var i = queryEnd - queryLength; i < queryEnd; i++) {
-      console.log(queryIndex);
       queryDataRdiff.push(benchmark[0].rdiff[queryIndex].rdiff);
       queryDataDate.push(benchmark[0].rdiff[queryIndex].date);
       queryDataValue.push(benchmark[0].rdiff[queryIndex].value);

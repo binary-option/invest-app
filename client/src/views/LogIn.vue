@@ -83,7 +83,7 @@ export default {
       login(this.username, this.password)
         .then(user => {
           this.$root.user = user;
-          this.$router.push("/search");
+          this.$router.push("/searchNew");
         })
         .catch(err => {
           this.error = err;

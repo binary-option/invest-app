@@ -2,6 +2,7 @@
 <div>
   <div v-loading="!dataLoaded" v-if="!dataLoaded&&!quandlErrorFlag"></div>
   <div v-loading="!dataLoaded" v-if="dataLoaded" class="about">
+    <br>
     <indicator-card :rating="ratings" :ratingValues="ratingValues" :read-only="true"></indicator-card>
 
     <div class="container">
@@ -20,7 +21,7 @@
           <h3>Single stock development</h3>
           <br/>
           <line-chart :data="plotObject" :options="plotObject.options"></line-chart>
-          <span class="text-muted">From Feb 17 to Mar 18</span>
+          <span class="text-muted">From {{this.startDate | moment}} to {{this.endDate | moment}}</span>
         </div>
         <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
           <h3>Portfolio allocation</h3>
@@ -32,7 +33,7 @@
           <h3>Portfolio vs Benchmark </h3>
           <br/>
           <line-chart :data="indexPlotObject" :options="indexPlotObject.options"></line-chart>
-          <span class="text-muted">From Feb 17 to Mar 18</span>
+          <span class="text-muted">From {{this.startDate | moment}} to {{this.endDate | moment}}</span>
         </div>
       </div>
       <br/>
@@ -112,7 +113,6 @@ export default {
   created() {
     // This array of promises makes sure that the functions are carried out when both callbacks are ready
     this.portfolioId = this.$route.params.portfolioId;
-    console.log(this.portfolioId);
     getPortfolio(this.$route.params.portfolioId)
       .then(portfolio => {
         portfolio.stocks.forEach(pf => {
@@ -121,20 +121,20 @@ export default {
           //Calculate start date, one year and one day from now
           let startDate = moment(date)
             .subtract(1, "year")
-            .subtract(1, "day")
-            .format("YYYY-MM-DD");
+            .subtract(1, "day");
+
+          this.startDate = startDate;
           //Start one day from now to ensure data availability
-          let endDate = moment(date)
-            .subtract(1, "day")
-            .format("YYYY-MM-DD");
+          let endDate = moment(date).subtract(1, "day");
+          this.endDate = endDate;
           let frequency = "weekly";
           let lastUpdatedDate = moment(pf.lastUpdatedDate).format("YYYY-MM-DD");
           let lastStockValue = pf.stockValue;
           let lastHoldingValue = pf.holdingValue;
           let stock = {
             name: name,
-            startDate: startDate,
-            endDate: endDate,
+            startDate: startDate.format("YYYY-MM-DD"),
+            endDate: endDate.format("YYYY-MM-DD"),
             frequency: frequency,
             lastUpdatedDate: lastUpdatedDate,
             lastStockValue: lastStockValue,
@@ -150,10 +150,32 @@ export default {
         return Promise.all([
           Promise.all(this.stockInfo.map(getStockDelta)),
           Promise.all(this.stockInfo.map(getStockValue)),
-          retrieveBenchmarkData("2017-02-27", "2018-02-27")
+          //retrieveBenchmarkData("2017-02-07", "2018-03-01")
+          retrieveBenchmarkData(
+            moment()
+              .subtract(1, "year")
+              .startOf("isoWeek")
+              .format("YYYY-MM-DD"),
+            moment()
+              .startOf("isoWeek")
+              .format("YYYY-MM-DD")
+          )
         ]);
       })
       .then(([stockRdiff, stockValue, benchmarkData]) => {
+        console.log(
+          "DATE ",
+          moment()
+            .startOf("isoWeek")
+            .format("YYYY-MM-DD")
+        );
+        console.log(
+          "DATE PAST",
+          moment()
+            .subtract(1, "year")
+            .startOf("isoWeek")
+            .format("YYYY-MM-DD")
+        );
         this.benchmarkData = benchmarkData;
         this.stockRdiffs = stockRdiff;
         this.filterStockRdiffs();
@@ -187,6 +209,9 @@ export default {
         this.prepareIndexPlotData();
         this.preparePieChartData();
 
+        //Call al functions to calculate the ratings
+        this.addRatings();
+
         //This function updates the portfolio returns in the database
         var portfolioReturns = [];
         this.compositeStockValue.forEach((value, i) => {
@@ -196,19 +221,17 @@ export default {
           });
         });
         var updateObject = {
-          risk: 100 - this.portfolioBetaRating * 20,
-          performance: this.portfolioReturn,
+          portfolioRisk: 100 - this.portfolioBetaRating * 20,
+          portfolioPerformance: this.portfolioReturn,
           returns: portfolioReturns
         };
 
         this.userId = this.$root.user.id;
-        console.log("aa ", this.$route.params);
         this.portfolioId = this.$route.params.portfolioId;
         updatePortfolio(this.portfolioId, updateObject).then(res => {});
 
         getPortfolioComments(this.portfolioId).then(res => {
-          console.log("res ", res.messages);
-          res.messages.forEach(message => {
+          res.forEach(message => {
             let messageObject = {
               imageURL: message.user.picture,
               name: message.user.name,
@@ -229,11 +252,13 @@ export default {
   mounted() {},
   data() {
     return {
+      startDate: "",
+      endDate: "",
       //Locally store the userId
       userInfo: {},
-      //Locally store the portfolio Id
       messages: [],
       messagesLoaded: false,
+      //Locally store the portfolio Id
       portfolioId: "",
       //Store the quantity of money invested in a portfolio
       quantity: 0,
@@ -472,22 +497,16 @@ export default {
   methods: {
     addMoneyToPortfolio(payload) {
       this.portfolioId = this.$route.params.portfolioId;
-      console.log("I'm here", payload);
       this.quantity = parseInt(payload.quantity);
       this.clientId = this.userInfo._id;
 
       // this.newBalance = this.userInfo.accountBalance - this.quantity;
       // console.log("new balance", this.newBalance);
-      console.log("T want to add this quantity of Money ", this.quantity);
-      console.log("by this user ", this.clientId);
-      console.log("to this portfolio", this.portfolioId);
       addMoney(this.quantity, this.portfolioId, this.clientId, this.newBalance)
         .then(() => {
-          console.log("added Money");
           this.$router.push("/dashboard");
         })
         .catch(err => {
-          console.log(err);
           this.err = err;
         });
     },
@@ -499,7 +518,7 @@ export default {
     addComment(content) {
       let contentObject = {
         content: content,
-        portfolio: this.portfolioId,
+        portfolio: this.$route.params.portfolioId,
         date: new Date(),
         user: this.userId
       };
@@ -510,7 +529,9 @@ export default {
         content: content
       };
       this.messages.unshift(messageObject);
-      addPortfolioComment(this.portfolioId, contentObject).then(res => {});
+      addPortfolioComment(this.$route.params.portfolioId, contentObject).then(
+        res => {}
+      );
     },
     //Returns an array with the weighted value of the stock
     caclulateCompositeStock() {
@@ -537,9 +558,19 @@ export default {
           tempStockValue.push(
             this.stockValueFiltered[j][i] * numberOfStocks[j]
           );
+          console.log(
+            "svvi ",
+            this.stockValueFiltered[j][i] * numberOfStocks[j],
+            "svf ",
+            this.stockValueFiltered[j][i],
+            "nos ",
+            numberOfStocks[j]
+          );
         }
         stockValueVector.push(tempStockValue);
       }
+
+      console.log("svv ", stockValueVector);
 
       //A Matrix, containing in each row the wheighted stock contributions to the
       //composite stock per period
@@ -560,6 +591,8 @@ export default {
         }
         tempWeightedStock.push(weightedStockHolder);
       }
+      //console.log("tws ", tempWeightedStock);
+      //So far ok, tempWeightedStock returns the rdiffs from Quandl
       //Array holding the value of the composite stock per period in rdiff
       for (var i = 0; i < tempWeightedStock.length; i++) {
         this.compositeStockRdiff.push(
@@ -568,6 +601,7 @@ export default {
           })
         );
       }
+      //console.log("csr ", this.compositeStockRdiff);
       //Array holding the total value of the composite stock
       for (var i = 0; i < tempWeightedStock.length; i++) {
         var weightedStock = [];
@@ -575,6 +609,14 @@ export default {
           weightedStock.push(
             (1 + tempWeightedStock[i][j]) * stockValueVector[i][j]
           );
+          // console.log(
+          //   "weightedStock ",
+          //   weightedStock,
+          //   "tempWeightedStock ",
+          //   tempWeightedStock[i][j],
+          //   "stockValueVector ",
+          //   stockValueVector[i][j]
+          // );
         }
         this.compositeStockValue.push(
           weightedStock.reduce((acc, curr) => {
@@ -582,6 +624,7 @@ export default {
           }) / totalNumberOfStocks
         );
       }
+      console.log("csv ", this.compositeStockValue);
     },
     //Calculates the change in value of the stocks since the last time they were updated
     holdingDelta() {
@@ -692,6 +735,11 @@ export default {
         return: this.portfolioReturn,
         returnBenchmark: this.benchmarkReturn
       };
+    }
+  },
+  filters: {
+    moment: function(date) {
+      return moment(date).format("MMMM YYYY");
     }
   }
 };

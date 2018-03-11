@@ -170,18 +170,31 @@ router.get("/:portfolioId/comments", ensureLoggedIn(), function(
 ) {
   const portfolioId = req.params.portfolioId;
   Portfolio.findById(portfolioId)
-    .populate("messages")
-    .then(portfolios => {
-      res.json(portfolios);
+    .populate({
+      path: "messages",
+      populate: {
+        path: "user"
+      }
+    })
+    .then(portfolio => {
+      res.json(portfolio.messages.reverse());
     });
 });
 
 router.patch("/:portfolioId/returns", ensureLoggedIn(), (req, res, next) => {
-  const portfolioReturns = req.body.portfolioReturns;
+  const portfolioReturns = req.body.updateObject.returns;
+  const portfolioRisk = req.body.updateObject.portfolioRisk;
+  const portfolioPerformance = req.body.updateObject.portfolioPerformance;
+
+  console.log("pr ", portfolioReturns);
 
   Portfolio.findByIdAndUpdate(
     req.params.portfolioId,
-    { returns: portfolioReturns },
+    {
+      returns: portfolioReturns,
+      risk: portfolioRisk,
+      performance1y: portfolioPerformance
+    },
     (err, portfolioReturns) => {
       if (err) return next(err);
       res.json("portfolioReturns");

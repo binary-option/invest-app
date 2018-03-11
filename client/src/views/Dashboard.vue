@@ -2,12 +2,12 @@
 <div class="">
   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 dashboard-container">
    
-    <b-container fluid class="bv-example-row col-lg-12 col-sm-12 mt-3">
+    <b-container fluid class="bv-example-row col-lg-12 col-sm-12 mt-3 dashboard-container-2">
       <div class="row justify-content-md-center mb-3 p-3 mb-2  text-white mb-0 dashboard-banner">
         <h4>Your dashboard </h4>
       </div>
       <br>
-          <b-alert variant="success" show v-if="displayAlertSuccess">Portfolio created succesfully</b-alert>
+          <!-- <b-alert variant="success" show v-if="displayAlertSuccess">Portfolio created succesfully</b-alert> -->
 
 
       <b-row class="row-eq-height mt-0 mb-3">
@@ -15,15 +15,17 @@
 <!-- Side colomn for clients  -->
         <div v-if="userInfo.role==='client'" id="side-column" class="col-lg-3 col-md-4 col-sm-4 pb-3 border d-flex flex-column justify-content-start align-items-center text-left pb-5">
           <div class="pt-5">
-            <p>Risk profile:</p>
+            <p v-if="userInfo.riskProfileCompleted">Risk profile: {{clientRiskProfile}}</p>
+            <p v-else>Risk profile: 
+              <router-link to="/risk" class=""><span class="complete-profile">Complete now</span></router-link>
+            </p>
             <p>Number of portfolios: {{clientPortfoliosNumber}}</p>
             <p>Invested amount: {{clientTotalInvestment}}</p>
-            <p>Your profit: {{clientTotalBenefit}}</p>
           </div>
         </div>
 
 <!-- Side colomn for managers  -->
-        <div v-else id="side-column" class="col-lg-3 col-md-4 col-sm-4 border d-flex flex-column justify-content-start align-items-center  pb-5">
+        <div v-if="userInfo.role==='manager'" id="side-column" class="col-lg-3 col-md-4 col-sm-4 border d-flex flex-column justify-content-start align-items-center  pb-5">
           <div class="pt-5">
             <p>Number of portfolios: {{managerPortfoliosNumber}}</p>
             <!-- to fill this we need to populae the portfolioIds to see who is the owner -->
@@ -41,13 +43,13 @@
               <b-modal v-model="modal1IsVisible" style="color:black" ref="modal1" :hide-footer="true">
                 <form>
                   <b-alert variant="danger"  show v-if="displayAlertOne" >
-                     Fill all the fields please
+                     Please fill out all fields
                  </b-alert>
                  <b-alert variant="danger"  show v-if="displayAlertTwo" >
-                     Something went wrong, try again!
+                     Something went wrong, please try again!
                  </b-alert>
                   <p class="text-center">
-                    <strong>Portfolio informations:</strong>
+                    <strong>Portfolio information:</strong>
                   </p>
                   <b-form-input require class="mt-2 mb-2" type="text" placeholder="Enter the portfolio name" v-model="newPortfolio.portfolioName"></b-form-input>
                   <b-form-textarea require class="mt-2 mb-2" type="text" placeholder="Enter the portfolio description" v-model="newPortfolio.description"></b-form-textarea>
@@ -107,7 +109,9 @@
 
 
 
-        <div id="card-column" class="col-lg-9 col-sm-12 pt-5 d-flex flex-row  align-items-center justify-content-center flex-wrap">
+        <div id="card-column" class="col-lg-9 col-md-8 col-sm-8 pt-5 d-flex flex-row  align-items-center justify-content-center flex-wrap">
+
+          <b-alert show dismissible variant="success" v-if="displayAlertSuccess">Portfolio created succesfully </b-alert>
 
           <PortfolioGenericCard v-if="userInfo.role==='manager'" v-for="portfolio in userInfo.managerPortfolios" 
           :key="portfolio.id" 
@@ -170,7 +174,7 @@ export default {
       managerTotalClients: "",
       managerTotalFollowers: "",
       managerTotalManagedMoney: "",
-      //information for portfolios
+      //Information for portfolios
       stock: {},
       newStocks: [],
       newPortfolio: {},
@@ -178,10 +182,11 @@ export default {
       portfolioId: "",
       portfolioTotalClients: "",
       portfolioTotalFollowers: "",
-      //information for the client
+      //Information for the client
       clientPortfoliosNumber: "",
       clientTotalInvestment: "",
-      clientTotalBenefit: ""
+      clientTotalBenefit: "",
+      clientRiskProfile: 0
     };
   },
   created() {
@@ -205,6 +210,7 @@ export default {
       } else if (userInfo.role === "client") {
         //if he is a client
         this.clientPortfoliosNumber = userInfo.customerPortfoliosOwned.length;
+        this.clientRiskProfile = userInfo.riskProfile;
         (this.clientTotalInvestment = this.getClientTotalInvestment(
           this.userInfo
         )),
@@ -358,12 +364,17 @@ export default {
 #side-column {
   color: white;
   background-color: rgba(96, 100, 114, 0.623);
+  margin-top: -24px !important;
+  border-top: 0px !important;
+  padding-top: 0 !important;
 }
 
 #card-column {
   overflow-y: auto;
   height: 100%;
   background-color: rgba(248, 251, 252, 0.1);
+  margin-right: 0 !important;
+  padding-right: 0 !important;
 }
 
 .row-eq-height {
@@ -373,15 +384,20 @@ export default {
   display: flex;
 }
 
-.dashboard-container {
-  padding-left: 0;
-  padding-right: 0;
+.dashboard-container,
+.dashboard-container-2 {
+  padding: 0 !important;
+  /* margin: 0 !important; */
 }
 
 .dashboard-banner {
   padding-bottom: 0;
+  margin: 0 !important;
   margin-top: -16px !important;
-  margin-bottom: 0 !important;
   background-color: #33495c;
+}
+
+.complete-profile {
+  color: #33495c;
 }
 </style>

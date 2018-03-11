@@ -3,14 +3,13 @@
     <br/>
     <br/>
     <br/>
-    <br/>
-    <h2 class="text-white text-center">Search for a portfolio</h2>
+    <h2 class="text-white text-center display-4">Search for a portfolio</h2>
     <br/>
     <div class="row text-center justify-content-center">
-      <div class="col-lg-12 col-sm-12">
+      <div class="col col-lg-8 col-md-8 col-sm-8 col-xs-12 align-self-center">
 
-        	<b-alert variant ="danger" show v-if="noWord" >
-          Insert a word!
+        	<b-alert variant ="secondary" show v-if="noWord" >
+          Please enter a valid word to start your search
          </b-alert> 
 
         <div class="container">
@@ -23,7 +22,7 @@
           <br/>
           <div class="row justify-content-center">
             <br/>
-            <b-button  type="submit" variant="dark"  @click.prevent="search">Search</b-button>
+            <b-button  class="btn" type="submit" variant="dark"  @click.prevent="search">Search</b-button>
           </div>
           
         </b-form>
@@ -50,7 +49,7 @@ export default {
       if (this.$root.searchWord) this.$router.push("/search");
       else {
         this.noWord = true;
-        (this.word = ""), this.$router.push("/");
+        (this.word = ""), this.$router.push("/searchNew");
       }
     }
   }
@@ -59,13 +58,14 @@ export default {
 
 <style>
 .search-container {
-  background-image: url("/pictures/search_bg.jpg");
+  background-image: url("/pictures/search_bg.png");
   height: 100%;
   width: 100%;
   max-width: 1300px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  margin: 0;
 }
 .search-input {
   width: 80%;

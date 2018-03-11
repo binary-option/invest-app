@@ -8,7 +8,7 @@
             <!--First column-->
             <div class="col-md-6">
                 <h5 class="text-uppercase text-white">About iInvest</h5>
-                <p class="text-white">Final project @Ironhack Paris by Manuel Rojas and Hanna Mazzoni. Application powered by Node in the backend and Vue in the frontend.</p>
+                <p class="text-white">Final project @ Ironhack Paris by Manuel Rojas and Hanna Mazzoni. Application powered by Node in the backend and Vue in the frontend.</p>
             </div>
             <!--/.First column-->
 

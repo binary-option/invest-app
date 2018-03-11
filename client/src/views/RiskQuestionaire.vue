@@ -8,6 +8,8 @@
 			<div class="modal-heading"> -->
         <br>
 		<h2 class="text-center">Risk assessment</h2>
+    <br/>
+    <p class="h5">Assessing your risk preferences helps us understand your financial needs, so that we can match you the right portfolios. Please answer the questions below.</p>
 		</div>
 		<hr />
 		<div class="modal-body">
@@ -94,12 +96,6 @@
         <b-button type="submit" variant="dark">Submit</b-button>
         </div>
             </b-form>
-
-            <div class="mt-3">
-            Selected: <strong>{{ q1+q2+q3+q4+q5+q6+q7 }}</strong>
-            <pre>Time horizon {{q1+q2}}</pre>
-            <pre>Risk Tolerance {{q3+q4+q5+q6+q7}}</pre>
-            </div>
         </div>
 
   </div>

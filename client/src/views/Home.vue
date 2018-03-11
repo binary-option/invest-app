@@ -20,7 +20,7 @@
           <br/>
           <div class="row justify-content-center">
             <br/>
-            <b-button  type="submit" variant="dark"  to="signup">Sign up</b-button>
+            <b-button class="btn btn-lg" type="submit" variant="dark"  to="signup">Sign up</b-button>
           </div>
           
         </b-form>
@@ -130,13 +130,13 @@ export default {
 }
 
 .search-container {
-  background-image: url("/pictures/search_bg.jpg");
-
+  background-image: url("/pictures/landing_bg.png");
   width: 100%;
-  max-width: 1300px;
+  max-width: 1300px !important;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  margin: 0;
 }
 
 .search-input {

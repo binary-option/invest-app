@@ -5,13 +5,16 @@
   
 
   <b-navbar-brand>
-      <router-link class="navbar-item" to="/searchNew">
+      <router-link v-if="!$root.user" class="navbar-item" to="/">
+      <img type="dark" src="/pictures/icon.png" height="45">
+    </router-link>
+    <router-link v-if="$root.user" class="navbar-item" to="/searchNew">
       <img type="dark" src="/pictures/icon.png" height="45">
     </router-link>
   </b-navbar-brand>
   <b-navbar-nav>
-  <b-nav-item to="/dashboard" >Dashboard</b-nav-item>
-  <b-nav-item to="/searchNew"  @click.native="isActive = false">Search</b-nav-item>
+  <b-nav-item v-if="$root.user" to="/dashboard" >Dashboard</b-nav-item>
+  <b-nav-item v-if="$root.user" to="/searchNew"  @click.native="isActive = false">Search</b-nav-item>
   </b-navbar-nav>
 
 <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
@@ -27,12 +30,14 @@
     </b-navbar-nav>
 
 <!-- if logged in -->
-    <b-navbar-nav class="ml-auto align-items-center" v-else>
+    <b-navbar-nav class="ml-auto " v-else>
 
       <b-nav-item-dropdown id="ddown-right" right text="Right align">
       <template slot="button-content">
         <em> 
-          <div  v-if="!$root.user.picture">{{$root.user.name}}</div>
+          <div  v-if="!$root.user.picture" class="icon-image">
+            <b-img  height="50" rounded src="/pictures/person.png" fluid/>
+          </div>
           <div  v-if="$root.user.picture" class="icon-image" >
             <b-img  rounded :src="$root.user.picture" fluid/>
           </div>

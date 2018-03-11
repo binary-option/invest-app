@@ -19,7 +19,7 @@ const userSchema = new Schema({
   },
   picture: {
     type: String,
-    default: ""
+    default: "/pictures/person_contrast.png"
   },
   accountCreated: Date,
   role: {
@@ -32,7 +32,10 @@ const userSchema = new Schema({
     default: 10000
   },
   //Parameters only relevant for the customer:
-  riskProfile: Number,
+  riskProfile: {
+    type: Number,
+    default: 0
+  },
   riskProfileCompleted: {
     type: Boolean,
     default: false
