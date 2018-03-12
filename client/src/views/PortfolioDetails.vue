@@ -43,8 +43,8 @@
     <div class="container">
       <div class="row text-center justify-content-start">
         <div class="col-lg-4 col-md-12 col-sm-12 col-xs-12 lg-push-right">
-          <complete-profile v-if="this.$root.user.role!=='manager' && this.userInfo.riskAssessded===false"></complete-profile>
-          <invest v-if="this.$root.user.role!=='manager' && this.userInfo.riskAssessded===true"
+          <complete-profile v-if="this.$root.user.role!=='manager' && this.userInfo.riskProfileCompleted===false"></complete-profile>
+          <invest v-if="this.$root.user.role!=='manager' && this.userInfo.riskProfileCompleted===true"
           :balance="userInfo.accountBalance"
           v-on:invest="addMoneyToPortfolio"></invest>
         </div>

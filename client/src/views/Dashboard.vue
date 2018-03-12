@@ -17,7 +17,7 @@
           <div class="pt-5">
             <p v-if="userInfo.riskProfileCompleted">Risk profile: {{clientRiskProfile}}</p>
             <p v-else>Risk profile: 
-              <router-link to="/risk" class=""><span class="complete-profile">Complete now</span></router-link>
+              <span class="complete-profile text-white"> 0</span>
             </p>
             <p>Number of portfolios: {{clientPortfoliosNumber}}</p>
             <p>Invested amount: {{clientTotalInvestment}}</p>
@@ -209,6 +209,7 @@ export default {
         );
       } else if (userInfo.role === "client") {
         //if he is a client
+        console.log("portf ", userInfo.customerPortfoliosOwned.length);
         this.clientPortfoliosNumber = userInfo.customerPortfoliosOwned.length;
         this.clientRiskProfile = userInfo.riskProfile;
         (this.clientTotalInvestment = this.getClientTotalInvestment(

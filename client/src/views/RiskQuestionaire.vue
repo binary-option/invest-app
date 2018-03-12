@@ -127,7 +127,7 @@ export default {
       };
       updateUserRisk(userId, userInfo)
         .then(() => {
-          this.$router.push("/profile");
+          this.$router.push(`/portfolios/${this.$route.query.portfolioId}`);
         })
         .catch(err => {
           this.error = err;
@@ -136,6 +136,7 @@ export default {
   },
   data() {
     return {
+      props: ["portfolioId"],
       timeHorizon: 0,
       riskTolerance: 0,
       riskProfile: 0,

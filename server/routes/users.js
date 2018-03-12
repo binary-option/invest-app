@@ -46,8 +46,7 @@ router.get("/:userId", ensureLoggedIn(), function(req, res, next) {
 router.get("/:userId/populate", ensureLoggedIn(), function(req, res, next) {
   User.findById(req.params.userId)
     .populate({
-      path: "managerPortfolios customerPortfoliosOwned",
-      populate: { path: "investors" }
+      path: "managerPortfolios customerPortfoliosOwned"
     })
     .exec((err, user) => {
       if (err) return next(err);
