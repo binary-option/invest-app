@@ -9,7 +9,7 @@
     <br/>
     <h2 class="h1 text-white text-center display-1">iInvest</h2>
     <br/>
-    <h3 class="text-white text-center"> Take your financial future into your own hands</h3>
+    <h3 class="text-white text-center"> Take your financial future into your own hands </h3>
     <div class="row text-center justify-content-center">
       <div class="col-lg-12 col-sm-12">
 
@@ -132,7 +132,7 @@ export default {
 .search-container {
   background-image: url("/pictures/landing_bg.png");
   width: 100%;
-  max-width: 1300px !important;
+  max-width: 1301px !important;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
