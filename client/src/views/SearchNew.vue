@@ -56,7 +56,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .search-container {
   background-image: url("/pictures/search_bg.png");
   height: 100%;

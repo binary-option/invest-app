@@ -105,7 +105,7 @@ export default {
 
 
 
-<style>
+<style scoped>
 .centered-text {
   position: absolute;
   top: 50%;
