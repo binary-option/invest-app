@@ -700,11 +700,22 @@ export default {
         return: this.portfolioReturn,
         returnBenchmark: this.benchmarkReturn
       };
+    },
+    addMoneyToPortfolio(payload) {
+      this.quantity = parseInt(payload.quantity);
+      this.clientId = this.userInfo._id;
+      addMoney(this.portfolioId, this.clientId, this.quantity)
+        .then(() => {
+          this.$router.push("/search");
+        })
+        .catch(err => {
+          this.err = err;
+        });
     }
   },
   filters: {
     moment: function(date) {
-      return moment(date).format("MMMM YYYY");
+      return moment(date).format("MMMM YY");
     }
   }
 };
