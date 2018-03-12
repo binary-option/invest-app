@@ -15,7 +15,7 @@
           <b-form-group label="Amount">
           <b-form-input placeholder="Type a quantity in USD" v-model="quantity"></b-form-input>
           </b-form-group>
-          <button type="submit" class="btn btn-primary btn-block">Invest now</button>
+          <button type="submit" class="btn btn-dark btn-block">Invest now</button>
         </b-form>
       </div>
     </div>

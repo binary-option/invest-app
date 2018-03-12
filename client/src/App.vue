@@ -6,7 +6,7 @@
 <router-view/>
      
     </section>
-      <div slot="footer" class="text-center mt-5">
+      <div v-if="$root.user" slot="footer" class="text-center mt-5">
         <small class="text-muted"><strong>Invest-app</strong> by Manuel Rojas & Hanna Mazzoni <br> Ironhack Web Dev 2018</small>
       </div>
     <footer class="footer">

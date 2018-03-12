@@ -87,37 +87,66 @@ router.patch(
   }
 );
 
+// router.patch("/:portfolioId/addMoney", ensureLoggedIn(), (req, res, next) => {
+//   const portfolioId = req.params.portfolioId;
+//   const amountOfMoney = req.body.quantity;
+//   const investmentDate = new Date();
+//   const investmentUpdatedDate = this.investmentDate;
+//   const clientId = req.user._id;
+//   console.log(req.body);
+//   const newBalance = req.body.newBalance;
+//   console.log("newBalance", newBalance);
+//   //Modify the client
+//   User.findByIdAndUpdate(
+//     clientId,
+//     {
+//       $push: {
+//         customerPort: {
+//           amountOfMoney,
+//           portfolioId,
+//           investmentDate,
+//           investmentUpdatedDate
+//         },
+//         customerPortfoliosOwned: portfolioId
+//       },
+//       accountBalance: this.newBalance
+//     },
+//     (err, portfolio) => {
+//       if (err) return next(err);
+//       res.json(portfolio);
+//     }
+//   );
+//   //Modify the portfolio
+//   Portfolio.findByIdAndUpdate(
+//     portfolioId,
+//     {
+//       $push: {
+//         movements: {
+//           date: investmentDate,
+//           amountOfMoney,
+//           clientId
+//         },
+//         investors: clientId
+//       }
+//     },
+//     (err, portfolio) => {
+//       if (err) return next(err);
+//       res.json(portfolio);
+//     }
+//   );
+// });
+
 router.patch("/:portfolioId/addMoney", ensureLoggedIn(), (req, res, next) => {
+  console.log("REQQQQQQQ ", req.body);
   const portfolioId = req.params.portfolioId;
-  const amountOfMoney = req.body.quantity;
+  const amountOfMoney = Object.keys(req.body)[0];
+  console.log("amount of m", amountOfMoney);
+  const oppositeAmountOfMoney = -amountOfMoney;
   const investmentDate = new Date();
   const investmentUpdatedDate = this.investmentDate;
   const clientId = req.user._id;
-  console.log(req.body);
-  const newBalance = req.body.newBalance;
-  console.log("newBalance", newBalance);
-  //Modify the client
-  User.findByIdAndUpdate(
-    clientId,
-    {
-      $push: {
-        customerPort: {
-          amountOfMoney,
-          portfolioId,
-          investmentDate,
-          investmentUpdatedDate
-        },
-        customerPortfoliosOwned: portfolioId
-      },
-      accountBalance: this.newBalance
-    },
-    (err, portfolio) => {
-      if (err) return next(err);
-      res.json(portfolio);
-    }
-  );
   //Modify the portfolio
-  Portfolio.findByIdAndUpdate(
+  let portfolio = Portfolio.findByIdAndUpdate(
     portfolioId,
     {
       $push: {
@@ -131,7 +160,23 @@ router.patch("/:portfolioId/addMoney", ensureLoggedIn(), (req, res, next) => {
     },
     (err, portfolio) => {
       if (err) return next(err);
-      res.json(portfolio);
+      console.log("new Portfolio done", portfolio);
+    }
+  );
+  //Modify the client
+  let user = User.findByIdAndUpdate(
+    clientId,
+    {
+      $push: {
+        customerPortfoliosOwned: portfolioId,
+        customerPortfoliosOwned: portfolioId
+      },
+      $inc: { accountBalance: oppositeAmountOfMoney }
+    },
+    (err, user) => {
+      if (err) return next(err);
+      console.log("newUser done", user);
+      res.json("portfolio and user modified");
     }
   );
 });

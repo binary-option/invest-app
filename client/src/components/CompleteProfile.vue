@@ -14,7 +14,7 @@
           </p>
           <br/>
           <router-link to="/risk">
-            <button class="btn btn-primary btn-block btn-dark">Complete profile</button>
+            <button class="btn btn-block btn-dark">Complete profile</button>
           </router-link>
       </div>
     </div>

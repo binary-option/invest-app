@@ -143,39 +143,26 @@ export default {
           this.stockInfo.push(stock);
         });
         getUser(this.$root.user.id).then(user => {
-          console.log("user", this.userInfo);
           this.userInfo = user;
         });
 
         return Promise.all([
           Promise.all(this.stockInfo.map(getStockDelta)),
           Promise.all(this.stockInfo.map(getStockValue)),
-          //retrieveBenchmarkData("2017-02-07", "2018-03-01")
           retrieveBenchmarkData(
             moment()
+              .subtract(1, "week")
               .subtract(1, "year")
               .startOf("isoWeek")
               .format("YYYY-MM-DD"),
             moment()
+              .subtract(1, "week")
               .startOf("isoWeek")
               .format("YYYY-MM-DD")
           )
         ]);
       })
       .then(([stockRdiff, stockValue, benchmarkData]) => {
-        console.log(
-          "DATE ",
-          moment()
-            .startOf("isoWeek")
-            .format("YYYY-MM-DD")
-        );
-        console.log(
-          "DATE PAST",
-          moment()
-            .subtract(1, "year")
-            .startOf("isoWeek")
-            .format("YYYY-MM-DD")
-        );
         this.benchmarkData = benchmarkData;
         this.stockRdiffs = stockRdiff;
         this.filterStockRdiffs();
@@ -501,7 +488,6 @@ export default {
       this.clientId = this.userInfo._id;
 
       // this.newBalance = this.userInfo.accountBalance - this.quantity;
-      // console.log("new balance", this.newBalance);
       addMoney(this.quantity, this.portfolioId, this.clientId, this.newBalance)
         .then(() => {
           this.$router.push("/dashboard");
@@ -558,19 +544,9 @@ export default {
           tempStockValue.push(
             this.stockValueFiltered[j][i] * numberOfStocks[j]
           );
-          console.log(
-            "svvi ",
-            this.stockValueFiltered[j][i] * numberOfStocks[j],
-            "svf ",
-            this.stockValueFiltered[j][i],
-            "nos ",
-            numberOfStocks[j]
-          );
         }
         stockValueVector.push(tempStockValue);
       }
-
-      console.log("svv ", stockValueVector);
 
       //A Matrix, containing in each row the wheighted stock contributions to the
       //composite stock per period
@@ -591,7 +567,6 @@ export default {
         }
         tempWeightedStock.push(weightedStockHolder);
       }
-      //console.log("tws ", tempWeightedStock);
       //So far ok, tempWeightedStock returns the rdiffs from Quandl
       //Array holding the value of the composite stock per period in rdiff
       for (var i = 0; i < tempWeightedStock.length; i++) {
@@ -601,7 +576,6 @@ export default {
           })
         );
       }
-      //console.log("csr ", this.compositeStockRdiff);
       //Array holding the total value of the composite stock
       for (var i = 0; i < tempWeightedStock.length; i++) {
         var weightedStock = [];
@@ -609,14 +583,6 @@ export default {
           weightedStock.push(
             (1 + tempWeightedStock[i][j]) * stockValueVector[i][j]
           );
-          // console.log(
-          //   "weightedStock ",
-          //   weightedStock,
-          //   "tempWeightedStock ",
-          //   tempWeightedStock[i][j],
-          //   "stockValueVector ",
-          //   stockValueVector[i][j]
-          // );
         }
         this.compositeStockValue.push(
           weightedStock.reduce((acc, curr) => {
@@ -624,7 +590,6 @@ export default {
           }) / totalNumberOfStocks
         );
       }
-      console.log("csv ", this.compositeStockValue);
     },
     //Calculates the change in value of the stocks since the last time they were updated
     holdingDelta() {

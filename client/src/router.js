@@ -11,6 +11,7 @@ import Dashboard from "./views/Dashboard.vue";
 import Search from "./views/Search.vue";
 import Risk from "./views/RiskQuestionaire.vue";
 import PortfolioDetails from "./views/PortfolioDetails.vue";
+import Payment from "./views/Payment.vue";
 
 Vue.use(Router);
 
@@ -92,6 +93,14 @@ export default new Router({
       path: "/portfolios/:portfolioId",
       name: "Details",
       component: PortfolioDetails,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: "/payment",
+      name: "Payment",
+      component: Payment,
       meta: {
         requiresAuth: true
       }
