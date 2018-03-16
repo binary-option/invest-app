@@ -20,10 +20,10 @@
                         <a class="text-white" href="https://github.com/manuelrs/invest-app">Github</a>
                     </li>
                     <li>
-                        <a class="text-white" href="https://www.linkedin.com/in/manuel-rojas/">LinkedIn Manuel Rojas</a> or <a class="text-white" href="mailto:manuel.rojas.soto@gmail.com">e-mail.</a>
+                        <a class="text-white" href="https://www.linkedin.com/in/manuel-rojas/">LinkedIn Manuel Rojas</a>
                     </li>
                     <li >
-                        <a class="text-white" href="#!">LinkeIn Hanna Mazzoni</a> or <a class="text-white" href="mailto:hannamaz@gmail.com">e-mail.</a>
+                        <a class="text-white" href="#!">LinkeIn Hanna Mazzoni</a>
                     </li>
                 </ul>
             </div>
