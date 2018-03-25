@@ -70,9 +70,9 @@
     
     
      </div>
-    <!-- <div v-if="quandlErrorFlag">
+    <div v-if="quandlErrorFlag">
       <quandl-error></quandl-error>
-    </div> -->
+    </div>
   </div>
 </template>
 

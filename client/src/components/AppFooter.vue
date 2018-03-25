@@ -7,8 +7,9 @@
 
             <!--First column-->
             <div class="col-md-6">
-                <h5 class="text-uppercase text-white">About iInvest</h5>
-                <p class="text-white">Final project @ Ironhack Paris by Manuel Rojas and Hanna Mazzoni. Application powered by Node in the backend and Vue in the frontend.</p>
+                <h5 class=" text-white">About iInvest</h5>
+                <p class="text-white">Final project @ Ironhack Paris by Manuel Rojas and Hanna Mazzoni. Application powered by Node in the backend and Vue in the frontend. </p>
+                <p class="text-white">Try as an user: username and password: client</p>
             </div>
             <!--/.First column-->
 
@@ -37,7 +38,6 @@
         <small class="text-muted"><strong>iInvest</strong> by Manuel Rojas & Hanna Mazzoni @ Ironhack Web Dev 2018</small>
       </div>
     <!--/.Copyright-->
-    <!-- sss -->
 
 </footer>
 </template>

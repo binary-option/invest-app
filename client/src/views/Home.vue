@@ -44,7 +44,7 @@
         <div class="row">
           <div class="col col-lg-7">
             <div class="row">
-              <div class="col col-lg-10">
+              <div class="col col-lg-12">
                 <h2>Advanced analytics on demand</h2>
                 <p>Rating a single stock is complicated enough. Rating a whole portfolio is a huge undertaking and by no means trivial. At iInvest we do the heavy lifting for you, giving you the information you need, so that you can focus on what’s really important. </p>
                 <h2>Intuitive indicators</h2>
@@ -72,7 +72,7 @@
           </div>
           <div class="col col-lg-7">
             <div class="row">
-              <div class="col col-lg-10">
+              <div class="col col-lg-12">
                 <h2>Full transparency </h2>
                 <p>We know it is difficult to decide whom to trust managing your money, but it doesn’t have to be like that. Review the details of the portfolios up to a single transaction to fully understand your portfolio’s strategy. </p>
                 <h2>Join the discussion</h2>
@@ -132,7 +132,7 @@ export default {
 .search-container {
   background-image: url("/pictures/landing_bg.png");
   width: 100%;
-  max-width: 1301px !important;
+  max-width: 100vw !important;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
